@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>SwiftTrading</title>
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+	<link rel="stylesheet" type="text/css" href="css/topnav.css">
+	<link rel="stylesheet" type="text/css" href="css/trade.css">
+	<link rel="stylesheet" type="text/css" href="css/strategytrade.css">
+	<link rel="stylesheet" type="text/css" href="css/orderhistory.css">
+</head>
+<body ng-app = "st">
+	<div class="st-page">
+		<div ng-controller = "indexCtrl">
+		<div ng-include = "topnav"></div>
+		<div ng-include = "main"></div>
+		</div>
+	</div>
+
+	<!-- import angular and bootstrap -->
+	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="angular/angular.js"></script>
+
+	<!-- import controllers -->
+	<script type="text/javascript" src="js/Controller/indexctrl.js"></script>
+	<script type="text/javascript" src="js/Controller/mtCtrl/rawctrl.js"></script>
+	<script type="text/javascript" src="js/Controller/mtCtrl/ptradelistctrl.js"></script>
+	<script type="text/javascript" src="js/Controller/mtCtrl/tradectrl.js"></script>
+
+	<!-- import service -->
+	
+</body>
+</html>
