@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.citi.swifttrading.dao.SecurityRepo;
 import com.citi.swifttrading.domain.MovingAverage;
+import com.citi.swifttrading.domain.Strategy;
 import com.citi.swifttrading.domain.Strategy222;
 import com.citi.swifttrading.service.trade.TradeManager;
 
@@ -22,7 +23,7 @@ public class StrategyManager {
 	@Autowired
 	private SecurityRepo securityRepo;
 
-	private List<Strategy222> strategys= new ArrayList<>();
+	private List<Strategy> strategys= new ArrayList<>();
 	
 	
 
@@ -45,7 +46,7 @@ public class StrategyManager {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public void stopStrategy(Strategy222 strategy) {
+	public void stopStrategy(Strategy strategy) {
 		strategy.getRunner().stop();
 		log.info("stop :"+strategy.toString());
 	}
@@ -61,7 +62,7 @@ public class StrategyManager {
 		
 	}
 	
-	public void startStrategy(Strategy222 strategy) {
+	public void startStrategy(Strategy strategy) {
 		strategy.getRunner().start();
 		log.info("stop :"+strategy.toString());
 	}

@@ -7,11 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-<<<<<<< Updated upstream
-import com.citi.swifttrading.dao.SecurityRepo;
-=======
-import com.citi.swifttrading.dao.SecurityDao;
->>>>>>> Stashed changes
+import com.citi.swifttrading.dao.SecurityDao222;
 import com.citi.swifttrading.domain.Security;
 
 import lombok.extern.slf4j.Slf4j;
@@ -21,21 +17,21 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/rest/sec")
 public class Rest222 {
 
-	@Autowired
-    SecurityDao dao;
-   
-    @RequestMapping(value="{id}",method=RequestMethod.GET)
-    public Security hello(@PathVariable("id") int id){
-        log.debug("hello world");
-        return dao.get(id);
-    }
-    
-    @RequestMapping(method=RequestMethod.POST)
-    public String save(@RequestBody(required=true)Security s){
-        log.debug("save");
-        dao.save(s);
-        return "saved";
-    }
+//	@Autowired
+//    SecurityDao222 dao;
+//   
+//    @RequestMapping(value="{id}",method=RequestMethod.GET)
+//    public Security hello(@PathVariable("id") int id){
+//        log.debug("hello world");
+//        return dao.get(id);
+//    }
+//    
+//    @RequestMapping(method=RequestMethod.POST)
+//    public String save(@RequestBody(required=true)Security s){
+//        log.debug("save");
+//        dao.save(s);
+//        return "saved";
+//    }
     
    
 }
