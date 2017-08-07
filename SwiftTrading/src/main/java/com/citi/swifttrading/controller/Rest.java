@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.citi.swifttrading.dao.SecurityDAO;
+import com.citi.swifttrading.dao.SecurityRepo;
 import com.citi.swifttrading.domain.Security;
 
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 public class Rest {
 
 	@Autowired
-    SecurityDAO dao;
+	SecurityRepo dao;
    
     @RequestMapping(value="{id}",method=RequestMethod.GET)
     public Security hello(@PathVariable("id") int id){
