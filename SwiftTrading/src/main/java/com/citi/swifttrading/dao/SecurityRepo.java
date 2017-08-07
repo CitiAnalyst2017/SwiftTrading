@@ -25,7 +25,7 @@ public class SecurityRepo {
 	SecurityRepo(){
 		
 		security = new Security();
-		security.setISIN("APPL");
+		security.setNameAbbreviation("APPL");
 		updater = new SecrityUpdater(security);
 		updater.start();
 		map.put(map.size()+1, security);

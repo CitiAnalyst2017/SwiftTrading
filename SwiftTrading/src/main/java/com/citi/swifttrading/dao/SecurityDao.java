@@ -1,10 +1,10 @@
-package com.citi.swifttrading.service;
+package com.citi.swifttrading.dao;
 
 import java.util.List;
 
 import com.citi.swifttrading.domain.Security;
 
-public interface SecurityService {
+public interface SecurityDao {
 
 	public void save(Security s);
 

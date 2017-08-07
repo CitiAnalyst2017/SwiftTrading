@@ -5,16 +5,15 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.citi.swifttrading.domain.Security222;
-
+import com.citi.swifttrading.domain.Security;
 
 public class SecurityTest {
-	
-	Security222 security;
-	
+
+	Security security;
+
 	@Before
 	public void setUp() {
-		security = new Security222("This is Security Name", "Short Name");
+		security = new Security("This is Security Name", "Short Name");
 	}
 
 	@Test
@@ -22,12 +21,12 @@ public class SecurityTest {
 		assertEquals("This is Security Name", security.getSecurityName());
 		assertEquals("Short Name", security.getNameAbbreviation());
 	}
-	
+
 	@Test
 	public void testSecuritySet() {
 		security.setSecurityName("Change Name");
 		security.setNameAbbreviation("Change Short Name");
-		
+
 		assertEquals("Change Name", security.getSecurityName());
 		assertEquals("Change Short Name", security.getNameAbbreviation());
 	}

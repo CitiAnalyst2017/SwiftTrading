@@ -6,27 +6,27 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.citi.swifttrading.dao.SecurityDao222;
-import com.citi.swifttrading.domain.Security222;
+import com.citi.swifttrading.dao.SecurityDao;
+import com.citi.swifttrading.domain.Security;
 
 @Repository
-public class SecurityDaoImpl implements SecurityDao222{
+public class SecurityDaoImpl implements SecurityDao{
 
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
 	
 	@Override
-	public void save(Security222 s) {
+	public void save(Security s) {
 		sqlSessionTemplate.insert("insert-security", s);	
 	}
 
 	@Override
-	public Security222 queryById(String nameAbbreviation) {
-		return (Security222) sqlSessionTemplate.selectOne("queryByID", nameAbbreviation);
+	public Security queryById(String nameAbbreviation) {
+		return (Security) sqlSessionTemplate.selectOne("queryByID", nameAbbreviation);
 	}
 
 	@Override
-	public void update(Security222 s) {
+	public void update(Security s) {
 		sqlSessionTemplate.insert("update-security", s);	
 		
 	}
@@ -37,8 +37,8 @@ public class SecurityDaoImpl implements SecurityDao222{
 	}
 
 	@Override
-	public List<Security222> queryAll() {
-		List<Security222> security = sqlSessionTemplate.selectList("query_All");
+	public List<Security> queryAll() {
+		List<Security> security = sqlSessionTemplate.selectList("query_All");
 		return security;
 	}
 
