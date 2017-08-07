@@ -2,12 +2,17 @@ package com.citi.swifttrading.domamin;
 
 import static org.junit.Assert.assertEquals;
 
+
 import java.time.LocalDateTime;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.citi.swifttrading.domain.Security;
 import com.citi.swifttrading.domain.Trade;
+import com.citi.swifttrading.enumration.Position;
+import com.citi.swifttrading.enumration.TradeStatus;
+import com.citi.swifttrading.enumration.TradeType;
 
 public class TradeTest {
 	
@@ -17,8 +22,7 @@ public class TradeTest {
 	
 	@Before
 	public void setUp() {
-		trade = new Trade("ISIN123456", 1000, time.plusDays(2), time, time.plusDays(1),
-				3, 16, 10.5, 15.5, "M");
+		trade = new Trade(TradeType.MARKET,new Security(), 100, LocalDateTime.now(),LocalDateTime.now().plusMonths(1), 0.05, 0.05, Position.LONG, 0);
 	}
 
 	@Test
@@ -42,11 +46,11 @@ public class TradeTest {
 		trade.setExpiration(time.plusDays(5));
 		trade.setStart_time(time.plusDays(1));
 		trade.setEnd_time(time.plusDays(2));
-		trade.setStatus(1);
+		trade.setStatus(TradeStatus.OPEN);
 		trade.setPrice(15.7);
 		trade.setLoss_price(10.7);
 		trade.setProfit_price(15.7);
-		trade.setType("A");
+		trade.setType(TradeType.MARKET);
 		
 		assertEquals("ISIN654321", trade.getCode());
 		assertEquals(2000, trade.getQuantity());

@@ -2,42 +2,44 @@ package com.citi.swifttrading.domain;
 
 import java.io.Serializable;
 
+import com.citi.swifttrading.strategy.StrategyRunner;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Strategy implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	private String strategyName;
-	private String Description;
+	protected String status;
+	protected String strategyName;
+	protected String description;
+	protected Security security;
+	protected double exit;
+	protected StrategyRunner runner;
 	
-	public Strategy(String strategyName, String description) {
+	public Strategy(String strategyName, String description,Security security,double exit) {
 		super();
 		this.strategyName = strategyName;
-		Description = description;
+		this.description = description;
+		this.security=security;
+		this.exit=exit;
 	}
 
 	public Strategy() {
 		super();
 	}
 
-	public String getStrategyName() {
-		return strategyName;
+	public String getStatus(){
+		return runner.getState().toString();
+		
 	}
-
-	public void setStrategyName(String strategyName) {
-		this.strategyName = strategyName;
-	}
-
-	public String getDescription() {
-		return Description;
-	}
-
-	public void setDescription(String description) {
-		Description = description;
-	}
-
 	@Override
 	public String toString() {
-		return "Strategy [strategyName=" + strategyName + ", Description=" + Description + "]";
+		return "Strategy [strategyName=" + strategyName + ", description=" + description + ", security=" + security
+				+ "]";
 	}
 
 }

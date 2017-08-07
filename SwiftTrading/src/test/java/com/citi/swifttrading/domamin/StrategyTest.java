@@ -2,9 +2,11 @@ package com.citi.swifttrading.domamin;
 
 import static org.junit.Assert.assertEquals;
 
+
 import org.junit.Before;
 import org.junit.Test;
 
+import com.citi.swifttrading.domain.Security;
 import com.citi.swifttrading.domain.Strategy;
 
 
@@ -14,7 +16,7 @@ public class StrategyTest {
 	
 	@Before
 	public void setUp() {
-		strategy = new Strategy("Strategy Name", "Strategy Desc");
+		strategy = new Strategy("Strategy Name", "Strategy Desc", new Security(), 0.05);
 	}
 
 	@Test
