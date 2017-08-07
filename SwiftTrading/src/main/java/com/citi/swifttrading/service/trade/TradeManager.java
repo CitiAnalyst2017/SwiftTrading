@@ -7,7 +7,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.citi.swifttrading.domain.Security;
+import com.citi.swifttrading.domain.Security222;
 import com.citi.swifttrading.domain.Trade;
+import com.citi.swifttrading.domain.Trade222;
 import com.citi.swifttrading.enumration.Position;
 import com.citi.swifttrading.enumration.TradeStatus;
 import com.citi.swifttrading.enumration.TradeType;

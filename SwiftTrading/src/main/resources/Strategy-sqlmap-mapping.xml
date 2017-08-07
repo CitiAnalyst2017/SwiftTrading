@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+      "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.citi.swifttrading.domain.Strategy">
+
+	<cache />
+
+	<resultMap type="Strategy" id="resultListStrategy">
+		<result column="ID" property="id" />
+		<result column="Name" property="strategyName" />
+		<result column="Description" property="description" />
+		<result column="TradeID" property="tradeId" />
+	</resultMap>
+
+	<insert id="insert-strategy" parameterType="Strategy" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into
+		strategy(Name,Description,TradeID)
+		values(#{strategyName},#{description},#{tradeId})
+	</insert>
+
+	<select id="query_All_Strategy" resultMap="resultListStrategy">
+		select * from strategy
+	</select>
+
+	<select id="queryByStrategyID" resultType="Strategy" parameterType="int">
+		select * from strategy where ID = #{id}
+	</select>
+
+	<update id="update-strategy" parameterType="Strategy">
+		update strategy set ID=#{id},Name=#{strategyName},
+		Description=#{description},TradeID=#{tradeId}
+		where ID=#{id}
+	</update>
+
+	<delete id="delete-strategy" parameterType="int">
+		delete from strategy where ID = #{id}
+		</delete>
+</mapper> 
