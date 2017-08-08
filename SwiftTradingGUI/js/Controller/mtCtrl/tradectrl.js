@@ -3,8 +3,8 @@
 app.controller('tradeCtrl',function($scope,$http){
 	$scope.price = 0;
 	$scope.qty = 0;
-	$scope.types = ["Mrkt","Limit","IOC"];
-	$scope.positions = ["Long","Short"];
+	$scope.types = ["MRKT","LIMIT","IOC"];
+	$scope.positions = ["LONG","SHORT"];
 
 	var send_url = 'swifttrading/rest/trade';
 	// var send_url = './MockData/postData';

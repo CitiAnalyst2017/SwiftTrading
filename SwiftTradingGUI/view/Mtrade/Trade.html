@@ -11,7 +11,9 @@
 				<p ng-show="nopt">There Is No Pending Order Now</p>
 				<div class="pendingtrade">
 					<ul class="list-group" ng-repeat="porder in porders">
-						<li class="list-group-item">{{porder}}
+						<li class="list-group-item">
+						{{porder}}
+						<button class="btn btn-default" ng-model="oper">{{oper}}</button>
 						</li>
 					</ul>
 				</div>
@@ -74,7 +76,7 @@
 						<!-- ng-click="sendOrder()" -->
 
 						<!-- Dialog -->
-						<div class="modal fade" id="ForSure" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal fade" id="ForSure" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-header">
@@ -124,7 +126,9 @@
 									<div class="modal-footer">
 										<button type="button" class="btn btn-default" data-dismiss="modal">		Cancel
 										</button>
-										<button type="button" class="btn btn-success" ng-click="sendOrder()">
+										<button type="button" class="btn btn-success" ng-click="sendOrder()"
+										data-dismiss="modal"
+										>
 										Submit Order
 										</button>
 									</div>
