@@ -39,45 +39,48 @@ public class StrategyServiceimplTest {
 
 	@Test
 	public void testSave() {
-		strategy = new Strategy("strategy1", "strategy 1 desc", security, 0.2, 1);
-		strategy.setSecurityName();
+		strategy = new Strategy("testStrategyServices1", "desc11111", security, 0.2);
 		strategyServiceImpl.save(strategy);
-		strategy = new Strategy("strategy1", "strategy 1 desc", security, 0.2, 1);
-		strategy.setSecurityName();
+		strategy = new Strategy("testStrategyServices2", "desc22222", security, 0.2);
 		strategyServiceImpl.save(strategy);
 	}
 
 	@Test
 	public void testQueryById() {
-		strategy = strategyServiceImpl.queryById(4);
-		assertEquals("strategy1", strategy.getStrategyName());
-		assertEquals("strategy 1 desc", strategy.getDescription());
-		assertEquals(1, strategy.getTradeId());
+		strategy = strategyServiceImpl.queryById(20);
+		assertEquals("testStrategyServices1", strategy.getStrategyName());
+		assertEquals("desc11111", strategy.getDescription());
 		assertEquals(0.2, strategy.getExit(), 0);
-		assertEquals("A", strategy.getSecurityName());
+		assertEquals("A", strategy.getSecurity().getNameAbbreviation());
 	}
 
 	@Test
 	public void testUpdate() {
-		strategy = strategyServiceImpl.queryById(4);
-		strategy.setStrategyName("Name4");
-		strategyServiceImpl.update(strategy);
-		assertEquals("Name4", strategy.getStrategyName());
-		assertEquals("strategy 1 desc", strategy.getDescription());
-		assertEquals(1, strategy.getTradeId());
+		strategy = strategyServiceImpl.queryById(21);
+		assertEquals("testStrategyServices2", strategy.getStrategyName());
+		assertEquals("desc22222", strategy.getDescription());
 		assertEquals(0.2, strategy.getExit(), 0);
-		assertEquals("A", strategy.getSecurityName());
+		assertEquals("A", strategy.getSecurity().getNameAbbreviation());
+
+		strategy.setDescription("testUpdate");
+		strategyServiceImpl.update(strategy);
+		strategy = strategyServiceImpl.queryById(21);
+
+		assertEquals("testStrategyServices2", strategy.getStrategyName());
+		assertEquals("testUpdate", strategy.getDescription());
+		assertEquals(0.2, strategy.getExit(), 0);
+		assertEquals("A", strategy.getSecurity().getNameAbbreviation());
 	}
 
 	@Test
 	public void testgetAll() {
 		strategies = strategyServiceImpl.queryAll();
 		assertNotNull(strategies);
-		assertEquals(2, strategies.size());
+		assertEquals(16, strategies.size());
 	}
 
 	@Test
 	public void testDelete() {
-		strategyServiceImpl.delete(4);
+		strategyServiceImpl.delete(6);
 	}
 }

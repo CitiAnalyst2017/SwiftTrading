@@ -30,9 +30,9 @@ public class StrategyDaoImpl implements StrategyDao{
 		List<Strategy> strategy = sqlSessionTemplate.selectList("query_All_Strategy");
 		Iterator<Strategy> iter = strategy.iterator();
 		Strategy ste = null;
-		while(iter.hasNext()) {
-			Strategy s= iter.next();
-			if(s.getId() == id)
+		while (iter.hasNext()) {
+			Strategy s = iter.next();
+			if (s.getId() == id)
 				ste = s;
 		}
 		return ste;

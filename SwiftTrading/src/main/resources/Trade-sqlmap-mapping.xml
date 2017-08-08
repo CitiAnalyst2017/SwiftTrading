@@ -8,7 +8,7 @@
 
 	<resultMap type="Trade" id="resultListTrade">
 		<result column="ID" property="id" />
-		<result column="Symbol" property="code" />
+		<result column="SecurityName" property="security.nameAbbreviation" />
 		<result column="Quantity" property="quantity" />
 		<result column="BuyPrice" property="price" />
 		<result column="Expiration" property="expiration" />
@@ -19,7 +19,6 @@
 		<result column="ProfitPrice" property="profit_price" />
 		<result column="TradeType" property="type" />
 		<result column="CCY" property="ccy" />
-		<result column="Side" property="oderType" />
 		<result column="SellPrice" property="salePrice" />
 		<result column="Position" property="position" />
 	</resultMap>
@@ -27,9 +26,9 @@
 	<insert id="insert-trade" parameterType="Trade" useGeneratedKeys="true"
 		keyProperty="id">
 		insert into
-		trade(Symbol,Quantity,BuyPrice,Expiration,StartTime,EndTime,Status,LossPrice,ProfitPrice,TradeType,CCY,Side,SellPrice,Position)
-		values(#{code},#{quantity},#{price},#{expiration},#{start_time},#{end_time},#{status},#{loss_price},#{profit_price}
-		,#{type},#{ccy},#{oderType},#{salePrice},#{position})
+		trade(SecurityName,Quantity,BuyPrice,Expiration,StartTime,EndTime,Status,LossPrice,ProfitPrice,TradeType,CCY,SellPrice,Position)
+		values(#{security.nameAbbreviation},#{quantity},#{price},#{expiration},#{start_time},#{end_time},#{status},#{loss_price},#{profit_price}
+		,#{type},#{ccy},#{salePrice},#{position})
 	</insert>
 
 	<select id="query_AllTrade" resultMap="resultListTrade">
@@ -41,9 +40,9 @@
 	</select>
 
 	<update id="update-trade" parameterType="Trade">
-		update trade set Symbol=#{code},Quantity=#{quantity},BuyPrice=#{price},Expiration=#{expiration},
+		update trade set SecurityName=#{security.nameAbbreviation},Quantity=#{quantity},BuyPrice=#{price},Expiration=#{expiration},
 		StartTime=#{start_time},EndTime=#{end_time},Status=#{status},LossPrice=#{loss_price},ProfitPrice=#{profit_price},
-		TradeType=#{type},CCY=#{ccy},Side=#{oderType},SellPrice=#{salePrice},Position=#{position}
+		TradeType=#{type},CCY=#{ccy},SellPrice=#{salePrice},Position=#{position}
 		where ID=#{id}
 	</update>
 

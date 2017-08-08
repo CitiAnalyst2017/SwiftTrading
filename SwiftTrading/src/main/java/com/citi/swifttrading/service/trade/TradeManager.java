@@ -1,6 +1,7 @@
 package com.citi.swifttrading.service.trade;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -23,10 +24,14 @@ public class TradeManager {
 	@Autowired
 	SecurityRepo securityDao;
 	
-	List<Trade> trades=new ArrayList<>();
-	
+	List<Trade> trades = new ArrayList<>();
+	Date start_time = new Date();
+	Date expiration;
+	Calendar c = Calendar.getInstance();
+
 	public Trade createMarketTrade(Position position, Security target, double exit) {
-		Trade trade=new Trade(TradeType.LIMIT,target, 100, new Date(),15, 15, exit, position, 0);
+		this.setTime();
+		Trade trade = new Trade(TradeType.LIMIT, target, 100, start_time, expiration, 15, exit, position, 0);
 		trades.add(trade);
 		return trade;
 	}
@@ -68,4 +73,9 @@ public class TradeManager {
 		return trade;
 	}
 
+	private void setTime() {
+		c.setTime(start_time);
+		c.add(Calendar.MINUTE, 15);
+		expiration = c.getTime();
+	}
 }

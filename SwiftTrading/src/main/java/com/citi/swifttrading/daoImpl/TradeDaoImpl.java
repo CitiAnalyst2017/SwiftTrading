@@ -19,8 +19,9 @@ public class TradeDaoImpl implements TradeDao{
 	@Override
 	public Trade queryById(int id) {
 //		Trade trade = sqlSessionTemplate.selectOne("queryByTradeID", id);
+//		return trade;
 		
-		//TODO
+//		TODO
 		
 		List<Trade> trade = sqlSessionTemplate.selectList("query_AllTrade");
 		Iterator<Trade> iter = trade.iterator();

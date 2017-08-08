@@ -19,9 +19,7 @@ public class Strategy implements Serializable {
 	protected String description;
 	protected Security security;
 	protected double exit;
-	private int tradeId;
 	protected StrategyRunner runner;
-	protected String securityName;
 
 	public Strategy(String strategyName, String description, Security security, double exit) {
 		super();
@@ -31,27 +29,12 @@ public class Strategy implements Serializable {
 		this.exit = exit;
 	}
 
-	public Strategy(String strategyName, String description, Security security, double exit, int tradeId) {
-		super();
-		this.strategyName = strategyName;
-		this.description = description;
-		this.security = security;
-		this.exit = exit;
-		this.tradeId = tradeId;
-	}
-
 	public Strategy() {
 		super();
 	}
 
 	public String getStatus() {
 		return runner.getState().toString();
-
-	}
-
-	public void setSecurityName() {
-		this.securityName = this.security.getNameAbbreviation();
-
 	}
 
 }

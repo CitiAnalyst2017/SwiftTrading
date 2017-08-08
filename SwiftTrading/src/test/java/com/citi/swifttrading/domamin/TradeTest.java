@@ -21,10 +21,10 @@ public class TradeTest {
 	
 	LocalDateTime time = LocalDateTime.now();
 	
-	@Before
-	public void setUp() {
-		trade = new Trade(TradeType.MARKET,new Security("This is Security Name", "Short Name"), 100, new Date(),15, 0.05, 0.05, Position.LONG, 10);
-	}
+//	@Before
+//	public void setUp() {
+//		trade = new Trade(TradeType.MARKET,new Security("This is Security Name", "Short Name"), 100, new Date(),15, 0.05, 0.05, Position.LONG, 10);
+//	}
 
 //	TODO
 	

@@ -10,16 +10,15 @@
 		<result column="ID" property="id" />
 		<result column="Name" property="strategyName" />
 		<result column="Description" property="description" />
-		<result column="TradeID" property="tradeId" />
-		<result column="Test" property="exit" />
-		<result column="Symbol" property="securityName" />
+		<result column="ExitPoint" property="exit" />
+		<result column="SecurityName" property="security.nameAbbreviation" />
 	</resultMap>
 
 	<insert id="insert-strategy" parameterType="Strategy" useGeneratedKeys="true"
 		keyProperty="id">
 		insert into
-		strategy(Name,Description,TradeID,Test,Symbol)
-		values(#{strategyName},#{description},#{tradeId},#{exit},#{securityName})
+		strategy(Name,Description,ExitPoint,SecurityName)
+		values(#{strategyName},#{description},#{exit},#{security.nameAbbreviation})
 	</insert>
 
 	<select id="query_All_Strategy" resultMap="resultListStrategy">
@@ -32,8 +31,7 @@
 
 	<update id="update-strategy" parameterType="Strategy">
 		update strategy set ID=#{id},Name=#{strategyName},
-		Description=#{description},TradeID=#{tradeId},
-		Test=#{exit},Symbol=#{securityName}
+		Description=#{description},ExitPoint=#{exit},SecurityName=#{security.nameAbbreviation}
 		where ID=#{id}
 	</update>
 
