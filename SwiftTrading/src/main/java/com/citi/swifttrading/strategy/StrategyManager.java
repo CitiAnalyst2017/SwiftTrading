@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.citi.swifttrading.dao.SecurityRepo;
 import com.citi.swifttrading.domain.MovingAverage;
 import com.citi.swifttrading.domain.Strategy;
-import com.citi.swifttrading.domain.Strategy222;
 import com.citi.swifttrading.service.trade.TradeManager;
 
 import lombok.extern.slf4j.Slf4j;

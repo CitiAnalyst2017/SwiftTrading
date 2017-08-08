@@ -8,8 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.citi.swifttrading.dao.StrategyDao;
-import com.citi.swifttrading.domain.Strategy222;
-import com.citi.swifttrading.domain.Trade222;
+import com.citi.swifttrading.domain.Strategy;
 
 @Repository
 public class StrategyDaoImpl implements StrategyDao{
@@ -18,21 +17,21 @@ public class StrategyDaoImpl implements StrategyDao{
 	private SqlSessionTemplate sqlSessionTemplate;
 	
 	@Override
-	public void save(Strategy222 s) {
+	public void save(Strategy s) {
 		sqlSessionTemplate.insert("insert-strategy", s);	
 	}
 
 	@Override
-	public Strategy222 queryById(int id) {
+	public Strategy queryById(int id) {
 //		return (Strategy) sqlSessionTemplate.selectOne("queryByStrategyID", id);
 		
 //		TODO
 		
-		List<Strategy222> strategy = sqlSessionTemplate.selectList("query_All_Strategy");
-		Iterator<Strategy222> iter = strategy.iterator();
-		Strategy222 ste = null;
+		List<Strategy> strategy = sqlSessionTemplate.selectList("query_All_Strategy");
+		Iterator<Strategy> iter = strategy.iterator();
+		Strategy ste = null;
 		while(iter.hasNext()) {
-			Strategy222 s= iter.next();
+			Strategy s= iter.next();
 			if(s.getId() == id)
 				ste = s;
 		}
@@ -40,7 +39,7 @@ public class StrategyDaoImpl implements StrategyDao{
 	}
 
 	@Override
-	public void update(Strategy222 s) {
+	public void update(Strategy s) {
 		sqlSessionTemplate.insert("update-strategy", s);	
 		
 	}
@@ -51,8 +50,8 @@ public class StrategyDaoImpl implements StrategyDao{
 	}
 
 	@Override
-	public List<Strategy222> queryAll() {
-		List<Strategy222> strategy = sqlSessionTemplate.selectList("query_All_Strategy");
+	public List<Strategy> queryAll() {
+		List<Strategy> strategy = sqlSessionTemplate.selectList("query_All_Strategy");
 		return strategy;
 	}
 

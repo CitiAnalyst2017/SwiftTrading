@@ -27,35 +27,34 @@ public class SecurityServiceImplTest {
 
 	@Test
 	public void testSave() {
-		security = new Security("Name for ISIN11", "Name 11");
+		security = new Security("YES YES YES", "YYY");
 		securityServiceImpl.save(security);
 	}
 
 	@Test
 	public void testQueryById() {
-		security = securityServiceImpl.queryById("Name 11");
-		assertEquals("Name for ISIN11", security.getSecurityName());
-		assertEquals("Name 11", security.getNameAbbreviation());
+		security = securityServiceImpl.queryById("YYY");
+		assertEquals("YES YES YES", security.getSecurityName());
+		assertEquals("YYY", security.getNameAbbreviation());
 	}
 
 	@Test
 	public void testUpdate() {
-		securityServiceImpl.update(new Security("Name for Name 11", "Name 11"));
-		security = securityServiceImpl.queryById("Name 11");
-		assertEquals("Name for Name 11", security.getSecurityName());
-		assertEquals("Name 11", security.getNameAbbreviation());
+		securityServiceImpl.update(new Security("YES YES YES YES", "YYY"));
+		security = securityServiceImpl.queryById("YYY");
+		assertEquals("YES YES YES YES", security.getSecurityName());
+		assertEquals("YYY", security.getNameAbbreviation());
 	}
-
-	@Test
-	public void testDeletel() {
-		securityServiceImpl.delete("Name 1");
-	}
-
+	
 	@Test
 	public void testgetAll() {
 		fevoriteSecurity = securityServiceImpl.queryAll();
 		assertNotNull(fevoriteSecurity);
-		assertEquals(7, fevoriteSecurity.size());
+		assertEquals(23, fevoriteSecurity.size());
+	}
+	@Test
+	public void testDelete() {
+		securityServiceImpl.delete("YYY");
 	}
 
 }

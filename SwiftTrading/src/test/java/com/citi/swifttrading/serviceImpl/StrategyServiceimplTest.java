@@ -5,13 +5,16 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.citi.swifttrading.domain.Strategy222;
+import com.citi.swifttrading.daoImpl.SecurityDaoImpl;
+import com.citi.swifttrading.domain.Security;
+import com.citi.swifttrading.domain.Strategy;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext.xml")
@@ -20,50 +23,61 @@ public class StrategyServiceimplTest {
 	@Autowired
 	StrategyServiceImpl strategyServiceImpl;
 
-	Strategy222 strategy;
+	@Autowired
+	SecurityDaoImpl securityDaoImpl;
 
-	List<Strategy222> strategies;
+	Strategy strategy;
+	
+	Security security;
+
+	List<Strategy> strategies;
+	
+	@Before
+	public void setUp() {
+		security = securityDaoImpl.queryById("A");
+	}
 
 	@Test
 	public void testSave() {
-		strategy = new Strategy222("strategy4", "strategy 4 desc", 14);
+		strategy = new Strategy("strategy1", "strategy 1 desc", security, 0.2, 1);
 		strategyServiceImpl.save(strategy);
-		strategy = new Strategy222("strategy5", "strategy 5 desc", 21);
-		strategyServiceImpl.save(strategy);
-		strategy = new Strategy222("strategy6", "strategy 6 desc", 22);
+		strategy = new Strategy("strategy1", "strategy 1 desc", security, 0.2, 1);
 		strategyServiceImpl.save(strategy);
 	}
 
 	@Test
 	public void testQueryById() {
-		strategy = strategyServiceImpl.queryById(4);
+		strategy = strategyServiceImpl.queryById(1);
 		System.out.println(strategy.toString());
-		assertEquals("strategy4", strategy.getStrategyName());
-		assertEquals("strategy 4 desc", strategy.getDescription());
-		assertEquals(14, strategy.getTradeId());
+		assertEquals("Name1", strategy.getStrategyName());
+		assertEquals("desc", strategy.getDescription());
+		assertEquals(1, strategy.getTradeId());
+		assertEquals(0.3, strategy.getExit(),0);
+		assertEquals("A", strategy.getSecurityName());
 	}
 
 	@Test
 	public void testUpdate() {
-		strategy = strategyServiceImpl.queryById(5);
-		strategy.setStrategyName("strategy5 change");
+		strategy = strategyServiceImpl.queryById(1);
+		strategy.setStrategyName("Name2");
 		strategyServiceImpl.update(strategy);
-		assertEquals("strategy5 change", strategy.getStrategyName());
-		assertEquals("strategy 5 desc", strategy.getDescription());
-		assertEquals(21, strategy.getTradeId());
+		assertEquals("Name2", strategy.getStrategyName());
+		assertEquals("desc", strategy.getDescription());
+		assertEquals(1, strategy.getTradeId());
+		assertEquals(0.3, strategy.getExit(),0);
+		assertEquals("A", strategy.getSecurityName());
 	}
 
 	@Test
 	public void testgetAll() {
 		strategies = strategyServiceImpl.queryAll();
-		System.out.println(strategies.get(1).toString());
 		assertNotNull(strategies);
-		assertEquals(5, strategies.size());
+		assertEquals(1, strategies.size());
 	}
 
 	@Test
 	public void testDeletel() {
-		strategyServiceImpl.delete(6);
+		strategyServiceImpl.delete(1);
 	}
 
 }

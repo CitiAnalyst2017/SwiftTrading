@@ -36,7 +36,7 @@ public class UserDaoImplTest {
 	public void testQueryAll() {
 		users = userDaoImpl.queryAll();
 		assertNotNull(users);
-		assertEquals(3, users.size());
+		assertEquals(1, users.size());
 	}
 
 }

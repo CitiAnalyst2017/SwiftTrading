@@ -27,34 +27,34 @@ public class SecurityDaoImplTest {
 
 	@Test
 	public void testSave() {
-		security = new Security("Name for ISIN10", "Name 10");
+		security = new Security("YES YES YES", "YYY");
 		securityDaoImpl.save(security);
 	}
 
 	@Test
 	public void testQueryById() {
-		security = securityDaoImpl.queryById("Name 10");
-		assertEquals("Name for ISIN10", security.getSecurityName());
-		assertEquals("Name 10", security.getNameAbbreviation());
+		security = securityDaoImpl.queryById("YYY");
+		assertEquals("YES YES YES", security.getSecurityName());
+		assertEquals("YYY", security.getNameAbbreviation());
 	}
 
 	@Test
 	public void testUpdate() {
-		securityDaoImpl.update(new Security("Name for Name 10", "Name 10"));
-		security = securityDaoImpl.queryById("Name 10");
-		assertEquals("Name for Name 10", security.getSecurityName());
-		assertEquals("Name 10", security.getNameAbbreviation());
+		securityDaoImpl.update(new Security("YES YES YES YES", "YYY"));
+		security = securityDaoImpl.queryById("YYY");
+		assertEquals("YES YES YES YES", security.getSecurityName());
+		assertEquals("YYY", security.getNameAbbreviation());
 	}
 	
 	@Test
 	public void testgetAll() {
 		fevoriteSecurity = securityDaoImpl.queryAll();
 		assertNotNull(fevoriteSecurity);
-		assertEquals(7, fevoriteSecurity.size());
+		assertEquals(23, fevoriteSecurity.size());
 	}
 	@Test
-	public void testDeletel() {
-		securityDaoImpl.delete("Name 3");
+	public void testDelete() {
+		securityDaoImpl.delete("YYY");
 	}
 	
 

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.citi.swifttrading.dao.TradeDao;
-import com.citi.swifttrading.domain.Trade222;
+import com.citi.swifttrading.domain.Trade;
 
 @Repository
 public class TradeDaoImpl implements TradeDao{
@@ -17,16 +17,16 @@ public class TradeDaoImpl implements TradeDao{
 	private SqlSessionTemplate sqlSessionTemplate;
 	
 	@Override
-	public Trade222 queryById(int id) {
+	public Trade queryById(int id) {
 //		Trade trade = sqlSessionTemplate.selectOne("queryByTradeID", id);
 		
 		//TODO
 		
-		List<Trade222> trade = sqlSessionTemplate.selectList("query_AllTrade");
-		Iterator<Trade222> iter = trade.iterator();
-		Trade222 tra = null;
+		List<Trade> trade = sqlSessionTemplate.selectList("query_AllTrade");
+		Iterator<Trade> iter = trade.iterator();
+		Trade tra = null;
 		while(iter.hasNext()) {
-			Trade222 t= iter.next();
+			Trade t= iter.next();
 			if(t.getId() == id)
 				tra = t;
 		}
@@ -34,12 +34,12 @@ public class TradeDaoImpl implements TradeDao{
 	}
 
 	@Override
-	public void save(Trade222 t) {
+	public void save(Trade t) {
 		sqlSessionTemplate.insert("insert-trade", t);
 	}
 
 	@Override
-	public void update(Trade222 t) {
+	public void update(Trade t) {
 		sqlSessionTemplate.update("update-trade", t);
 	}
 
@@ -49,8 +49,8 @@ public class TradeDaoImpl implements TradeDao{
 	}
 
 	@Override
-	public List<Trade222> queryAll() {
-		List<Trade222> trade = sqlSessionTemplate.selectList("query_AllTrade");
+	public List<Trade> queryAll() {
+		List<Trade> trade = sqlSessionTemplate.selectList("query_AllTrade");
 		return trade;
 	}
 
