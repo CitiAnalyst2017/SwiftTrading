@@ -8,6 +8,20 @@
 	margin-top: 0.5em;
 }
 
+.finished-order .panel-body p{
+	text-align: center;
+	font-size: 1.5em;
+}
+
+.finished-order td{
+	margin-right: 4em;
+}
+
+.finished-order span{
+	font-size: 1.5em;
+	margin-right: 1em;
+}
+
 .performance{
 	margin-top: 0.5em;
 }

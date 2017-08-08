@@ -6,12 +6,12 @@
 	<div class="td-page-left col-md-8">
 
 		<div class="ptrade-list panel panel-success" ng-controller="ptradelistCtrl">
-			<div class="panel-heading">PendingTrade</div>
+			<div class="panel-heading">PendingOrade</div>
 			<div class="panel-body">
-				<p ng-show="nopt">There is no pending trade now</p>
+				<p ng-show="nopt">There Is No Pending Order Now</p>
 				<div class="pendingtrade">
-					<ul class="list-group" ng-repeat="ptrade in ptrades">
-						<li class="list-group-item">{{ptrade}}
+					<ul class="list-group" ng-repeat="porder in porders">
+						<li class="list-group-item">{{porder}}
 						</li>
 					</ul>
 				</div>
@@ -25,10 +25,13 @@
 					<div class="trade-form-left col-md-4">
 						<div class="input-group">
 							<span class="input-group-addon">Type</span>
-							<select class="form-control" ng-model="type">
-								<option>Mrkt</option>
-								<option>Limit</option>
-								<option>IOC</option>
+							<select ng-init="type=types[0]" ng-model="type" ng-options="x for x in types" class="form-control">
+							</select>
+						</div>
+						<br>
+						<div class="input-group">
+							<span class="input-group-addon">Position</span>
+							<select class="form-control" ng-model="position" ng-init="position=positions[0]" ng-options="x for x in positions">
 							</select>
 						</div>
 						<br>
@@ -36,7 +39,7 @@
 							<span class="input-group-addon">Code</span>
 							<input type="text" class="form-control" ng-model="code">
 						</div>
-						<br>
+						<br>		
 						<div class="input-group">
 							<span class="input-group-addon">Price</span>
 							<input type="text" class="form-control" ng-model="price">
@@ -67,7 +70,69 @@
 						</div>
 						<br>
 						<span><h4>Total Cost:&nbsp;{{ price*qty }}</h4></span>
-						<button class="btn btn-info pull-right" ng-click="sendOrder()">Submit Order</button>
+						<button class="btn btn-info pull-right" data-toggle="modal" data-target="#ForSure">Submit Order</button>
+						<!-- ng-click="sendOrder()" -->
+
+						<!-- Dialog -->
+						<div class="modal fade" id="ForSure" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+											&times;
+										</button>
+										<h4 class="modal-title" id="myModalLabel">
+											Are you Sure For Your Order?
+										</h4>
+									</div>
+									<div class="modal-body">
+										<table class="table table-striped">
+											<thead>
+												<tr>
+													<th>Type</th>
+													<th>Position</th>
+													<th>Code</th>
+													<th>Price</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>{{type}}</td>
+													<td>{{position}}</td>
+													<td>{{code}}</td>
+													<td>{{price}}</td>
+												</tr>
+											</tbody>
+											<thead>
+												<tr>
+													<th>Quantity</th>
+													<th>Loss Price</th>
+													<th>Profit Price</th>
+													<th>Expiration</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<th>{{qty}}</th>
+													<th>{{lossp}}%</th>
+													<th>{{profp}}%</th>
+													<th>{{expir}}min</th>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">		Cancel
+										</button>
+										<button type="button" class="btn btn-success" ng-click="sendOrder()">
+										Submit Order
+										</button>
+									</div>
+								</div><!-- /.modal-content -->
+							</div><!-- /.modal -->
+						</div>
+						<!-- End Dialog -->
+
 					</div>
 				</div>
 
@@ -83,7 +148,7 @@
 				<div class="td-search-bar input-group">
 					<input type="text" class="form-control" placeholder="input the code" ng-model="code"/>
 					<span class="input-group-btn">
-        				<button class="btn btn-info" type="button" ng-click="searchrawclick(code)">Search</button>
+        				<button class="btn btn-info" type="button" ng-click="searchrawclick()">Search</button>
       				</span>
 				</div>
 				<div class="raw-data-result">
@@ -96,6 +161,14 @@
 								<th>Qty</th>
 							</tr>
 						</thead>
+						<tbody>
+							<tr ng-repeat="raw in raws">
+								<td>{{ raw.symbol }}</td>
+								<td>{{ raw.side }}</td>
+								<td>{{ raw.price }}</td>
+								<td>{{ raw.qty }}</td>
+							</tr>
+						</tbody>
 					</table>
 				</div>
 			</div>

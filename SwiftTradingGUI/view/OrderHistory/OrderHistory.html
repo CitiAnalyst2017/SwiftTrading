@@ -1,9 +1,20 @@
 <div class="os-page">
-	<div class="finished-order">
+	<div class="finished-order" ng-controller="forderCtrl">
 		<div class="panel panel-default">
 			<div class="panel-heading">Finished Order</div>
 			<div class="panel-body">
-				
+				<p>There Is No Finished Order Now</p>
+				<ul class="list-group" ng-repeat="forder in forders">
+					<a class="list-group-item">	  
+						<span>OrderId:{{forders.oid}}</span>
+						<span>OrderTime:{{forders.ot}}</span>
+						<span>Code:{{forders.co}}</span>
+						<span>SellPrice:{{forders.sp}}</span>
+						<span>BuyPrice:{{forders.bp}}</span>
+						<span>Quantity:{{forders.qu}}</span>
+						<span>Profit:{{forders.pr}}</span>
+					</a>
+				</ul>
 			</div>
 		</div>
 	</div>

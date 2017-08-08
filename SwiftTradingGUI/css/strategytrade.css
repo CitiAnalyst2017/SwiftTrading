@@ -20,8 +20,21 @@
 	border-color: lightgrey;
 }
 
+.st-list p{
+	margin-top: 0.5em;
+	text-align: center;
+	font-size: 1.5em;
+}
+
 .st-panel{
 	margin-top: 0.5em;
 	border:solid 1px;
 	border-color: lightgrey;
+}
+
+.st-panel .nameselect{
+	width: 30%;
+}
+.st-panel .input-group{
+	width: 30%
 }
