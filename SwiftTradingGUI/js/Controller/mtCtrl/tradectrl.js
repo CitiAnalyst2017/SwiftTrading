@@ -1,12 +1,12 @@
 
-
+/*book the order and send it to the server*/
 app.controller('tradeCtrl',function($scope,$http){
 	$scope.price = 0;
 	$scope.qty = 0;
 	$scope.types = ["MRKT","LIMIT","IOC"];
 	$scope.positions = ["LONG","SHORT"];
 
-	var send_url = 'swifttrading/rest/trade';
+	var send_url = url_prefix + 'trade';
 	// var send_url = './MockData/postData';
 
 	$scope.sendOrder = function(){

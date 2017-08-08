@@ -8,7 +8,7 @@
 		<div class="ptrade-list panel panel-success" ng-controller="ptradelistCtrl">
 			<div class="panel-heading">PendingOrade</div>
 			<div class="panel-body">
-				<p ng-show="nopt">There Is No Pending Order Now</p>
+				<p ng-show="nopt()">There Is No Pending Order Now</p>
 				<div class="pendingtrade">
 					<ul class="list-group" ng-repeat="porder in porders">
 						<li class="list-group-item">

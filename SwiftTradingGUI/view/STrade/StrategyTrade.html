@@ -3,7 +3,7 @@
 		<div class="st-title-content"><h2>Strategy Trading</h2></div>
 	</div>
 
-	<div class="st-list panel panel-default">
+	<div class="st-list panel panel-default" ng-controller="strlistCtrl">
 		<div class="panel-heading">
 			Strategy
 		</div>
@@ -27,25 +27,25 @@
 					<hr>
 					<div class="input-group">
 						<span class="input-group-addon">Code</span>
-						<input type="text" class="form-control" ng-model="code">
+						<input type="text" class="form-control" ng-model="$parent.macode">
 					</div>
 					<br>
 					<div class="input-group">
 						<span class="input-group-addon">LongPeriod</span>
-						<input type="text" class="form-control" ng-model="code">
+						<input type="text" class="form-control" ng-model="$parent.malp">
 					</div>
 					<br>
 					<div class="input-group">
 						<span class="input-group-addon">ShortPeriod</span>
-						<input type="text" class="form-control" ng-model="code">
+						<input type="text" class="form-control" ng-model="$parent.masp">
 					</div>
 					<br>
 					<div class="input-group">
 						<span class="input-group-addon">Exit</span>
-						<input type="text" class="form-control" ng-model="code">
+						<input type="text" class="form-control" ng-model="$parent.maex">
 					</div>
 					<br>
-					<button class="btn btn-primary">Create Strategy</button>
+					<button class="btn btn-primary" ng-click="maclick()">Create Strategy</button>
 				</div>
 				<div ng-switch-when="Boll Band">
 					<div class="descri">
@@ -54,25 +54,25 @@
 					<hr>
 					<div class="input-group">
 						<span class="input-group-addon">Code</span>
-						<input type="text" class="form-control" ng-model="code">
+						<input type="text" class="form-control" ng-model="$parent.bbcode">
 					</div>
 					<br>
 					<div class="input-group">
 						<span class="input-group-addon">Period</span>
-						<input type="text" class="form-control" ng-model="code">
+						<input type="text" class="form-control" ng-model="$parent.bbpe">
 					</div>
 					<br>
 					<div class="input-group">
 						<span class="input-group-addon">StandardDeviation</span>
-							<input type="text" class="form-control" ng-model="code">
+							<input type="text" class="form-control" ng-model="$parent.bbsd">
 					</div>
 					<br>
 					<div class="input-group">
 						<span class="input-group-addon">Exit</span>
-						<input type="text" class="form-control" ng-model="code">
+						<input type="text" class="form-control" ng-model="$parent.bbex">
 					</div>
 					<br>
-					<button class="btn btn-primary">Create Strategy</button>
+					<button class="btn btn-primary" ng-click="bbclick()">Create Strategy</button>
 				</div>
 			</div>
 			<hr>
