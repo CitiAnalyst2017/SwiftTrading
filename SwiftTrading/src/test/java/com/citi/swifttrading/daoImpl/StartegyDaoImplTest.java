@@ -33,20 +33,21 @@ public class StartegyDaoImplTest {
 	
 	@Before
 	public void setUp() {
-		security = securityDaoImpl.queryById("A");
+		security = securityDaoImpl.queryById("AA");
 	}
 
 	@Test
 	public void testSave() {
-		strategy = new Strategy("testTradeIdNull1", "desc1", security, 0.2);
+		strategy = new Strategy("funk", "funk", security, 0.2);
 		strategyDaoImpl.save(strategy);
-		strategy = new Strategy("testTradeIdNull2", "desc2", security, 0.2);
+		strategy = new Strategy("funk", "funk", security, 0.2);
 		strategyDaoImpl.save(strategy);
 	}
 
 	@Test
 	public void testQueryById() {
 		strategy = strategyDaoImpl.queryById(14);
+		System.out.println(strategy.getSecurity().toString());
 		assertEquals("testTradeIdNull1", strategy.getStrategyName());
 		assertEquals("desc1", strategy.getDescription());
 		assertEquals(0.2, strategy.getExit(),0);
