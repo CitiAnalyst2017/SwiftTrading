@@ -41,4 +41,9 @@ public class Security implements Serializable{
 	public double latestPrice() {
 		return prices.get(prices.size()-1);
 	}
+
+	@Override
+	public String toString() {
+		return "Security [securityName=" + securityName + ", nameAbbreviation=" + nameAbbreviation + "]";
+	}
 }
