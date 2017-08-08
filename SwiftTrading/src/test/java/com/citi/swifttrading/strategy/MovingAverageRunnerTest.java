@@ -18,7 +18,7 @@ public class MovingAverageRunnerTest {
 	@Before
 	public void setUp() throws Exception {
 		security=new Security();
-		security.setISIN("APPL");
+		security.setNameAbbreviation("APPL");
 		updater= new SecrityUpdater(security);
 		target=new  MovingAverageRunner(null, movingAverage);
 	}

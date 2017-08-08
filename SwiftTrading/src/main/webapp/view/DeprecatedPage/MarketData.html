@@ -1,0 +1,71 @@
+
+<!-- deprecated -->
+<div class="md-page">
+	<div class="mdp-left col-md-7">
+		<div class="usr_search_area">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+						Search RAW Data	
+				</div>
+				<div class="panel-body" ng-controller="mdpsearchCtrl">
+					<div class="mdp-search-bar input-group col-md-7">
+						<input type="text" class="form-control" placeholder="please  input the stock code" ng-model="code"/>
+						<span class="input-group-btn">
+        				<button class="btn btn-info" type="button" ng-click="searchstockclick()">Search</button>
+      					</span>
+					</div>
+					<br>
+					<div class="mdp-search-rslt" ng-model="stock_detail" ng-show="false">
+						<label>Code:</label>{{stock_detail.code}}
+						<label>NowPrice:</label>{{stock_detail.nowprice}}
+						<button class="btn btn-default">AddToFavor</button>
+						</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- <div class="index_data_area">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Market Index Data
+				</div>
+				<div class="panel-body">
+					<div class="mindex_data" ng-controller="mindexCtrl">
+						<div ng-include="'indexDataItem.html'" ng-repeat="index_da in index_das"></div>
+					</div>
+				</div>
+			</div>
+		</div> -->
+	</div>
+	
+
+	<div class="mdp-right pull-right col-md-5">
+		<div class="favor_list" >
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					RAW Data
+				</div>
+				<div class="panel-body">
+					<div class="flist" ng-controller = "flistCtrl">
+						<div class="table">
+							<!-- <thead>
+								<tr>
+									<th>#</th>
+									<th>StockCode</th>
+									<th>NowPrice</th>
+									<th>Percentage</th>
+									<th>OffSet</th>
+									<th></th>
+								</tr>
+							</thead> -->
+							<tbody>
+								<tr ng-repeat="fstock in fstocks"></tr>
+							</tbody>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+      "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.citi.swifttrading.domain.Trade">
+
+	<cache />
+
+	<resultMap type="Trade" id="resultListTrade">
+		<result column="ID" property="id" />
+		<result column="Symbol" property="code" />
+		<result column="Quantity" property="quantity" />
+		<result column="BuyPrice" property="price" />
+		<result column="Expiration" property="expiration" />
+		<result column="StartTime" property="start_time" />
+		<result column="EndTime" property="end_time" />
+		<result column="Status" property="status" />
+		<result column="LossPrice" property="loss_price" />
+		<result column="ProfitPrice" property="profit_price" />
+		<result column="TradeType" property="type" />
+		<result column="CCY" property="ccy" />
+		<result column="Side" property="oderType" />
+		<result column="SellPrice" property="salePrice" />
+		<result column="Position" property="position" />
+	</resultMap>
+
+	<insert id="insert-trade" parameterType="Trade" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into
+		trade(Symbol,Quantity,BuyPrice,Expiration,StartTime,EndTime,Status,LossPrice,ProfitPrice,TradeType,CCY,Side,SellPrice,Position)
+		values(#{code},#{quantity},#{price},#{expiration},#{start_time},#{end_time},#{status},#{loss_price},#{profit_price}
+		,#{type},#{ccy},#{oderType},#{salePrice},#{position})
+	</insert>
+
+	<select id="query_AllTrade" resultMap="resultListTrade">
+		select * from trade
+	</select>
+
+	<select id="queryByTradeID" resultType="Trade" parameterType="int">
+		select * from trade where ID = #{id}
+	</select>
+
+	<update id="update-trade" parameterType="Trade">
+		update trade set Symbol=#{code},Quantity=#{quantity},BuyPrice=#{price},Expiration=#{expiration},
+		StartTime=#{start_time},EndTime=#{end_time},Status=#{status},LossPrice=#{loss_price},ProfitPrice=#{profit_price},
+		TradeType=#{type},CCY=#{ccy},Side=#{oderType},SellPrice=#{salePrice},Position=#{position}
+		where ID=#{id}
+	</update>
+
+	<delete id="delete-trade" parameterType="int">
+		delete from trade where ID = #{id}
+		</delete>
+</mapper> 

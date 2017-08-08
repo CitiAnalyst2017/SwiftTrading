@@ -7,34 +7,27 @@ import org.junit.Test;
 
 import com.citi.swifttrading.domain.Security;
 
-
 public class SecurityTest {
-	
+
 	Security security;
-	
+
 	@Before
 	public void setUp() {
-		security = new Security("ISIN123456", "This is Security Name", "Short Name", true);
+		security = new Security("This is Security Name", "Short Name");
 	}
 
 	@Test
-	public void testUserGet() {
-		assertEquals("ISIN123456", security.getISIN());
+	public void testSecurityGet() {
 		assertEquals("This is Security Name", security.getSecurityName());
 		assertEquals("Short Name", security.getNameAbbreviation());
-		assertTrue(security.isFavorite());
 	}
-	
+
 	@Test
-	public void testUserSet() {
-		security.setISIN("ISIN654321");
+	public void testSecuritySet() {
 		security.setSecurityName("Change Name");
 		security.setNameAbbreviation("Change Short Name");
-		security.setFavorite(false);
-		
-		assertEquals("ISIN654321", security.getISIN());
+
 		assertEquals("Change Name", security.getSecurityName());
 		assertEquals("Change Short Name", security.getNameAbbreviation());
-		assertFalse(security.isFavorite());
 	}
 }

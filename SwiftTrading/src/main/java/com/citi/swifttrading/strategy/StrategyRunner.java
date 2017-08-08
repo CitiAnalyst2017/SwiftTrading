@@ -24,14 +24,14 @@ public abstract class StrategyRunner extends Thread {
 
 	protected Trade createLongRequest(Security target, double exit) {
 
-		log.info(String.format("Long Secrity %s ,at price %f ,with exit %f", target.getISIN(), target.latestPrice(),
+		log.info(String.format("Long Secrity %s ,at price %f ,with exit %f", target.getNameAbbreviation(), target.latestPrice(),
 				exit));
 		return tradeManager.createMarketTrade(Position.LONG, target, exit);
 	}
 
 	protected Trade createShortRequest(Security target, double exit) {
 
-		log.info(String.format("short Secrity %s ,at price %f ,with exit %f", target.getISIN(), target.latestPrice(),
+		log.info(String.format("short Secrity %s ,at price %f ,with exit %f", target.getNameAbbreviation(), target.latestPrice(),
 				exit));
 		return tradeManager.createMarketTrade(Position.SHORT, target, exit);
 
