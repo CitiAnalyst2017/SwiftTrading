@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.citi.swifttrading.dao.TradeDao;
+import com.citi.swifttrading.domain.Security;
 import com.citi.swifttrading.domain.Trade;
 
 @Repository
@@ -15,6 +16,9 @@ public class TradeDaoImpl implements TradeDao {
 
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
+	
+	@Autowired
+	SecurityDaoImpl securityDaoImpl;
 
 	@Override
 	public Trade queryById(int id) {
@@ -28,8 +32,12 @@ public class TradeDaoImpl implements TradeDao {
 		Trade tra = null;
 		while (iter.hasNext()) {
 			Trade t = iter.next();
-			if (t.getId() == id)
+			if (t.getId() == id) {
 				tra = t;
+				Security security = securityDaoImpl.queryById(t.getSecurity().getNameAbbreviation());
+				tra.setSecurity(security);
+			}
+				
 		}
 		return tra;
 	}
