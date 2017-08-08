@@ -1,5 +1,7 @@
 package com.citi.swifttrading.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,15 +22,21 @@ public class TradeController {
 	@Autowired 
 	TradeManager tradeManager;
 	
+	@RequestMapping(method=RequestMethod.GET)
+    public List<TradeVO> getAllTrade(){
+        log.debug("hello world");
+        return tradeManager.getTradeVOs();
+    }
 	 	@RequestMapping(value="{id}",method=RequestMethod.GET)
-	    public Trade hello(@PathVariable("id") int id){
+	    public TradeVO getById(@PathVariable("id") int id){
 	        log.debug("hello world");
-	        return tradeManager.getTradeById(id);
+	        return tradeManager.getTradeVOById(id);
 	    }
 	    
 	    @RequestMapping(method=RequestMethod.POST)
-	    public Trade save(@RequestBody(required=true)TradeVO trade){
+	    public TradeVO save(@RequestBody(required=true)TradeVO trade){
 	        log.debug("save");
 	        return tradeManager.createTrade(trade);
 	    }
+	    
 }

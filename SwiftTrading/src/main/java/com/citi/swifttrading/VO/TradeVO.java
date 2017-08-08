@@ -23,4 +23,6 @@ public class TradeVO {
 	private int expiration;
 	private Date startTime;
 	private double profit;
+
+	
 }

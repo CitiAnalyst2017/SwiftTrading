@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.citi.swifttrading.dao.SecurityRepo;
+import com.citi.swifttrading.dao.SecurityDao;
 import com.citi.swifttrading.domain.MovingAverage;
 import com.citi.swifttrading.domain.Strategy;
 import com.citi.swifttrading.service.trade.TradeManager;
@@ -20,7 +20,7 @@ public class StrategyManager {
 	@Autowired
 	private TradeManager tradeManager;
 	@Autowired
-	private SecurityRepo securityRepo;
+	private SecurityDao securityDao;
 
 	private List<Strategy> strategys= new ArrayList<>();
 	
@@ -36,7 +36,7 @@ public class StrategyManager {
 	}
 
 	public void createMovingAverage() {
-		MovingAverage movingAverage=new MovingAverage("move1", "moveagedx", securityRepo.get("APPL"), 200, 500, 0.05);
+		MovingAverage movingAverage=new MovingAverage("move1", "moveagedx", securityDao.queryById("APPL"), 200, 500, 0.05);
 		MovingAverageRunner target = new MovingAverageRunner(tradeManager,movingAverage);
 		target.start();
 		movingAverage.setRunner(target);
