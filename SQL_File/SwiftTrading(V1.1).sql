@@ -15,7 +15,7 @@ CREATE TABLE `currency` (
 -- ----------------------------
 DROP TABLE IF EXISTS `security`;
 CREATE TABLE `security` (
-  `ISIN` char(12) NOT NULL,
+  `ISIN` varchar(12) NOT NULL,
   `SecurityName` varchar(30) NOT NULL,
   `NameAbbreviation` varchar(20) NOT NULL,
   `isFavorite` int(2) NOT NULL DEFAULT '0' COMMENT 'dislike',
@@ -46,7 +46,7 @@ CREATE TABLE `strategy` (
 DROP TABLE IF EXISTS `trade`;
 CREATE TABLE `trade` (
   `ID` int(11) NOT NULL,
-  `Code` char(12) NOT NULL,
+  `Code` varchar(12) NOT NULL,
   `Quantity` bigint(20) NOT NULL,
   `Price` double NOT NULL DEFAULT '0' COMMENT '0 represents no deal',
   `Expiration` char(30) NOT NULL,

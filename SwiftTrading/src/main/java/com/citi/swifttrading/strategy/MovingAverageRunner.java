@@ -20,7 +20,7 @@ public class MovingAverageRunner extends StrategyRunner {
 		super(tradeManager, movingAverage);
 		this.longPeriod = movingAverage.getLongPeriod();
 		this.shortPeriod = movingAverage.getShortPeriod();
-
+		this.setName("MovingAverageRunner for"+movingAverage.getStrategyName());
 	}
 
 	private boolean getStatus() {
@@ -48,7 +48,7 @@ public class MovingAverageRunner extends StrategyRunner {
 			status = newStatus;
 
 			try {
-				Thread.sleep(5);
+				Thread.sleep(50);
 			} catch (InterruptedException e) {
 				log.info(e.toString());
 				e.printStackTrace();

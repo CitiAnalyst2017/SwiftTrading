@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias alias="user" type="com.citi.swifttrading.domain.User" />
+		<typeAlias alias="security" type="com.citi.swifttrading.domain.Security" />
+		<typeAlias alias="trade" type="com.citi.swifttrading.domain.Trade" />
+		<typeAlias alias="strategy" type="com.citi.swifttrading.domain.Strategy" />
+	</typeAliases>
+
+	<!-- 指定映射文件 -->
+	<mappers>
+		<mapper resource="User-sqlmap-mapping.xml" />
+		<mapper resource="Security-sqlmap-mapping.xml" />
+		<mapper resource="Trade-sqlmap-mapping.xml" />
+		<mapper resource="Strategy-sqlmap-mapping.xml" />
+	</mappers>
+</configuration> 

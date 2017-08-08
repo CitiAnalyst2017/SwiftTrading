@@ -4,58 +4,24 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Data;
 
+@Data
 public class Security implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	protected List<Double> prices=new ArrayList<>();
-	private String ISIN;
 	private String securityName;
 	private String nameAbbreviation;
-	private boolean isFavorite;
 
 	public Security() {
 		super();
 	}
 
-	public Security(String iSIN, String securityName, String nameAbbreviation, boolean isFavorite) {
+	public Security(String securityName, String nameAbbreviation) {
 		super();
-		ISIN = iSIN;
 		this.securityName = securityName;
 		this.nameAbbreviation = nameAbbreviation;
-		this.isFavorite = isFavorite;
-	}
-
-	public String getISIN() {
-		return ISIN;
-	}
-
-	public void setISIN(String iSIN) {
-		ISIN = iSIN;
-	}
-
-	public String getSecurityName() {
-		return securityName;
-	}
-
-	public void setSecurityName(String securityName) {
-		this.securityName = securityName;
-	}
-
-	public String getNameAbbreviation() {
-		return nameAbbreviation;
-	}
-
-	public void setNameAbbreviation(String nameAbbreviation) {
-		this.nameAbbreviation = nameAbbreviation;
-	}
-
-	public boolean isFavorite() {
-		return isFavorite;
-	}
-
-	public void setFavorite(boolean isFavorite) {
-		this.isFavorite = isFavorite;
 	}
 	
 	public double getAverage(int period) {
@@ -74,11 +40,5 @@ public class Security implements Serializable{
 
 	public double latestPrice() {
 		return prices.get(prices.size()-1);
-	}
-	
-	@Override
-	public String toString() {
-		return "Security [ISIN=" + ISIN + ", securityName=" + securityName + ", nameAbbreviation=" + nameAbbreviation
-				+ ", isFavorite=" + isFavorite + "]";
 	}
 }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+      "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.citi.swifttrading.domain.User">
+
+	<cache />
+
+	<resultMap type="User" id="resultListUser">
+		<id column="ID" property="id" />
+		<result column="Name" property="name" />
+		<result column="Email" property="email" />
+		<result column="PhoneNumber" property="phoneNumber" />
+		<result column="Address" property="address" />
+	</resultMap>
+
+	<select id="queryById" resultType="User" parameterType="int">
+		select * from user where ID = #{id}
+	</select>
+
+	<insert id="insert-user" parameterType="User" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into
+		user(Name,Email,PhoneNumber,Address)
+		values(#{name},#{email},#{phoneNumber},#{address})
+	</insert>
+
+	<update id="update-user" parameterType="User">
+		update user set Name=#{name},Email=#{email},PhoneNumber=#{phoneNumber},Address=#{address} WHERE ID=#{id}
+	</update>
+
+	<delete id="delete-user" parameterType="int">
+		delete * from user where ID=#{id}
+	</delete>
+
+	<select id="queryAll" resultMap="resultListUser">
+		select * from user
+	</select>
+</mapper> 

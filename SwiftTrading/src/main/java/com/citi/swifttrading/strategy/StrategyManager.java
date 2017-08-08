@@ -36,7 +36,7 @@ public class StrategyManager {
 	}
 
 	public void createMovingAverage() {
-		MovingAverage movingAverage=new MovingAverage("move1", "moveagedx", securityRepo.get(1), 200, 500, 0.05);
+		MovingAverage movingAverage=new MovingAverage("move1", "moveagedx", securityRepo.get("APPL"), 200, 500, 0.05);
 		MovingAverageRunner target = new MovingAverageRunner(tradeManager,movingAverage);
 		target.start();
 		movingAverage.setRunner(target);

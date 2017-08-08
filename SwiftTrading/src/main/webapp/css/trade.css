@@ -1,0 +1,32 @@
+.td-page{
+	margin-top: 4.5em;
+}
+
+.td-title{
+	margin-top: 1em;
+	margin-left: 15px;
+	margin-right: 15px;
+	background-color: lightgrey;
+}
+
+.td-title-content{
+	color:rgba(0,0,0,.5);
+	margin-left: 1em;
+}
+
+.ptrade-list p{
+	text-align: center;
+	font-size: 1.5em;
+}
+
+.trade-panel{
+	margin-top: 0.5em;
+}
+
+.raw-data-result table{
+	margin-top: 1em;
+}
+
+.trade-form-right{
+	margin-left: 8em;
+}

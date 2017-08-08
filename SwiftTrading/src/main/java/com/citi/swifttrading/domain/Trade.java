@@ -1,40 +1,42 @@
 package com.citi.swifttrading.domain;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import com.citi.swifttrading.enumration.Position;
 import com.citi.swifttrading.enumration.TradeStatus;
 import com.citi.swifttrading.enumration.TradeType;
 
-import lombok.Getter;
-import lombok.Setter;
-@Getter
-@Setter
+import lombok.Data;
+
+@Data
 public class Trade implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private int id;
-	private String code;
 	private int quantity;
-	private LocalDateTime expiration;
-	private LocalDateTime start_time;
-	private LocalDateTime end_time;
+	private Date expiration;
+	private Date start_time;
+	private Date end_time;
 	private TradeStatus status;
-	private double price;
 	private double loss_price;
 	private double profit_price;
 	private TradeType type;
 	private Security security;
 	private Position position;
+	private String ccy;
+	private double salePrice;
+	private double salePriceReal;
+	private double buyPrice;
+	private double buyPriceReal;
 
 	public Trade() {
 		super();
 	}
 
-	public Trade(TradeType type, Security security, int quantity, LocalDateTime start_time, LocalDateTime expiration,
-			double loss_price, double profit_price, Position position,double price) {
+	public Trade(TradeType type, Security security, int quantity, Date start_time, Date expiration, double loss_price,
+			double profit_price, Position position, double price) {
 		super();
 		this.security = security;
 		this.quantity = quantity;
@@ -45,20 +47,10 @@ public class Trade implements Serializable {
 		this.type = type;
 		this.status = TradeStatus.CREATED;
 		this.position = position;
-		if(type==TradeType.LIMIT) {
-			this.price=price;
-		}
-		else {
-			this.price=security.latestPrice();
+		if (type == TradeType.LIMIT) {
+			this.buyPrice = price;
+		} else {
+			this.buyPrice = security.latestPrice();
 		}
 	}
-
-	@Override
-	public String toString() {
-		return "Trade [id=" + id + ", code=" + code + ", quantity=" + quantity + ", expiration=" + expiration
-				+ ", start_time=" + start_time + ", end_time=" + end_time + ", status=" + status + ", price=" + price
-				+ ", loss_price=" + loss_price + ", profit_price=" + profit_price + ", type=" + type + ", security="
-				+ security + ", position=" + position + "]";
-	}
-
 }

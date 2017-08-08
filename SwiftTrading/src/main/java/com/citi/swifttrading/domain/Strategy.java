@@ -9,37 +9,32 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Strategy implements Serializable{
+public class Strategy implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
+	private int id;
 	protected String status;
 	protected String strategyName;
 	protected String description;
 	protected Security security;
 	protected double exit;
 	protected StrategyRunner runner;
-	
-	public Strategy(String strategyName, String description,Security security,double exit) {
+
+	public Strategy(String strategyName, String description, Security security, double exit) {
 		super();
 		this.strategyName = strategyName;
 		this.description = description;
-		this.security=security;
-		this.exit=exit;
+		this.security = security;
+		this.exit = exit;
 	}
 
 	public Strategy() {
 		super();
 	}
 
-	public String getStatus(){
+	public String getStatus() {
 		return runner.getState().toString();
-		
-	}
-	@Override
-	public String toString() {
-		return "Strategy [strategyName=" + strategyName + ", description=" + description + ", security=" + security
-				+ "]";
 	}
 
 }

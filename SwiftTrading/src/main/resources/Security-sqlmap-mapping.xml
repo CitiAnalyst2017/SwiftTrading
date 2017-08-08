@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+      "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.citi.swifttrading.domain.Security">
+
+	<cache />
+
+	<resultMap type="Security" id="resultListSecurity">
+		<result column="SecurityName" property="securityName" />
+		<result column="NameAbbreviation" property="nameAbbreviation" />
+	</resultMap>
+
+	<insert id="insert-security" parameterType="Security"
+		keyProperty="NameAbbreviation">
+		insert into
+		security(SecurityName,NameAbbreviation)
+		values(#{securityName},#{nameAbbreviation})
+	</insert>
+
+	<select id="query_All" resultMap="resultListSecurity">
+		select * from security
+	</select>
+
+	<select id="queryByID" resultType="Security" parameterType="String">
+		select * from security where NameAbbreviation = #{nameAbbreviation}
+	</select>
+
+	<update id="update-security" parameterType="Security">
+		update security set SecurityName=#{securityName},
+		NameAbbreviation=#{nameAbbreviation}
+		where NameAbbreviation=#{nameAbbreviation}
+	</update>
+
+	<delete id="delete-security" parameterType="String">
+		delete from security where NameAbbreviation = #{nameAbbreviation, jdbcType=VARCHAR}
+		</delete>
+</mapper> 

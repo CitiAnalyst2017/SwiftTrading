@@ -1,0 +1,27 @@
+.strade-page{
+	margin-top: 4.5em;
+	margin-left: 15px;
+	margin-right: 15px;
+}
+
+.st-title{
+	margin-top: 1em;
+	background-color: lightgrey;
+}
+
+.st-title-content{
+	color:rgba(0,0,0,.5);
+	margin-left: 1em;
+}
+
+.st-list{
+	margin-top: 0.5em;
+	border:solid 1px;
+	border-color: lightgrey;
+}
+
+.st-panel{
+	margin-top: 0.5em;
+	border:solid 1px;
+	border-color: lightgrey;
+}
