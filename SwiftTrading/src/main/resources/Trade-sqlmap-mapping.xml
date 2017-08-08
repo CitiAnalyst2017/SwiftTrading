@@ -8,7 +8,7 @@
 
 	<resultMap type="Trade" id="resultListTrade">
 		<result column="ID" property="id" />
-		<result column="SecurityName" property="security.nameAbbreviation" />
+		<result column="SecurityName" property="security.nameAbbreviation" /> 
 		<result column="Quantity" property="quantity" />
 		<result column="Expiration" property="expiration" />
 		<result column="StartTime" property="start_time" />
@@ -23,11 +23,6 @@
 		<result column="SalePrice" property="salePrice" />
 		<result column="BuyPriceReal" property="buyPriceReal" />
 		<result column="SalePriceReal" property="salePriceReal" />
-		<association property="security"
-			javaType="com.citi.swifttrading.domain.Security">
-			<result column="SecurityName" property="securityName" />
-			<result column="NameAbbreviation" property="nameAbbreviation" />
-		</association>
 	</resultMap>
 
 	<insert id="insert-trade" parameterType="Trade"
@@ -43,9 +38,8 @@
 		select * from trade
 	</select>
 
-	<select id="queryByTradeID" resultType="Trade" parameterType="int">
-		select * from trade, security where ID = #{id} and
-		security.NameAbbreviation = trade.SecurityName
+	<select id="queryByTradeID" resultMap="resultListTrade" parameterType="int">
+		select * from trade where ID = #{id}
 	</select>
 
 	<update id="update-trade" parameterType="Trade">
