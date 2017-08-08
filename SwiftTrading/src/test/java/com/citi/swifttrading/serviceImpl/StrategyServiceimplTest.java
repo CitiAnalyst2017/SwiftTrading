@@ -27,11 +27,11 @@ public class StrategyServiceimplTest {
 	SecurityDaoImpl securityDaoImpl;
 
 	Strategy strategy;
-	
+
 	Security security;
 
 	List<Strategy> strategies;
-	
+
 	@Before
 	public void setUp() {
 		security = securityDaoImpl.queryById("A");
@@ -40,31 +40,32 @@ public class StrategyServiceimplTest {
 	@Test
 	public void testSave() {
 		strategy = new Strategy("strategy1", "strategy 1 desc", security, 0.2, 1);
+		strategy.setSecurityName();
 		strategyServiceImpl.save(strategy);
 		strategy = new Strategy("strategy1", "strategy 1 desc", security, 0.2, 1);
+		strategy.setSecurityName();
 		strategyServiceImpl.save(strategy);
 	}
 
 	@Test
 	public void testQueryById() {
-		strategy = strategyServiceImpl.queryById(1);
-		System.out.println(strategy.toString());
-		assertEquals("Name1", strategy.getStrategyName());
-		assertEquals("desc", strategy.getDescription());
+		strategy = strategyServiceImpl.queryById(4);
+		assertEquals("strategy1", strategy.getStrategyName());
+		assertEquals("strategy 1 desc", strategy.getDescription());
 		assertEquals(1, strategy.getTradeId());
-		assertEquals(0.3, strategy.getExit(),0);
+		assertEquals(0.2, strategy.getExit(), 0);
 		assertEquals("A", strategy.getSecurityName());
 	}
 
 	@Test
 	public void testUpdate() {
-		strategy = strategyServiceImpl.queryById(1);
-		strategy.setStrategyName("Name2");
+		strategy = strategyServiceImpl.queryById(4);
+		strategy.setStrategyName("Name4");
 		strategyServiceImpl.update(strategy);
-		assertEquals("Name2", strategy.getStrategyName());
-		assertEquals("desc", strategy.getDescription());
+		assertEquals("Name4", strategy.getStrategyName());
+		assertEquals("strategy 1 desc", strategy.getDescription());
 		assertEquals(1, strategy.getTradeId());
-		assertEquals(0.3, strategy.getExit(),0);
+		assertEquals(0.2, strategy.getExit(), 0);
 		assertEquals("A", strategy.getSecurityName());
 	}
 
@@ -72,12 +73,11 @@ public class StrategyServiceimplTest {
 	public void testgetAll() {
 		strategies = strategyServiceImpl.queryAll();
 		assertNotNull(strategies);
-		assertEquals(1, strategies.size());
+		assertEquals(2, strategies.size());
 	}
 
 	@Test
-	public void testDeletel() {
-		strategyServiceImpl.delete(1);
+	public void testDelete() {
+		strategyServiceImpl.delete(4);
 	}
-
 }

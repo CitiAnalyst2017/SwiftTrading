@@ -39,8 +39,6 @@ public class Strategy implements Serializable {
 		this.exit = exit;
 		this.tradeId = tradeId;
 	}
-	
-	
 
 	public Strategy() {
 		super();
@@ -50,7 +48,7 @@ public class Strategy implements Serializable {
 		return runner.getState().toString();
 
 	}
-	
+
 	public void setSecurityName() {
 		this.securityName = this.security.getNameAbbreviation();
 

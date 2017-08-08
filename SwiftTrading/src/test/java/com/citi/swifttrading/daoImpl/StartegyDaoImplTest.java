@@ -39,31 +39,32 @@ public class StartegyDaoImplTest {
 	@Test
 	public void testSave() {
 		strategy = new Strategy("strategy1", "strategy 1 desc", security, 0.2, 1);
+		strategy.setSecurityName();
 		strategyDaoImpl.save(strategy);
 		strategy = new Strategy("strategy1", "strategy 1 desc", security, 0.2, 1);
+		strategy.setSecurityName();
 		strategyDaoImpl.save(strategy);
 	}
 
 	@Test
 	public void testQueryById() {
-		strategy = strategyDaoImpl.queryById(1);
-		System.out.println(strategy.toString());
-		assertEquals("Name1", strategy.getStrategyName());
-		assertEquals("desc", strategy.getDescription());
+		strategy = strategyDaoImpl.queryById(2);
+		assertEquals("strategy1", strategy.getStrategyName());
+		assertEquals("strategy 1 desc", strategy.getDescription());
 		assertEquals(1, strategy.getTradeId());
-		assertEquals(0.3, strategy.getExit(),0);
+		assertEquals(0.2, strategy.getExit(),0);
 		assertEquals("A", strategy.getSecurityName());
 	}
 
 	@Test
 	public void testUpdate() {
-		strategy = strategyDaoImpl.queryById(1);
+		strategy = strategyDaoImpl.queryById(2);
 		strategy.setStrategyName("Name2");
 		strategyDaoImpl.update(strategy);
 		assertEquals("Name2", strategy.getStrategyName());
-		assertEquals("desc", strategy.getDescription());
+		assertEquals("strategy 1 desc", strategy.getDescription());
 		assertEquals(1, strategy.getTradeId());
-		assertEquals(0.3, strategy.getExit(),0);
+		assertEquals(0.2, strategy.getExit(),0);
 		assertEquals("A", strategy.getSecurityName());
 	}
 
@@ -75,8 +76,8 @@ public class StartegyDaoImplTest {
 	}
 
 	@Test
-	public void testDeletel() {
-		strategyDaoImpl.delete(1);
+	public void testDelete() {
+		strategyDaoImpl.delete(3);
 	}
 
 }

@@ -11,14 +11,14 @@
 		<result column="Name" property="strategyName" />
 		<result column="Description" property="description" />
 		<result column="TradeID" property="tradeId" />
-		<result column="Exit" property="exit" />
+		<result column="Test" property="exit" />
 		<result column="Symbol" property="securityName" />
 	</resultMap>
 
 	<insert id="insert-strategy" parameterType="Strategy" useGeneratedKeys="true"
 		keyProperty="id">
 		insert into
-		strategy(Name,Description,TradeID,Exit,SecurityName)
+		strategy(Name,Description,TradeID,Test,Symbol)
 		values(#{strategyName},#{description},#{tradeId},#{exit},#{securityName})
 	</insert>
 
@@ -33,7 +33,7 @@
 	<update id="update-strategy" parameterType="Strategy">
 		update strategy set ID=#{id},Name=#{strategyName},
 		Description=#{description},TradeID=#{tradeId},
-		Exit=#{exit},SecurityName=#{securityName}
+		Test=#{exit},Symbol=#{securityName}
 		where ID=#{id}
 	</update>
 
