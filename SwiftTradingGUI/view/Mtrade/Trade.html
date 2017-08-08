@@ -8,7 +8,8 @@
 		<div class="ptrade-list panel panel-success" ng-controller="ptradelistCtrl">
 			<div class="panel-heading">PendingOrade</div>
 			<div class="panel-body">
-				<p ng-show="nopt()">There Is No Pending Order Now</p>
+				<p ng-show="nopt">There Is No Pending Order Now</p>
+				<p ng-show="errormsg" style="color: red;">Internet Error</p>
 				<div class="pendingtrade">
 					<ul class="list-group" ng-repeat="porder in porders">
 						<li class="list-group-item">
@@ -42,11 +43,11 @@
 							<input type="text" class="form-control" ng-model="code">
 						</div>
 						<br>		
-						<div class="input-group">
+						<div class="input-group" ng-show="showprice">
 							<span class="input-group-addon">Price</span>
 							<input type="text" class="form-control" ng-model="price">
 						</div>
-						<br>
+						<br ng-show="showprice">
 						<div class="input-group">
 							<span class="input-group-addon">Quantity</span>
 							<input type="text" class="form-control" ng-model="qty">
@@ -71,7 +72,7 @@
 							<span class="input-group-addon">min</span>
 						</div>
 						<br>
-						<span><h4>Total Cost:&nbsp;{{ price*qty }}</h4></span>
+						<span ng-show="total()"><h4>Total Cost:&nbsp;{{ price*qty }}</h4></span>
 						<button class="btn btn-info pull-right" data-toggle="modal" data-target="#ForSure">Submit Order</button>
 						<!-- ng-click="sendOrder()" -->
 
@@ -102,7 +103,7 @@
 													<td>{{type}}</td>
 													<td>{{position}}</td>
 													<td>{{code}}</td>
-													<td>{{price}}</td>
+													<td><span ng-show="showprice">{{price}}</span><span ng-show="!showprice">/</span></td>
 												</tr>
 											</tbody>
 											<thead>

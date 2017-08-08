@@ -33,6 +33,15 @@ app.controller('tradeCtrl',function($scope,$http){
 		});
 	};
 
-	
 
+	$scope.total = function(){
+		if($scope.type != 'LIMIT'){
+			$scope.showprice = false;
+			return false;
+		}else{
+			$scope.showprice = true;
+			return true;
+		}
+	};
+	
 });

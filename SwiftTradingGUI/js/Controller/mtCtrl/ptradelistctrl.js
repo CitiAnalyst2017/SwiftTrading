@@ -4,9 +4,8 @@ app.controller('ptradelistCtrl',function($scope,$http,$interval){
 
 	var pending_order_url = url_prefix + 'trade/pending';
 
-	$scope.nopt = function(){
-			return false;	
-		};
+	$scope.nopt = false;
+	$scope.errormsg = false;
 
 	$interval(function(){
 		$http({
@@ -14,8 +13,11 @@ app.controller('ptradelistCtrl',function($scope,$http,$interval){
 			url:pending_order_url,
 		}).success(function(){
 			$scope.porders = data;
+			if(porders.length == 0){
+				$scope.nopt = true;
+			}
 		}).error(function(){
-			
+			$scope.errormsg = true;
 		});
 	},1000);
 
