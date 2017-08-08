@@ -27,6 +27,8 @@ public class TradeDaoImplTest {
 
 	@Autowired
 	TradeDaoImpl tradeDaoImpl;
+	@Autowired
+	SecurityDaoImpl securityDaoImpl;
 
 	Date start_time = new Date();
 	Date expiration;
@@ -35,9 +37,6 @@ public class TradeDaoImplTest {
 	Trade trade;
 
 	List<Trade> trades;
-
-	@Autowired
-	SecurityDaoImpl securityDaoImpl;
 
 	Security security;
 
@@ -63,13 +62,13 @@ public class TradeDaoImplTest {
 
 	@Test
 	public void testQueryById() {
-		trade = tradeDaoImpl.queryById(10);
+		trade = tradeDaoImpl.queryById(17);
 		System.out.println(trade.toString());
 		assertEquals(TradeType.LIMIT, trade.getType());
 		assertEquals("A", trade.getSecurity().getNameAbbreviation());
 		assertEquals(10000, trade.getQuantity());
 		assertEquals(TradeStatus.CREATED, trade.getStatus());
-		assertEquals(10.5, trade.getPrice(), 0);
+		assertEquals(10.5, trade.getBuyPrice(), 0);
 		assertEquals(9.5, trade.getLoss_price(), 0);
 		assertEquals(11.5, trade.getProfit_price(), 0);
 		assertEquals(Position.LONG, trade.getPosition());
@@ -77,30 +76,49 @@ public class TradeDaoImplTest {
 
 	@Test
 	public void testUpdate() {
-		trade = tradeDaoImpl.queryById(6);
-		trade.setLoss_price(9.8);
-		tradeDaoImpl.update(trade);
-		trade = tradeDaoImpl.queryById(6);
+		trade = tradeDaoImpl.queryById(18);
+		System.out.println(trade.getSecurity().toString());
 		assertEquals(TradeType.LIMIT, trade.getType());
 		assertEquals("A", trade.getSecurity().getNameAbbreviation());
 		assertEquals(10000, trade.getQuantity());
 		assertEquals(TradeStatus.CREATED, trade.getStatus());
-		assertEquals(10.5, trade.getPrice(), 0);
-		assertEquals(9.8, trade.getLoss_price(), 0);
+		assertEquals(10.5, trade.getBuyPrice(), 0);
+		assertEquals(9.5, trade.getLoss_price(), 0);
 		assertEquals(11.5, trade.getProfit_price(), 0);
 		assertEquals(Position.LONG, trade.getPosition());
+		assertEquals(0, trade.getBuyPriceReal(), 0);
+		assertEquals(0, trade.getSalePrice(), 0);
+		assertEquals(0, trade.getSalePriceReal(), 0);
+		
+		trade.setBuyPriceReal(99999);
+		trade.setSalePrice(55555);
+		trade.setSalePriceReal(66666);
+		trade.setLoss_price(9.8);
+		tradeDaoImpl.update(trade);
+		trade = tradeDaoImpl.queryById(18);
+		assertEquals(TradeType.LIMIT, trade.getType());
+		assertEquals("A", trade.getSecurity().getNameAbbreviation());
+		assertEquals(10000, trade.getQuantity());
+		assertEquals(TradeStatus.CREATED, trade.getStatus());
+		assertEquals(10.5, trade.getBuyPrice(), 0);
+		assertEquals(9.5, trade.getLoss_price(), 0);
+		assertEquals(11.5, trade.getProfit_price(), 0);
+		assertEquals(Position.LONG, trade.getPosition());
+		assertEquals(99999, trade.getBuyPriceReal(), 0);
+		assertEquals(55555, trade.getSalePrice(), 0);
+		assertEquals(66666, trade.getSalePriceReal(), 0);
 	}
 
 	@Test
 	public void testgetAll() {
 		trades = tradeDaoImpl.queryAll();
 		assertNotNull(trades);
-		assertEquals(1, trades.size());
+		assertEquals(0, trades.size());
 	}
 
 	@Test
 	public void testDelete() {
-		tradeDaoImpl.delete(5);
+		tradeDaoImpl.delete(6);
 	}
 
 }

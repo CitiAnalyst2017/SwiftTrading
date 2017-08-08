@@ -65,10 +65,10 @@ public class TradeManager {
 		trade.setProfit_price(tradeVO.getProfitPrice());
 		trade.setStatus(TradeStatus.CREATED);
 		if(tradeVO.getTradeType()==TradeType.LIMIT) {
-			trade.setPrice(tradeVO.getPrice());
+			trade.setBuyPrice(tradeVO.getPrice());
 		}
 		else {
-			trade.setPrice(securityDao.get(tradeVO.getSymbol()).latestPrice());
+			trade.setBuyPrice(securityDao.get(tradeVO.getSymbol()).latestPrice());
 		}
 		return trade;
 	}

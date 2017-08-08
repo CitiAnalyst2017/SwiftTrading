@@ -43,7 +43,7 @@ public abstract class StrategyRunner extends Thread {
 	};
 	
 	protected boolean takeProfit() { 
-		return target.latestPrice()>(1+exit)*request.getPrice()||target.latestPrice()<(1-exit)*request.getPrice();
+		return target.latestPrice()>(1+exit)*request.getBuyPrice()||target.latestPrice()<(1-exit)*request.getBuyPrice();
 	}
 
 }

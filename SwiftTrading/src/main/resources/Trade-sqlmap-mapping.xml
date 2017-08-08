@@ -10,7 +10,6 @@
 		<result column="ID" property="id" />
 		<result column="SecurityName" property="security.nameAbbreviation" />
 		<result column="Quantity" property="quantity" />
-		<result column="BuyPrice" property="price" />
 		<result column="Expiration" property="expiration" />
 		<result column="StartTime" property="start_time" />
 		<result column="EndTime" property="end_time" />
@@ -19,16 +18,20 @@
 		<result column="ProfitPrice" property="profit_price" />
 		<result column="TradeType" property="type" />
 		<result column="CCY" property="ccy" />
-		<result column="SellPrice" property="salePrice" />
 		<result column="Position" property="position" />
+		<result column="BuyPrice" property="buyPrice" />
+		<result column="SalePrice" property="salePrice" />
+		<result column="BuyPriceReal" property="buyPriceReal" />
+		<result column="SalePriceReal" property="salePriceReal" />
 	</resultMap>
 
 	<insert id="insert-trade" parameterType="Trade" useGeneratedKeys="true"
 		keyProperty="id">
 		insert into
-		trade(SecurityName,Quantity,BuyPrice,Expiration,StartTime,EndTime,Status,LossPrice,ProfitPrice,TradeType,CCY,SellPrice,Position)
-		values(#{security.nameAbbreviation},#{quantity},#{price},#{expiration},#{start_time},#{end_time},#{status},#{loss_price},#{profit_price}
-		,#{type},#{ccy},#{salePrice},#{position})
+		trade(SecurityName,Quantity,BuyPrice,Expiration,StartTime,EndTime,Status,
+		LossPrice,ProfitPrice,TradeType,CCY,SalePrice,Position,BuyPriceReal,SalePriceReal)
+		values(#{security.nameAbbreviation},#{quantity},#{buyPrice},#{expiration},#{start_time},#{end_time},
+		#{status},#{loss_price},#{profit_price},#{type},#{ccy},#{salePrice},#{position},#{buyPriceReal},#{salePriceReal})
 	</insert>
 
 	<select id="query_AllTrade" resultMap="resultListTrade">
@@ -40,9 +43,10 @@
 	</select>
 
 	<update id="update-trade" parameterType="Trade">
-		update trade set SecurityName=#{security.nameAbbreviation},Quantity=#{quantity},BuyPrice=#{price},Expiration=#{expiration},
+		update trade set SecurityName=#{security.nameAbbreviation},Quantity=#{quantity},BuyPrice=#{buyPrice},Expiration=#{expiration},
 		StartTime=#{start_time},EndTime=#{end_time},Status=#{status},LossPrice=#{loss_price},ProfitPrice=#{profit_price},
-		TradeType=#{type},CCY=#{ccy},SellPrice=#{salePrice},Position=#{position}
+		TradeType=#{type},CCY=#{ccy},SalePrice=#{salePrice},Position=#{position},
+		BuyPriceReal=#{buyPriceReal},SalePriceReal=#{salePriceReal}
 		where ID=#{id}
 	</update>
 

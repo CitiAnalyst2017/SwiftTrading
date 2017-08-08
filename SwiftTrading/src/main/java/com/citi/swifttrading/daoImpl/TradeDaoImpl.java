@@ -11,24 +11,24 @@ import com.citi.swifttrading.dao.TradeDao;
 import com.citi.swifttrading.domain.Trade;
 
 @Repository
-public class TradeDaoImpl implements TradeDao{
+public class TradeDaoImpl implements TradeDao {
 
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
-	
+
 	@Override
 	public Trade queryById(int id) {
-//		Trade trade = sqlSessionTemplate.selectOne("queryByTradeID", id);
-//		return trade;
-		
-//		TODO
-		
+		// Trade trade = sqlSessionTemplate.selectOne("queryByTradeID", id);
+		// return trade;
+
+		// TODO
+
 		List<Trade> trade = sqlSessionTemplate.selectList("query_AllTrade");
 		Iterator<Trade> iter = trade.iterator();
 		Trade tra = null;
-		while(iter.hasNext()) {
-			Trade t= iter.next();
-			if(t.getId() == id)
+		while (iter.hasNext()) {
+			Trade t = iter.next();
+			if (t.getId() == id)
 				tra = t;
 		}
 		return tra;
