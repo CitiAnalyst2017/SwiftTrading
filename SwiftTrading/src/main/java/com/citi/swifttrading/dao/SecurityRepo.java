@@ -6,18 +6,18 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import com.citi.swifttrading.domain.Security;
-import com.citi.swifttrading.service.trade.SecrityUpdater;
+import com.citi.swifttrading.service.trade.SecurityUpdater;
 
 @Repository
 public class SecurityRepo {
-	public static Map<Integer,Security> map=new HashMap<>();
-	SecrityUpdater updater;
+	public static Map<String,Security> map=new HashMap<>();
+	SecurityUpdater updater;
 	public void save(Security s) {
-		map.put(map.size()+1, s);
+		map.put(s.getNameAbbreviation(), s);
 	}
 	
-	public Security get(int index) {
-		return map.get(index);
+	public Security get(String abbr) {
+		return map.get(abbr);
 	}
 	
 	private Security security;
@@ -26,9 +26,9 @@ public class SecurityRepo {
 		
 		security = new Security();
 		security.setNameAbbreviation("APPL");
-		updater = new SecrityUpdater(security);
+		updater = new SecurityUpdater(security);
 		updater.start();
-		map.put(map.size()+1, security);
+		map.put(security.getNameAbbreviation(), security);
 	}
 	
 	@SuppressWarnings("deprecation")
