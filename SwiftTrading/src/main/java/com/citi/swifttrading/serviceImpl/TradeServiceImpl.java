@@ -43,8 +43,8 @@ public class TradeServiceImpl implements TradeService {
 	}
 
 	@Override
-	public List<Trade> queryByStarus(TradeStatus status) {
-		List<Trade> trade = tradeDaoImpl.queryByStarus(status);
+	public List<Trade> queryByStatus(TradeStatus status) {
+		List<Trade> trade = tradeDaoImpl.queryByStatus(status);
 		return trade;
 	}
 

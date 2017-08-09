@@ -1,7 +1,6 @@
 package com.citi.swifttrading.service.trade;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +15,10 @@ import com.citi.swifttrading.domain.Trade;
 import com.citi.swifttrading.enumration.Position;
 import com.citi.swifttrading.enumration.TradeStatus;
 import com.citi.swifttrading.enumration.TradeType;
+import com.citi.swifttrading.util.DateUtil;
 
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Service("tradeManager")
 public class TradeManager {
 	@Autowired
@@ -24,23 +26,23 @@ public class TradeManager {
 	@Autowired
 	SecurityDao securityDao;
 	
-	List<Trade> trades = new ArrayList<>();
-	Date start_time = new Date();
-	Date expiration;
-	Calendar c = Calendar.getInstance();
 
-	public Trade createMarketTrade(Position position, Security target, double exit) {
-		this.setTime();
-		Trade trade = new Trade(TradeType.LIMIT, target, 100, start_time, expiration, 15, exit, position, 0);
-		trades.add(trade);
+
+	public Trade createMarketTrade(Position position, Security target, double exit,int quantity) {
+		Date now=new Date();
+		Trade trade = new Trade(TradeType.LIMIT, target, quantity, now, DateUtil.addDay(now, 1), exit, exit, position, 0);
+		trade.setBuyPriceReal(target.latestPrice());
+		trade.setId(tradeDao.save(trade));
 		return trade;
 	}
 
 	public void closeTrade(Trade trade) {
+		tradeDao.update(trade);
 		trade.setStatus(TradeStatus.CLOSED);
 		trade.setEnd_time(new Date());
-		trade.setSalePrice(trade.getSecurity().latestPrice());
-		tradeDao.save(trade);
+		trade.setSalePriceReal(trade.getSecurity().latestPrice());
+		tradeDao.update(trade);
+		log.info(String.format("Profit________________ %f", trade.calProfit()));
 	}
 
 	public Trade getTradeById(int id) {
@@ -53,32 +55,17 @@ public class TradeManager {
 		return trade;
 	}
 
-	private Trade toTrade(TradeVO tradeVO) {
-		Trade trade=new Trade();
-		trade.setSecurity(securityDao.queryById(tradeVO.getCode()));
-		trade.setStart_time(new Date());
-		trade.setExpiration(new Date());
-		trade.setQuantity(tradeVO.getQuantity());
-		trade.setPosition(tradeVO.getPosition());
-		trade.setType(tradeVO.getType());
-		trade.setLoss_price(tradeVO.getLossprice());
-		trade.setProfit_price(tradeVO.getProfitprice());
-		trade.setStatus(TradeStatus.CREATED);
-		if(tradeVO.getType()==TradeType.LIMIT) {
-			trade.setBuyPrice(tradeVO.getBuyprice());
-		}
-		return trade;
-	}
+	
 
-	private void setTime() {
-		c.setTime(start_time);
-		c.add(Calendar.MINUTE, 15);
-		expiration = c.getTime();
-	}
+	
 
 	public List<TradeVO> getPendings() {
 		List<TradeVO> VOs=new ArrayList<TradeVO>();
-		tradeDao.queryAll().forEach(trade->{
+		List<Trade> trades =tradeDao.queryByStatus(TradeStatus.OPEN);
+		trades.addAll(tradeDao.queryByStatus(TradeStatus.CREATED));
+		trades.addAll(tradeDao.queryByStatus(TradeStatus.CLOSING));
+		trades.sort(null);
+		trades.forEach(trade->{
 			VOs.add(toVO(trade));
 		});
 		return VOs;
@@ -88,26 +75,54 @@ public class TradeManager {
 		TradeVO VO=new TradeVO();
 		VO.setId(trade.getId());
 		
-		VO.setTradestatus(trade.getStatus());
+		VO.setStatus(trade.getStatus());
 		VO.setType(trade.getType());
 		VO.setPosition(trade.getPosition());
 		VO.setCode(trade.getSecurity().getNameAbbreviation());
 		VO.setBuyprice(trade.getBuyPriceReal());
 		VO.setQuantity(trade.getQuantity());
 		VO.setStarttime(trade.getStart_time());
+		VO.setProfit(trade.calProfit());
+		VO.setNowprice(trade.getSecurity().latestPrice());
 		return VO;
 	}
 
 	public void closeOrCancleTrade(Trade trade) {
+		
 		if(trade.getStatus()==TradeStatus.CREATED)
 			cancleTrade(trade);
 		else if(trade.getStatus()==TradeStatus.OPEN) {
 			closeTrade(trade);
 		}
 	}
+	
+	public void closeOrCancleTrade(TradeVO VO) {
+		Trade trade=tradeDao.queryById(VO.getId());
+		trade.setStatus(TradeStatus.CLOSING);
+		closeOrCancleTrade(trade);
+	}
 
 	public void cancleTrade(Trade trade) {
-		// TODO Auto-generated method stub
-		
+		tradeDao.update(trade);
+		trade.setStatus(TradeStatus.CANCLED);
+		trade.setEnd_time(new Date());
+		tradeDao.update(trade);
 	}
+	
+	 private Trade toTrade(TradeVO tradeVO) {
+			Trade trade=new Trade();
+			trade.setSecurity(securityDao.queryById(tradeVO.getCode()));
+			trade.setStart_time(new Date());
+			trade.setExpiration(new Date());
+			trade.setQuantity(tradeVO.getQuantity());
+			trade.setPosition(tradeVO.getPosition());
+			trade.setType(tradeVO.getType());
+			trade.setLoss_price(tradeVO.getLossprice());
+			trade.setProfit_price(tradeVO.getProfitprice());
+			trade.setStatus(TradeStatus.CREATED);
+			if(tradeVO.getType()==TradeType.LIMIT) {
+				trade.setBuyPrice(tradeVO.getBuyprice());
+			}
+			return trade;
+		}
 }

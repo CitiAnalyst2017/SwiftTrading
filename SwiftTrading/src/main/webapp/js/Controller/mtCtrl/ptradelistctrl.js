@@ -47,7 +47,7 @@ app.controller('ptradelistCtrl',function($scope,$http,$interval){
 		$http({
 			method:'GET',
 			url:pending_order_url,
-		}).success(function(){
+		}).success(function(data){
 			$scope.porders = data;
 			if(porders.length == 0){
 				$scope.nopt = true;
@@ -58,10 +58,10 @@ app.controller('ptradelistCtrl',function($scope,$http,$interval){
 	},2000);
 
 	$scope.opert = function(){
-		this.porder.status = 'close';
+		this.porder.status = 'CLOSING';
 		$http({
-			method:'POST',
-			url:url_prefix + '/trade/' + this.porder.id,
+			method:'PUT',
+			url:url_prefix + '/trade/',
 			data:this.porder,
 		}).success(function(){
 			this.oper = "ing";

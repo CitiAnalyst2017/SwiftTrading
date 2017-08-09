@@ -10,7 +10,7 @@ import com.citi.swifttrading.enumration.TradeType;
 import lombok.Data;
 
 @Data
-public class Trade implements Serializable {
+public class Trade implements Serializable,Comparable<Trade> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -53,5 +53,23 @@ public class Trade implements Serializable {
 		} else {
 			this.buyPrice = security.latestPrice();
 		}
+	}
+	
+	public double calProfit() {
+		double profit;
+		if(status==TradeStatus.CLOSED) {
+			profit=(salePriceReal-buyPriceReal)*quantity;
+		}
+		else {
+			profit=(security.latestPrice()-buyPriceReal)*quantity;
+		}
+		if(position==Position.SHORT)
+			profit*=-1;
+		return profit;
+	}
+
+	@Override
+	public int compareTo(Trade other) {
+		return this.id-other.id;
 	}
 }
