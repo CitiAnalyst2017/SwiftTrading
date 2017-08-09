@@ -9,7 +9,7 @@ public interface TradeDao {
 	
 	public Trade queryById(int id);
 
-	public void save(Trade t);
+	public int save(Trade t);
 
 	public void update(Trade t);
 

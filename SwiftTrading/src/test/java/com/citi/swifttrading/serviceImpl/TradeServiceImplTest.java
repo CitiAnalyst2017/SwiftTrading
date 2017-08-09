@@ -54,14 +54,14 @@ public class TradeServiceImplTest {
 
 	@Test
 	public void testSave() {
-		trade = new Trade(TradeType.LIMIT, security, 10000, start_time, expiration, 9.5, 11.5, Position.LONG, 10.5);
-		tradeServiceImpl.save(trade);
-		trade.setStatus(TradeStatus.OPEN);
-		trade = new Trade(TradeType.LIMIT, security, 10000, start_time, expiration, 9.5, 11.5, Position.LONG, 10.5);
-		tradeServiceImpl.save(trade);
+		trade = new Trade(TradeType.LIMIT, security, 1200, start_time, expiration, 9.5, 11.5, Position.LONG, 10.5);
 		trade.setStatus(TradeStatus.CREATED);
+		System.out.println(tradeServiceImpl.save(trade));
+		trade = new Trade(TradeType.LIMIT, security, 2000, start_time, expiration, 9.5, 11.5, Position.LONG, 10.5);
+		trade.setStatus(TradeStatus.CREATED);
+		System.out.println(tradeServiceImpl.save(trade));
 	}
-	
+
 	@Test
 	public void testQueryByStatus() {
 		trades = tradeServiceImpl.queryByStarus(TradeStatus.CANCLED);
@@ -77,7 +77,7 @@ public class TradeServiceImplTest {
 		System.out.println(trades.get(0).getStatus());
 		assertEquals(4, trades.size());
 	}
-	
+
 	@Test
 	public void testQueryById() {
 		trade = tradeServiceImpl.queryById(33);
@@ -104,7 +104,7 @@ public class TradeServiceImplTest {
 		assertEquals(9.5, trade.getLoss_price(), 0);
 		assertEquals(11.5, trade.getProfit_price(), 0);
 		assertEquals(Position.LONG, trade.getPosition());
-		
+
 		security = trade.getSecurity();
 		security.setNameAbbreviation("ABT");
 		trade.setSecurity(security);

@@ -19,8 +19,9 @@ public class StrategyDaoImpl implements StrategyDao {
 	SecurityDaoImpl securityDaoImpl;
 	
 	@Override
-	public void save(Strategy s) {
+	public int save(Strategy s) {
 		sqlSessionTemplate.insert("insert-strategy", s);	
+		return s.getId();
 	}
 
 	@Override

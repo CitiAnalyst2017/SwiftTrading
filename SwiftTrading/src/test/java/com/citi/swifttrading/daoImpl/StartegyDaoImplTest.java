@@ -41,9 +41,9 @@ public class StartegyDaoImplTest {
 	@Test
 	public void testSave() {
 		MovingAverage strategMMM = new MovingAverage("MovingAverage", "MovingAverage", security, 19, 10, 0.2);
-		strategyDaoImpl.save(strategMMM);
+		System.out.println(strategyDaoImpl.save(strategMMM));
 		BollBand strateyBBB = new BollBand("BollBand", "BollBand", security, 19, 5.5, 0.2);
-		strategyDaoImpl.save(strateyBBB);
+		System.out.println(strategyDaoImpl.save(strateyBBB));
 	}
 	
 	@Test

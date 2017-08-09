@@ -22,8 +22,8 @@ public class TradeServiceImpl implements TradeService {
 	}
 
 	@Override
-	public void save(Trade t) {
-		tradeDaoImpl.save(t);
+	public int save(Trade t) {
+		return tradeDaoImpl.save(t);
 	}
 
 	@Override

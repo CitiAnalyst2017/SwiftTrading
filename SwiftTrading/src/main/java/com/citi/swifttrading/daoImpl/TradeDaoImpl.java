@@ -25,8 +25,9 @@ public class TradeDaoImpl implements TradeDao {
 	}
 
 	@Override
-	public void save(Trade t) {
+	public int save(Trade t) {
 		sqlSessionTemplate.insert("insert-trade", t);
+		return t.getId();
 	}
 
 	@Override

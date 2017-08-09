@@ -56,14 +56,12 @@ public class TradeDaoImplTest {
 	public void testSave() {
 		trade = new Trade(TradeType.LIMIT, security, 1200, start_time, expiration, 9.5, 11.5, Position.LONG, 10.5);
 		trade.setStatus(TradeStatus.CREATED);
-		trade.setStrategyId(68);
-		tradeDaoImpl.save(trade);
+		System.out.println(tradeDaoImpl.save(trade));
 		trade = new Trade(TradeType.LIMIT, security, 2000, start_time, expiration, 9.5, 11.5, Position.LONG, 10.5);
 		trade.setStatus(TradeStatus.CREATED);
-		trade.setStrategyId(68);
-		tradeDaoImpl.save(trade);
+		System.out.println(tradeDaoImpl.save(trade));
 	}
-	
+
 	@Test
 	public void testQueryByStatus() {
 		trades = tradeDaoImpl.queryByStarus(TradeStatus.CANCLED);
@@ -102,7 +100,7 @@ public class TradeDaoImplTest {
 		assertEquals(11.5, trade.getProfit_price(), 0);
 		assertEquals(Position.LONG, trade.getPosition());
 		assertEquals(68, trade.getStrategyId());
-		
+
 		security = trade.getSecurity();
 		security.setNameAbbreviation("ABT");
 		trade.setSecurity(security);
