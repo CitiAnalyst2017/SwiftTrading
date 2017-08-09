@@ -6,7 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.citi.swifttrading.dao.SecurityRepo;
+import com.citi.swifttrading.VO.StrategyVO;
+import com.citi.swifttrading.dao.SecurityDao;
+import com.citi.swifttrading.dao.StrategyDao;
 import com.citi.swifttrading.domain.MovingAverage;
 import com.citi.swifttrading.domain.Strategy;
 import com.citi.swifttrading.service.trade.TradeManager;
@@ -20,8 +22,10 @@ public class StrategyManager {
 	@Autowired
 	private TradeManager tradeManager;
 	@Autowired
-	private SecurityRepo securityRepo;
-
+	private SecurityDao securityDao;
+	@Autowired
+	private StrategyDao strategyDao;
+	
 	private List<Strategy> strategys= new ArrayList<>();
 	
 	
@@ -35,13 +39,21 @@ public class StrategyManager {
 		
 	}
 
-	public void createMovingAverage() {
-		MovingAverage movingAverage=new MovingAverage("move1", "moveagedx", securityRepo.get("APPL"), 200, 500, 0.05);
+	public StrategyVO createMovingAverage(StrategyVO VO) {
+		MovingAverage movingAverage=new MovingAverage();
+		movingAverage.setExit(VO.getExit());
+		movingAverage.setLongPeriod(VO.getLongperiod());
+		movingAverage.setShortPeriod(VO.getShortperiod());
+		movingAverage.setSecurity(securityDao.queryById(VO.getCode()));
+		
 		MovingAverageRunner target = new MovingAverageRunner(tradeManager,movingAverage);
-		target.start();
+		movingAverage.setStatus("ACTIVE");
 		movingAverage.setRunner(target);
+		target.start();
+		strategyDao.save(movingAverage);
 		
 		log.info("start :"+movingAverage.toString());
+		return VO;
 	}
 	
 	@SuppressWarnings("deprecation")

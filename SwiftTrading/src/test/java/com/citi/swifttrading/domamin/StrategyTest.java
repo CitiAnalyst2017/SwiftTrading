@@ -20,13 +20,13 @@ public class StrategyTest {
 	}
 
 	@Test
-	public void testUserGet() {
+	public void testStrategyGet() {
 		assertEquals("Strategy Name", strategy.getStrategyName());
 		assertEquals("Strategy Desc", strategy.getDescription());
 	}
 	
 	@Test
-	public void testUserSet() {
+	public void testStrategySet() {
 		strategy.setStrategyName("Strategy Name Again");
 		strategy.setDescription("Strategy Desc Again");
 		

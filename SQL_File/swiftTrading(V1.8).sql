@@ -9,7 +9,7 @@
  Target Server Version : 50715
  File Encoding         : utf-8
 
- Date: 08/08/2017 16:49:30 PM
+ Date: 08/09/2017 20:12:54 PM
 */
 
 SET NAMES utf8;
@@ -42,14 +42,19 @@ CREATE TABLE `security` (
 DROP TABLE IF EXISTS `strategy`;
 CREATE TABLE `strategy` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `Name` varchar(50) NOT NULL,
-  `Description` varchar(30) NOT NULL,
-  `SecurityName` varchar(10) NOT NULL,
+  `Name` varchar(50) DEFAULT NULL,
+  `Description` varchar(30) DEFAULT NULL,
+  `SecuritySymbol` varchar(10) NOT NULL,
   `ExitPoint` double NOT NULL,
+  `LongPeriod` int(10) DEFAULT NULL,
+  `ShortPeriod` int(10) DEFAULT NULL,
+  `Period` int(10) DEFAULT NULL,
+  `Std` double DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  KEY `Symbol` (`SecurityName`),
-  CONSTRAINT `Symbol` FOREIGN KEY (`SecurityName`) REFERENCES `security` (`NameAbbreviation`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+  KEY `Symbol` (`SecuritySymbol`),
+  KEY `Name` (`Name`),
+  CONSTRAINT `Security` FOREIGN KEY (`SecuritySymbol`) REFERENCES `security` (`NameAbbreviation`)
+) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `trade`
@@ -57,10 +62,10 @@ CREATE TABLE `strategy` (
 DROP TABLE IF EXISTS `trade`;
 CREATE TABLE `trade` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `SecurityName` char(12) NOT NULL,
+  `SecuritySymbol` char(12) NOT NULL,
   `Quantity` bigint(20) NOT NULL,
-  `BuyPrice` double NOT NULL,
-  `SellPrice` double DEFAULT '0' COMMENT '0 represents no deal',
+  `BuyPrice` double DEFAULT NULL,
+  `SalePrice` double DEFAULT '0' COMMENT '0 represents no deal',
   `Expiration` datetime NOT NULL,
   `StartTime` datetime NOT NULL,
   `EndTime` datetime DEFAULT NULL,
@@ -71,14 +76,15 @@ CREATE TABLE `trade` (
   `StrategyID` int(10) DEFAULT NULL,
   `ProfitPrice` double NOT NULL,
   `LossPrice` double NOT NULL,
+  `BuyPriceReal` double DEFAULT NULL,
+  `SalePriceReal` double DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  KEY `Code` (`SecurityName`),
+  KEY `Code` (`SecuritySymbol`),
   KEY `ccy` (`ccy`),
   KEY `StrategyID` (`StrategyID`),
-  CONSTRAINT `strategy` FOREIGN KEY (`StrategyID`) REFERENCES `strategy` (`ID`),
   CONSTRAINT `trade_ibfk_2` FOREIGN KEY (`ccy`) REFERENCES `currency` (`ISO`),
-  CONSTRAINT `trade_ibfk_3` FOREIGN KEY (`SecurityName`) REFERENCES `security` (`NameAbbreviation`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+  CONSTRAINT `trade_ibfk_3` FOREIGN KEY (`SecuritySymbol`) REFERENCES `security` (`NameAbbreviation`)
+) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `user`

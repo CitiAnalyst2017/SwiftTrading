@@ -54,16 +54,34 @@ public class TradeServiceImplTest {
 
 	@Test
 	public void testSave() {
-		trade = new Trade(TradeType.LIMIT, security, 10000, start_time, expiration, 9.5, 11.5, Position.LONG, 10.5);
-		tradeServiceImpl.save(trade);
-		trade = new Trade(TradeType.LIMIT, security, 10000, start_time, expiration, 9.5, 11.5, Position.LONG, 10.5);
-		tradeServiceImpl.save(trade);
+		trade = new Trade(TradeType.LIMIT, security, 1200, start_time, expiration, 9.5, 11.5, Position.LONG, 10.5);
+		trade.setStatus(TradeStatus.CREATED);
+		System.out.println(tradeServiceImpl.save(trade));
+		trade = new Trade(TradeType.LIMIT, security, 2000, start_time, expiration, 9.5, 11.5, Position.LONG, 10.5);
+		trade.setStatus(TradeStatus.CREATED);
+		System.out.println(tradeServiceImpl.save(trade));
+	}
+
+	@Test
+	public void testQueryByStatus() {
+		trades = tradeServiceImpl.queryByStarus(TradeStatus.CANCLED);
+		System.out.println(trades.get(0).getStatus());
+		assertEquals(4, trades.size());
+		trades = tradeServiceImpl.queryByStarus(TradeStatus.CREATED);
+		System.out.println(trades.get(0).getStatus());
+		assertEquals(5, trades.size());
+		trades = tradeServiceImpl.queryByStarus(TradeStatus.OPEN);
+		System.out.println(trades.get(0).getStatus());
+		assertEquals(5, trades.size());
+		trades = tradeServiceImpl.queryByStarus(TradeStatus.CLOSED);
+		System.out.println(trades.get(0).getStatus());
+		assertEquals(4, trades.size());
 	}
 
 	@Test
 	public void testQueryById() {
-		trade = tradeServiceImpl.queryById(19);
-		System.out.println(trade.toString());
+		trade = tradeServiceImpl.queryById(33);
+		System.out.println(trade.getSecurity().toString());
 		assertEquals(TradeType.LIMIT, trade.getType());
 		assertEquals("A", trade.getSecurity().getNameAbbreviation());
 		assertEquals(10000, trade.getQuantity());
@@ -76,7 +94,7 @@ public class TradeServiceImplTest {
 
 	@Test
 	public void testUpdate() {
-		trade = tradeServiceImpl.queryById(22);
+		trade = tradeServiceImpl.queryById(34);
 		System.out.println(trade.getSecurity().toString());
 		assertEquals(TradeType.LIMIT, trade.getType());
 		assertEquals("A", trade.getSecurity().getNameAbbreviation());
@@ -86,39 +104,34 @@ public class TradeServiceImplTest {
 		assertEquals(9.5, trade.getLoss_price(), 0);
 		assertEquals(11.5, trade.getProfit_price(), 0);
 		assertEquals(Position.LONG, trade.getPosition());
-		assertEquals(0, trade.getBuyPriceReal(), 0);
-		assertEquals(0, trade.getSalePrice(), 0);
-		assertEquals(0, trade.getSalePriceReal(), 0);
 
-		trade.setBuyPriceReal(99999);
-		trade.setSalePrice(55555);
-		trade.setSalePriceReal(66666);
-		trade.setLoss_price(9.8);
+		security = trade.getSecurity();
+		security.setNameAbbreviation("ABT");
+		trade.setSecurity(security);
 		tradeServiceImpl.update(trade);
-		trade = tradeServiceImpl.queryById(22);
+		trade = tradeServiceImpl.queryById(34);
+		System.out.println(trade.getSecurity().toString());
 		assertEquals(TradeType.LIMIT, trade.getType());
-		assertEquals("A", trade.getSecurity().getNameAbbreviation());
+		assertEquals("ABT", trade.getSecurity().getNameAbbreviation());
 		assertEquals(10000, trade.getQuantity());
 		assertEquals(TradeStatus.CREATED, trade.getStatus());
 		assertEquals(10.5, trade.getBuyPrice(), 0);
-		assertEquals(9.8, trade.getLoss_price(), 0);
+		assertEquals(9.5, trade.getLoss_price(), 0);
 		assertEquals(11.5, trade.getProfit_price(), 0);
 		assertEquals(Position.LONG, trade.getPosition());
-		assertEquals(99999, trade.getBuyPriceReal(), 0);
-		assertEquals(55555, trade.getSalePrice(), 0);
-		assertEquals(66666, trade.getSalePriceReal(), 0);
 	}
 
 	@Test
 	public void testgetAll() {
 		trades = tradeServiceImpl.queryAll();
+		System.out.println(trades.get(0).toString());
 		assertNotNull(trades);
 		assertEquals(1, trades.size());
 	}
 
 	@Test
 	public void testDelete() {
-		tradeServiceImpl.delete(20);
+		tradeServiceImpl.delete(33);
 	}
 
 }

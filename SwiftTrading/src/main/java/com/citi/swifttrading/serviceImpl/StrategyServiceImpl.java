@@ -21,8 +21,8 @@ public class StrategyServiceImpl implements StrategyService{
 	}
 
 	@Override
-	public void save(Strategy s) {
-		strategyDaoImpl.save(s);
+	public int save(Strategy s) {
+		return strategyDaoImpl.save(s);
 	}
 
 	@Override

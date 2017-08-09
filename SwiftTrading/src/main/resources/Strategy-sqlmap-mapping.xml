@@ -11,31 +11,129 @@
 		<result column="Name" property="strategyName" />
 		<result column="Description" property="description" />
 		<result column="ExitPoint" property="exit" />
-		<result column="SecurityName" property="security.nameAbbreviation" />
+		<result column="SecuritySymbol" property="security.nameAbbreviation" />
+		<association property="security"
+			javaType="com.citi.swifttrading.domain.Security">
+			<result column="NameAbbreviation" property="nameAbbreviation" />
+			<result column="SecurityName" property="securityName" />
+		</association>
+		<discriminator column="Name" javaType="string">
+			<case value="MovingAverage" resultType="com.citi.swifttrading.domain.MovingAverage">
+				<result property="longPeriod" column="LongPeriod" />
+				<result property="shortPeriod" column="ShortPeriod" />
+			</case>
+			<case value="BollBand" resultType="com.citi.swifttrading.domain.BollBand">
+				<result property="period" column="Period" />
+				<result property="std" column="Std" />
+			</case>
+		</discriminator>
 	</resultMap>
 
-	<insert id="insert-strategy" parameterType="Strategy" useGeneratedKeys="true"
-		keyProperty="id">
-		insert into
-		strategy(Name,Description,ExitPoint,SecurityName)
-		values(#{strategyName},#{description},#{exit},#{security.nameAbbreviation})
+	<insert id="insert-strategy" parameterType="Strategy"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into strategy
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="strategyName != null">
+				Name,
+			</if>
+			<if test="description != null">
+				Description,
+			</if>
+			<if test="exit != null">
+				ExitPoint,
+			</if>
+			<if test="security.nameAbbreviation != null">
+				SecuritySymbol,
+			</if>
+			<if test="strategyName == 'MovingAverage'">
+				LongPeriod,
+			</if>
+			<if test="strategyName == 'MovingAverage'">
+				ShortPeriod,
+			</if>
+			<if test="strategyName == 'BollBand'">
+				Period,
+			</if>
+			<if test="strategyName == 'BollBand'">
+				Std
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="strategyName != null">
+				#{strategyName},
+			</if>
+			<if test="description != null">
+				#{description},
+			</if>
+			<if test="exit != null">
+				#{exit},
+			</if>
+			<if test="security.nameAbbreviation != null">
+				#{security.nameAbbreviation},
+			</if>
+			<if test="strategyName == 'MovingAverage'">
+				#{longPeriod},
+			</if>
+			<if test="strategyName == 'MovingAverage'">
+				#{shortPeriod},
+			</if>
+			<if test="strategyName == 'BollBand'">
+				#{period},
+			</if>
+			<if test="strategyName == 'BollBand'">
+				#{std}
+			</if>
+		</trim>
 	</insert>
 
 	<select id="query_All_Strategy" resultMap="resultListStrategy">
 		select * from strategy
 	</select>
 
-	<select id="queryByStrategyID" resultType="Strategy" parameterType="int">
-		select * from strategy where ID = #{id}
+	<select id="queryByStrategyID" resultMap="resultListStrategy"
+		parameterType="int">
+		select * from strategy str, security sec where ID =
+		#{id} and str.SecuritySymbol = sec.NameAbbreviation
 	</select>
 
 	<update id="update-strategy" parameterType="Strategy">
-		update strategy set ID=#{id},Name=#{strategyName},
-		Description=#{description},ExitPoint=#{exit},SecurityName=#{security.nameAbbreviation}
-		where ID=#{id}
+		update strategy
+		<set>
+			<if test="id != null">
+				ID=#{id},
+			</if>
+			<if test="strategyName != null">
+				Name=#{strategyName},
+			</if>
+			<if test="description != null">
+				Description=#{description},
+			</if>
+			<if test="exit != null">
+				ExitPoint=#{exit},
+			</if>
+			<if test="security.nameAbbreviation != null">
+				SecuritySymbol=#{security.nameAbbreviation},
+			</if>
+			<if test="strategyName == 'MovingAverage'">
+				LongPeriod=#{longPeriod},
+			</if>
+			<if test="strategyName == 'MovingAverage'">
+				ShortPeriod=#{shortPeriod},
+			</if>
+			<if test="strategyName == 'BollBand'">
+				Period=#{period},
+			</if>
+			<if test="strategyName == 'BollBand'">
+				Std=#{std}
+			</if>
+		</set>
+		where
+		ID=#{id}
+
 	</update>
 
 	<delete id="delete-strategy" parameterType="int">
-		delete from strategy where ID = #{id}
-		</delete>
+		delete from strategy
+		where ID = #{id}
+	</delete>
 </mapper> 

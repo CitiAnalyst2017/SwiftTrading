@@ -8,7 +8,7 @@ public interface StrategyService {
 	
 	public Strategy queryById(int id);
 
-	public void save(Strategy s);
+	public int save(Strategy s);
 
 	public void update(Strategy s);
 

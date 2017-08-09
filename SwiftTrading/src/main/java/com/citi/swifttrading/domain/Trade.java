@@ -30,6 +30,7 @@ public class Trade implements Serializable {
 	private double salePriceReal;
 	private double buyPrice;
 	private double buyPriceReal;
+	private int strategyId;
 
 	public Trade() {
 		super();
