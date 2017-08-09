@@ -10,7 +10,7 @@ app.controller('ptradelistCtrl',function($scope,$http,$interval){
 	$scope.oper = "";
 
 	// mock data
-	$scope.porders = [{
+	/*$scope.porders = [{
 		"code":"app",
 		"position":"long",
 		"quantity":214,
@@ -28,9 +28,9 @@ app.controller('ptradelistCtrl',function($scope,$http,$interval){
 		"profit":345,
 		"status":"bought",
 		"time":"2017-6-17"
-	}];
+	}];*/
 
-	/*$http({
+	$http({
 			method:'GET',
 			url:pending_order_url,
 		}).success(function(){
@@ -40,10 +40,10 @@ app.controller('ptradelistCtrl',function($scope,$http,$interval){
 			}
 		}).error(function(){
 			$scope.errormsg = true;
-		});*/
+		});
 
 
-	/*$interval(function(){
+	$interval(function(){
 		$http({
 			method:'GET',
 			url:pending_order_url,
@@ -55,23 +55,22 @@ app.controller('ptradelistCtrl',function($scope,$http,$interval){
 		}).error(function(){
 			$scope.errormsg = true;
 		});
-	},2000);*/
+	},2000);
 
 	$scope.opert = function(){
-		/*this function can not be used now*/
-		/*$http({
+		this.porder.status = 'close';
+		$http({
 			method:'POST',
-			url:pending_order_url,
+			url:url_prefix + '/trade/' + this.porder.id,
 			data:this.porder,
 		}).success(function(){
-			this.oper = "Operating";
+			this.oper = "ing";
 			this.opdis = true;
 			alert("operate successfully!");
 		}).error(function(){
 			alert("InternetError");
-		});	*/
-		this.oper = "ing";
-		this.opdis = true;
+		});	
+		
 	};
 
 	$scope.sellstock = function(){

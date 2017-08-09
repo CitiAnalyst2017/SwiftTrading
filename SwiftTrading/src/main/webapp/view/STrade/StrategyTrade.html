@@ -10,7 +10,18 @@
 		<p ng-show="nostr">There Is No Strategy Now</p>
 		<p ng-show="errormsg" style="color: red;">Internet Error</p>
 		<div class="panel-body">
-			
+			<div class="list-group">
+				<a href="#" class="list-group-item" ng-repeat="strate in strates">
+					<span>StrategyID:{{strate.id}}</span>
+					<span>StrategyName:{{strate.name}}</span>
+					<span>Status:{{strate.status}}</span>
+					<span><button class="btn btn-link">Show Details</button></span>
+					<span ng-switch="strate.status">
+						<button class="btn btn-default" ng-click="cancelstr" ng-switch-when="running">Stop Strategy
+						</button>
+					</span>
+				</a>
+			</div>
 		</div>
 	</div>
 
