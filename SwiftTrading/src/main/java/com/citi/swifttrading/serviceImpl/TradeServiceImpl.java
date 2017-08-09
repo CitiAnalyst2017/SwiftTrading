@@ -1,5 +1,7 @@
 package com.citi.swifttrading.serviceImpl;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,14 +9,15 @@ import org.springframework.stereotype.Repository;
 
 import com.citi.swifttrading.daoImpl.TradeDaoImpl;
 import com.citi.swifttrading.domain.Trade;
+import com.citi.swifttrading.enumration.TradeStatus;
 import com.citi.swifttrading.service.TradeService;
 
 @Repository
-public class TradeServiceImpl implements TradeService{
+public class TradeServiceImpl implements TradeService {
 
 	@Autowired
 	private TradeDaoImpl tradeDaoImpl;
-	
+
 	@Override
 	public Trade queryById(int id) {
 		return tradeDaoImpl.queryById(id);
@@ -39,6 +42,20 @@ public class TradeServiceImpl implements TradeService{
 	public List<Trade> queryAll() {
 		List<Trade> trade = tradeDaoImpl.queryAll();
 		return trade;
+	}
+
+	@Override
+	public List<Trade> queryByStarus(TradeStatus status) {
+		List<Trade> trade = tradeDaoImpl.queryAll();
+		Iterator<Trade> iter = trade.iterator();
+		List<Trade> ste = new ArrayList<Trade>();
+		while (iter.hasNext()) {
+			Trade s = iter.next();
+			if (s.getStatus() == status) {
+				ste.add(s);
+			}
+		}
+		return ste;
 	}
 
 }
