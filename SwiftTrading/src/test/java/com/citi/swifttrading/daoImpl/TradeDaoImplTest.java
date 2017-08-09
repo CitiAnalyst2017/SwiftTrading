@@ -54,59 +54,70 @@ public class TradeDaoImplTest {
 
 	@Test
 	public void testSave() {
-		trade = new Trade(TradeType.LIMIT, security, 10000, start_time, expiration, 9.5, 11.5, Position.LONG, 10.5);
+		trade = new Trade(TradeType.LIMIT, security, 1200, start_time, expiration, 9.5, 11.5, Position.LONG, 10.5);
+		trade.setStatus(TradeStatus.CREATED);
+		trade.setStrategyId(68);
 		tradeDaoImpl.save(trade);
-		trade = new Trade(TradeType.LIMIT, security, 10000, start_time, expiration, 9.5, 11.5, Position.LONG, 10.5);
+		trade = new Trade(TradeType.LIMIT, security, 2000, start_time, expiration, 9.5, 11.5, Position.LONG, 10.5);
+		trade.setStatus(TradeStatus.CREATED);
+		trade.setStrategyId(68);
 		tradeDaoImpl.save(trade);
+	}
+	
+	@Test
+	public void testQueryByStatus() {
+		trades = tradeDaoImpl.queryByStarus(TradeStatus.CANCLED);
+		assertEquals(2, trades.size());
+		trades = tradeDaoImpl.queryByStarus(TradeStatus.CREATED);
+		assertEquals(2, trades.size());
+		trades = tradeDaoImpl.queryByStarus(TradeStatus.OPEN);
+		assertEquals(2, trades.size());
+		trades = tradeDaoImpl.queryByStarus(TradeStatus.CLOSED);
+		assertEquals(2, trades.size());
 	}
 
 	@Test
 	public void testQueryById() {
-		trade = tradeDaoImpl.queryById(26);
-		System.out.println(trade.getSecurity().toString());
+		trade = tradeDaoImpl.queryById(72);
 		assertEquals(TradeType.LIMIT, trade.getType());
 		assertEquals("A", trade.getSecurity().getNameAbbreviation());
-		assertEquals(10000, trade.getQuantity());
+		assertEquals(2000, trade.getQuantity());
 		assertEquals(TradeStatus.CREATED, trade.getStatus());
 		assertEquals(10.5, trade.getBuyPrice(), 0);
 		assertEquals(9.5, trade.getLoss_price(), 0);
 		assertEquals(11.5, trade.getProfit_price(), 0);
 		assertEquals(Position.LONG, trade.getPosition());
+		assertEquals(68, trade.getStrategyId());
 	}
 
 	@Test
 	public void testUpdate() {
-		trade = tradeDaoImpl.queryById(18);
-		System.out.println(trade.getSecurity().toString());
+		trade = tradeDaoImpl.queryById(72);
 		assertEquals(TradeType.LIMIT, trade.getType());
 		assertEquals("A", trade.getSecurity().getNameAbbreviation());
-		assertEquals(10000, trade.getQuantity());
+		assertEquals(2000, trade.getQuantity());
 		assertEquals(TradeStatus.CREATED, trade.getStatus());
 		assertEquals(10.5, trade.getBuyPrice(), 0);
 		assertEquals(9.5, trade.getLoss_price(), 0);
 		assertEquals(11.5, trade.getProfit_price(), 0);
 		assertEquals(Position.LONG, trade.getPosition());
-		assertEquals(0, trade.getBuyPriceReal(), 0);
-		assertEquals(0, trade.getSalePrice(), 0);
-		assertEquals(0, trade.getSalePriceReal(), 0);
+		assertEquals(68, trade.getStrategyId());
 		
-		trade.setBuyPriceReal(99999);
-		trade.setSalePrice(55555);
-		trade.setSalePriceReal(66666);
-		trade.setLoss_price(9.8);
+		security = trade.getSecurity();
+		security.setNameAbbreviation("ABT");
+		trade.setSecurity(security);
+		trade.setStrategyId(69);
 		tradeDaoImpl.update(trade);
-		trade = tradeDaoImpl.queryById(18);
+		trade = tradeDaoImpl.queryById(72);
 		assertEquals(TradeType.LIMIT, trade.getType());
-		assertEquals("A", trade.getSecurity().getNameAbbreviation());
-		assertEquals(10000, trade.getQuantity());
+		assertEquals("ABT", trade.getSecurity().getNameAbbreviation());
+		assertEquals(2000, trade.getQuantity());
 		assertEquals(TradeStatus.CREATED, trade.getStatus());
 		assertEquals(10.5, trade.getBuyPrice(), 0);
 		assertEquals(9.5, trade.getLoss_price(), 0);
 		assertEquals(11.5, trade.getProfit_price(), 0);
 		assertEquals(Position.LONG, trade.getPosition());
-		assertEquals(99999, trade.getBuyPriceReal(), 0);
-		assertEquals(55555, trade.getSalePrice(), 0);
-		assertEquals(66666, trade.getSalePriceReal(), 0);
+		assertEquals(69, trade.getStrategyId());
 	}
 
 	@Test
@@ -114,12 +125,12 @@ public class TradeDaoImplTest {
 		trades = tradeDaoImpl.queryAll();
 		System.out.println(trades.get(0).toString());
 		assertNotNull(trades);
-		assertEquals(8, trades.size());
+		assertEquals(11, trades.size());
 	}
 
 	@Test
 	public void testDelete() {
-		tradeDaoImpl.delete(6);
+		tradeDaoImpl.delete(62);
 	}
 
 }

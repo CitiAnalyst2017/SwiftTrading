@@ -1,6 +1,5 @@
 package com.citi.swifttrading.daoImpl;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -8,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.citi.swifttrading.dao.StrategyDao;
-import com.citi.swifttrading.domain.Security;
 import com.citi.swifttrading.domain.Strategy;
 
 @Repository
@@ -27,23 +25,7 @@ public class StrategyDaoImpl implements StrategyDao {
 
 	@Override
 	public Strategy queryById(int id) {
-		// return (Strategy) sqlSessionTemplate.selectOne("queryByStrategyID", id);
-
-		// TODO
-
-		List<Strategy> strategy = sqlSessionTemplate.selectList("query_All_Strategy");
-		Iterator<Strategy> iter = strategy.iterator();
-		Strategy ste = null;
-		while (iter.hasNext()) {
-			Strategy s = iter.next();
-			if (s.getId() == id) {
-				ste = s;
-				Security security = securityDaoImpl.queryById(s.getSecurity().getNameAbbreviation());
-				ste.setSecurity(security);
-			}
-
-		}
-		return ste;
+		return (Strategy) sqlSessionTemplate.selectOne("queryByStrategyID", id);
 	}
 
 	@Override

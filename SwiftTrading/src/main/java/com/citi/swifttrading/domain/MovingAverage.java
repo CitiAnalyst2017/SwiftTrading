@@ -19,4 +19,8 @@ public class MovingAverage extends Strategy {
 		this.shortPeriod = shortPeriod;
 	}
 
+	public MovingAverage() {
+		super();
+	}
+
 }

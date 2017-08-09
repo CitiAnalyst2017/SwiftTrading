@@ -1,6 +1,5 @@
 package com.citi.swifttrading.daoImpl;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -8,38 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.citi.swifttrading.dao.TradeDao;
-import com.citi.swifttrading.domain.Security;
 import com.citi.swifttrading.domain.Trade;
+import com.citi.swifttrading.enumration.TradeStatus;
 
 @Repository
 public class TradeDaoImpl implements TradeDao {
 
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
-	
+
 	@Autowired
 	SecurityDaoImpl securityDaoImpl;
 
 	@Override
 	public Trade queryById(int id) {
-		// Trade trade = sqlSessionTemplate.selectOne("queryByTradeID", id);
-		// return trade;
-
-		// TODO
-
-		List<Trade> trade = sqlSessionTemplate.selectList("query_AllTrade");
-		Iterator<Trade> iter = trade.iterator();
-		Trade tra = null;
-		while (iter.hasNext()) {
-			Trade t = iter.next();
-			if (t.getId() == id) {
-				tra = t;
-				Security security = securityDaoImpl.queryById(t.getSecurity().getNameAbbreviation());
-				tra.setSecurity(security);
-			}
-				
-		}
-		return tra;
+		return (Trade) sqlSessionTemplate.selectOne("queryByTradeID", id);
 	}
 
 	@Override
@@ -60,6 +42,12 @@ public class TradeDaoImpl implements TradeDao {
 	@Override
 	public List<Trade> queryAll() {
 		List<Trade> trade = sqlSessionTemplate.selectList("query_AllTrade");
+		return trade;
+	}
+
+	@Override
+	public List<Trade> queryByStarus(TradeStatus status) {
+		List<Trade> trade = sqlSessionTemplate.selectList("queryByStarus", status);
 		return trade;
 	}
 

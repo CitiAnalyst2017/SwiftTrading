@@ -1,7 +1,5 @@
 package com.citi.swifttrading.serviceImpl;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,16 +44,8 @@ public class TradeServiceImpl implements TradeService {
 
 	@Override
 	public List<Trade> queryByStarus(TradeStatus status) {
-		List<Trade> trade = tradeDaoImpl.queryAll();
-		Iterator<Trade> iter = trade.iterator();
-		List<Trade> ste = new ArrayList<Trade>();
-		while (iter.hasNext()) {
-			Trade s = iter.next();
-			if (s.getStatus() == status) {
-				ste.add(s);
-			}
-		}
-		return ste;
+		List<Trade> trade = tradeDaoImpl.queryByStarus(status);
+		return trade;
 	}
 
 }
