@@ -6,7 +6,7 @@ import java.util.List;
 public class GetOrderBook {
 
 
-	public static OrderBook getOrderBook(){
+	public OrderBook getOrderBook(){
 		List<OrderBookItem> orderBookItems = new ArrayList<OrderBookItem>();
 		OrderBook orderBook = new OrderBook();
 		GetOrderBookItem getOrderBookItem = new GetOrderBookItem();

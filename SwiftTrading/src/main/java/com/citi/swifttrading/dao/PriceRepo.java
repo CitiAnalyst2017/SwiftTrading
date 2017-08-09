@@ -7,38 +7,38 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
+import com.citi.swifttrading.domain.Security;
 import com.citi.swifttrading.generator.OrderBook;
 import com.citi.swifttrading.service.trade.SecurityUpdater;
 
 @Repository
 public class PriceRepo {
-	public static Map<String, List<Double>> map = new HashMap<>();
-	 public static Map<String,OrderBook> orderMap = new HashMap<>();
-	public List<Double> updatePrice(String abbr) {
+	private Map<String, List<Double>> prices = new HashMap<>();
+	private Map<String, OrderBook> orderBooks = new HashMap<>();
+
+	public void add(String abbr) {
 		SecurityUpdater updater;
-		List<Double> prices=new ArrayList<>();
+		List<Double> prices = new ArrayList<>();
 		OrderBook orderBook = new OrderBook();
-		updater = new SecurityUpdater(prices,orderBook);
+		updater = new SecurityUpdater(prices, orderBook);
 		updater.start();
-		orderMap.put(abbr,orderBook);
-		return prices;
+		orderBooks.put(abbr, orderBook);
+		this.prices.put(abbr, prices);
 	}
 
-	public List<Double> add(String abbr) {
-		SecurityUpdater updater;
-		List<Double> prices=new ArrayList<>();
-		OrderBook orderBook = new OrderBook();
-		updater = new SecurityUpdater(prices,orderBook);
-		updater.start();
-		map.put(abbr, prices);
-		return prices;
-	}
-	public List<Double> get(String abbr) {
-		if (map.containsKey(abbr)) {
-			return map.get(abbr);
-		} else {
-			return add(abbr);
+	public List<Double> getPrices(String abbr) {
+		if (!prices.containsKey(abbr)) {
+			add(abbr);
 		}
+		return prices.get(abbr);
+	}
+
+	public OrderBook getOrderBook(String abbr) {
+		if (!orderBooks.containsKey(abbr)) {
+
+			add(abbr);
+		}
+		return orderBooks.get(abbr);
 	}
 
 	PriceRepo() {
@@ -49,6 +49,11 @@ public class PriceRepo {
 	public void stop() {
 		// TODO Auto-generated method stub
 
+	}
+
+	public void bind(Security security) {
+		security.setPrices(getPrices(security.getNameAbbreviation()));
+		security.setOrderBook(getOrderBook(security.getNameAbbreviation()));
 	}
 
 }

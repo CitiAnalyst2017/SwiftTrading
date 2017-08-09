@@ -9,14 +9,14 @@ import java.util.List;
 import java.util.Random;
 
 public class GetOrderBookItem {
-	private static List<OrderBookItem> orderDatas;
+//	private static List<OrderBookItem> orderDatas;
 
-	public static List<OrderBookItem> generateBook() {
+	public  List<OrderBookItem> generateBook() {
 		OrderBookItem obItem = null;
-		orderDatas = new ArrayList<OrderBookItem>();
+		List<OrderBookItem> orderDatas = new ArrayList<OrderBookItem>();
 		Random rand = new Random();
 		DecimalFormat df = new DecimalFormat("#.00");
-		double price = 80.21;
+		double price = 50+rand.nextFloat()*5;
 		for (int i = 0; i < 20; i++) {
 			obItem = new OrderBookItem();
 			int bqty = rand.nextInt(20) + 5;
@@ -31,7 +31,8 @@ public class GetOrderBookItem {
 				return item2.getPrice().compareTo(item1.getPrice());
 			}
 		});
-		orderDatas = orderDatas.subList(0, 10);
+		int pos=rand.nextInt(10);
+		orderDatas = orderDatas.subList(pos, pos+10);
 		for (int i = 0; i < orderDatas.size(); i++) {
 			if (i < 5) {
 				orderDatas.get(i).setBid("Offer" + (5 - i));

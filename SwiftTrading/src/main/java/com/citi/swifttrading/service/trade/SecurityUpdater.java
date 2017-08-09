@@ -3,12 +3,12 @@ package com.citi.swifttrading.service.trade;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import com.citi.swifttrading.generator.GetOrderBook;
 import com.citi.swifttrading.generator.OrderBook;
 
 import lombok.Setter;
-
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Setter
 public class SecurityUpdater extends Thread {
 
@@ -25,7 +25,7 @@ public class SecurityUpdater extends Thread {
 		while (true) {			
 				try {
 					orderBook=getOrderBook.getOrderBook();
-					prices.add(orderBook.getOfferPrice());			  
+					prices.add(orderBook.getOfferPrice());
 					Thread.sleep(10);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
@@ -33,31 +33,4 @@ public class SecurityUpdater extends Thread {
 				}
 		}
 	}
-/*	@Override
-	public void run() {
-		ListIterator<Double> iter = prices.listIterator();
-		while (true) {
-
-			
-			while (iter.hasNext()) {
-				target.add(iter.next());
-				try {
-					Thread.sleep(10);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			while (iter.hasPrevious()) {
-				target.add(iter.previous());
-				try {
-					Thread.sleep(5);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-	}*/
-
 }
