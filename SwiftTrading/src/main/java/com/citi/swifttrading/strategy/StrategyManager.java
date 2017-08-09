@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.citi.swifttrading.VO.StrategyVO;
 import com.citi.swifttrading.dao.SecurityDao;
 import com.citi.swifttrading.dao.StrategyDao;
+import com.citi.swifttrading.domain.BollBand;
 import com.citi.swifttrading.domain.MovingAverage;
 import com.citi.swifttrading.domain.Strategy;
 import com.citi.swifttrading.service.trade.TradeManager;
@@ -76,5 +77,22 @@ public class StrategyManager {
 	public void startStrategy(Strategy strategy) {
 		strategy.getRunner().start();
 		log.info("stop :"+strategy.toString());
+	}
+
+	public StrategyVO createBollBand(StrategyVO VO) {
+		BollBand bollBand=new BollBand();
+		bollBand.setExit(VO.getExit());
+		bollBand.setPeriod(VO.getPeriod());
+		bollBand.setStd(VO.getStd());
+		bollBand.setSecurity(securityDao.queryById(VO.getCode()));
+		
+		BollBandRunner target = new BollBandRunner(tradeManager,bollBand);
+		bollBand.setStatus("ACTIVE");
+		bollBand.setRunner(target);
+		target.start();
+		strategyDao.save(bollBand);
+		
+		log.info("start :"+bollBand.toString());
+		return VO;
 	}
 }

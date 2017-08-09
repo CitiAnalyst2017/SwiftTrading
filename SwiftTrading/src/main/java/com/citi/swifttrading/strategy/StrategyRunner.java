@@ -26,20 +26,20 @@ public abstract class StrategyRunner extends Thread {
 
 		log.info(String.format("Long Secrity %s ,at price %f ,with exit %f", target.getNameAbbreviation(), target.latestPrice(),
 				exit));
-		return tradeManager.createMarketTrade(Position.LONG, target, exit);
+		return tradeManager.createMarketTrade(Position.LONG, target, exit, 20);
 	}
 
 	protected Trade createShortRequest(Security target, double exit) {
 
 		log.info(String.format("short Secrity %s ,at price %f ,with exit %f", target.getNameAbbreviation(), target.latestPrice(),
 				exit));
-		return tradeManager.createMarketTrade(Position.SHORT, target, exit);
+		return tradeManager.createMarketTrade(Position.SHORT, target, exit,20);
 
 	}
 
 	protected void closeRequest(Trade trade) {
 		log.info(String.format("close request %s", trade.toString()));
-		tradeManager.closeTrade(trade);
+		tradeManager.closeOrCancleTrade(trade);
 	};
 	
 	protected boolean takeProfit() { 

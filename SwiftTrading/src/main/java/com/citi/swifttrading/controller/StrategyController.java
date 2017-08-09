@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.citi.swifttrading.VO.StrategyVO;
-import com.citi.swifttrading.dao.SecurityDao;
 import com.citi.swifttrading.strategy.StrategyManager;
 
 @RestController
@@ -19,8 +18,6 @@ public class StrategyController {
 	
 	@Autowired
 	 private StrategyManager strategyManager;
-	@Autowired
-	 private SecurityDao securityDao;
 	
     @RequestMapping(value="/MovingAverage",method=RequestMethod.POST)
     public StrategyVO createMovingAveragr(@RequestBody StrategyVO strategyVO){
@@ -31,14 +28,10 @@ public class StrategyController {
   
     }
     
-    @RequestMapping(value="/b",method=RequestMethod.GET)
-    public String xixi(Model m){
+    @RequestMapping(value="/BollBand",method=RequestMethod.POST)
+    public StrategyVO createBollBand(@RequestBody StrategyVO strategyVO){
  
-        
-        
-        m.addAttribute("serverTime", "stragystoped");
-        strategyManager.stopStrategys();
-        return "home";
+    	return strategyManager.createBollBand(strategyVO);
     }
     
     @RequestMapping(value="/c",method=RequestMethod.GET)
