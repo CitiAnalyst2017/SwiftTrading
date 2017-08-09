@@ -11,31 +11,40 @@
 		<result column="Name" property="strategyName" />
 		<result column="Description" property="description" />
 		<result column="ExitPoint" property="exit" />
-		<result column="SecurityName" property="security.nameAbbreviation" />
+		<result column="SecuritySymbol" property="security.nameAbbreviation" />
+		<association property="security"
+			javaType="com.citi.swifttrading.domain.Security">
+			<result column="NameAbbreviation" property="nameAbbreviation" />
+			<result column="SecurityName" property="securityName" />
+		</association>
 	</resultMap>
 
-	<insert id="insert-strategy" parameterType="Strategy" useGeneratedKeys="true"
-		keyProperty="id">
+	<insert id="insert-strategy" parameterType="Strategy"
+		useGeneratedKeys="true" keyProperty="id">
 		insert into
-		strategy(Name,Description,ExitPoint,SecurityName)
+		strategy(Name,Description,ExitPoint,SecuritySymbol)
 		values(#{strategyName},#{description},#{exit},#{security.nameAbbreviation})
 	</insert>
 
 	<select id="query_All_Strategy" resultMap="resultListStrategy">
 		select * from strategy
 	</select>
-
-	<select id="queryByStrategyID" resultType="Strategy" parameterType="int">
-		select * from strategy where ID = #{id}
+	
+	<select id="queryByStrategyID" resultMap="resultListStrategy"
+		parameterType="int">
+		select * from strategy str, security sec where ID =
+		#{id} and str.SecuritySymbol = sec.NameAbbreviation
 	</select>
 
 	<update id="update-strategy" parameterType="Strategy">
-		update strategy set ID=#{id},Name=#{strategyName},
-		Description=#{description},ExitPoint=#{exit},SecurityName=#{security.nameAbbreviation}
+		update strategy set
+		ID=#{id},Name=#{strategyName},Description=#{description},
+		ExitPoint=#{exit},SecuritySymbol=#{security.nameAbbreviation}
 		where ID=#{id}
 	</update>
 
 	<delete id="delete-strategy" parameterType="int">
-		delete from strategy where ID = #{id}
-		</delete>
+		delete from strategy
+		where ID = #{id}
+	</delete>
 </mapper> 

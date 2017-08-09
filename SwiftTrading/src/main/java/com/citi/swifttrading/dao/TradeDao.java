@@ -3,6 +3,7 @@ package com.citi.swifttrading.dao;
 import java.util.List;
 
 import com.citi.swifttrading.domain.Trade;
+import com.citi.swifttrading.enumration.TradeStatus;
 
 public interface TradeDao {
 	
@@ -15,5 +16,7 @@ public interface TradeDao {
 	public void delete(int id);
 
 	public List<Trade> queryAll();
+	
+	public List<Trade> queryByStarus(TradeStatus status);
 
 }

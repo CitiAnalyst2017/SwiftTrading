@@ -37,4 +37,11 @@ public class Strategy implements Serializable {
 		return runner.getState().toString();
 	}
 
+	@Override
+	public String toString() {
+		return "Strategy [id=" + id + ", status=" + status + ", strategyName=" + strategyName + ", description="
+				+ description + ", security=" + security.getNameAbbreviation()+ ", exit=" + exit + "]";
+	}
+	
+
 }

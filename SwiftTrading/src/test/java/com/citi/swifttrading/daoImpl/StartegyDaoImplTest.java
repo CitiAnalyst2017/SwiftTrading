@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.citi.swifttrading.domain.MovingAverage;
 import com.citi.swifttrading.domain.Security;
 import com.citi.swifttrading.domain.Strategy;
 
@@ -35,53 +36,55 @@ public class StartegyDaoImplTest {
 	public void setUp() {
 		security = securityDaoImpl.queryById("AA");
 	}
-
+	
 	@Test
 	public void testSave() {
-		strategy = new Strategy("funk", "funk", security, 0.2);
+		strategy = new Strategy("test1", "test1 desc", security, 0.2);
 		strategyDaoImpl.save(strategy);
-		strategy = new Strategy("funk", "funk", security, 0.2);
+		strategy = new Strategy("test1", "test1 desc", security, 0.2);
 		strategyDaoImpl.save(strategy);
 	}
-
+	
 	@Test
 	public void testQueryById() {
-		strategy = strategyDaoImpl.queryById(14);
+		strategy = strategyDaoImpl.queryById(52);
 		System.out.println(strategy.getSecurity().toString());
-		assertEquals("testTradeIdNull1", strategy.getStrategyName());
-		assertEquals("desc1", strategy.getDescription());
+		assertEquals("test1", strategy.getStrategyName());
+		assertEquals("test1 desc", strategy.getDescription());
 		assertEquals(0.2, strategy.getExit(),0);
-		assertEquals("A", strategy.getSecurity().getNameAbbreviation());
+		assertEquals("AA", strategy.getSecurity().getNameAbbreviation());
 	}
 
 	@Test
 	public void testUpdate() {
-		strategy = strategyDaoImpl.queryById(15);
-		assertEquals("testTradeIdNull2", strategy.getStrategyName());
-		assertEquals("desc2", strategy.getDescription());
+		strategy = strategyDaoImpl.queryById(53);
+		System.out.println(strategy.getSecurity().toString());
+		assertEquals("test1", strategy.getStrategyName());
+		assertEquals("test1 desc", strategy.getDescription());
 		assertEquals(0.2, strategy.getExit(),0);
-		assertEquals("A", strategy.getSecurity().getNameAbbreviation());
+		assertEquals("AA", strategy.getSecurity().getNameAbbreviation());
 		
-		strategy.setDescription("testUpdate");
+		security.setNameAbbreviation("MO");
+		strategy.setSecurity(security);
 		strategyDaoImpl.update(strategy);
-		strategy = strategyDaoImpl.queryById(15);
-		
-		assertEquals("testTradeIdNull2", strategy.getStrategyName());
-		assertEquals("testUpdate", strategy.getDescription());
+		strategy = strategyDaoImpl.queryById(53);
+		System.out.println(strategy.getSecurity().toString());
+		assertEquals("test1", strategy.getStrategyName());
+		assertEquals("test1 desc", strategy.getDescription());
 		assertEquals(0.2, strategy.getExit(),0);
-		assertEquals("A", strategy.getSecurity().getNameAbbreviation());
+		assertEquals("MO", strategy.getSecurity().getNameAbbreviation());
 	}
 
 	@Test
 	public void testgetAll() {
 		strategies = strategyDaoImpl.queryAll();
 		assertNotNull(strategies);
-		assertEquals(15, strategies.size());
+		assertEquals(4, strategies.size());
 	}
 
 	@Test
 	public void testDelete() {
-		strategyDaoImpl.delete(5);
+		strategyDaoImpl.delete(50);
 	}
 
 }

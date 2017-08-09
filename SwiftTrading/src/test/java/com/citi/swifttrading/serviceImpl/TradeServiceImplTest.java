@@ -56,24 +56,26 @@ public class TradeServiceImplTest {
 	public void testSave() {
 		trade = new Trade(TradeType.LIMIT, security, 10000, start_time, expiration, 9.5, 11.5, Position.LONG, 10.5);
 		tradeServiceImpl.save(trade);
+		trade.setStatus(TradeStatus.OPEN);
 		trade = new Trade(TradeType.LIMIT, security, 10000, start_time, expiration, 9.5, 11.5, Position.LONG, 10.5);
 		tradeServiceImpl.save(trade);
+		trade.setStatus(TradeStatus.CREATED);
 	}
 	
 	@Test
 	public void testQueryByStatus() {
 		trades = tradeServiceImpl.queryByStarus(TradeStatus.CANCLED);
 		System.out.println(trades.get(0).getStatus());
-		assertEquals(2, trades.size());
+		assertEquals(4, trades.size());
 		trades = tradeServiceImpl.queryByStarus(TradeStatus.CREATED);
 		System.out.println(trades.get(0).getStatus());
-		assertEquals(2, trades.size());
+		assertEquals(5, trades.size());
 		trades = tradeServiceImpl.queryByStarus(TradeStatus.OPEN);
 		System.out.println(trades.get(0).getStatus());
-		assertEquals(2, trades.size());
+		assertEquals(5, trades.size());
 		trades = tradeServiceImpl.queryByStarus(TradeStatus.CLOSED);
 		System.out.println(trades.get(0).getStatus());
-		assertEquals(2, trades.size());
+		assertEquals(4, trades.size());
 	}
 	
 	@Test
