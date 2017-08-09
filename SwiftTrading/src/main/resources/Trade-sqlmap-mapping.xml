@@ -23,6 +23,7 @@
 		<result column="SalePrice" property="salePrice" />
 		<result column="BuyPriceReal" property="buyPriceReal" />
 		<result column="SalePriceReal" property="salePriceReal" />
+		<result column="StrategyID" property="strategyId" />
 		<association property="security"
 			javaType="com.citi.swifttrading.domain.Security">
 			<result column="NameAbbreviation" property="nameAbbreviation" />
@@ -34,9 +35,10 @@
 		useGeneratedKeys="true" keyProperty="id">
 		insert into
 		trade(SecuritySymbol,Quantity,BuyPrice,Expiration,StartTime,EndTime,Status,
-		LossPrice,ProfitPrice,TradeType,CCY,SalePrice,Position,BuyPriceReal,SalePriceReal)
+		LossPrice,ProfitPrice,TradeType,CCY,SalePrice,Position,BuyPriceReal,SalePriceReal,StrategyID)
 		values(#{security.nameAbbreviation},#{quantity},#{buyPrice},#{expiration},#{start_time},#{end_time},
-		#{status},#{loss_price},#{profit_price},#{type},#{ccy},#{salePrice},#{position},#{buyPriceReal},#{salePriceReal})
+		#{status},#{loss_price},#{profit_price},#{type},#{ccy},#{salePrice},
+		#{position},#{buyPriceReal},#{salePriceReal},#{strategyId})
 	</insert>
 
 	<select id="query_AllTrade" resultMap="resultListTrade">
@@ -58,7 +60,7 @@
 		SecuritySymbol=#{security.nameAbbreviation},Quantity=#{quantity},BuyPrice=#{buyPrice},Expiration=#{expiration},
 		StartTime=#{start_time},EndTime=#{end_time},Status=#{status},LossPrice=#{loss_price},ProfitPrice=#{profit_price},
 		TradeType=#{type},CCY=#{ccy},SalePrice=#{salePrice},Position=#{position},
-		BuyPriceReal=#{buyPriceReal},SalePriceReal=#{salePriceReal}
+		BuyPriceReal=#{buyPriceReal},SalePriceReal=#{salePriceReal},StrategyID=#{strategyId}
 		where
 		ID=#{id}
 	</update>
