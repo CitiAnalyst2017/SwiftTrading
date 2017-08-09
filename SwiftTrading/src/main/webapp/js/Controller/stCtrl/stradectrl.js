@@ -3,11 +3,10 @@
 in ther words its scope is child scope*/
 app.controller('stradeCtrl',function($scope,$http){
 
-	$scope.names = ["MovingAverage","Boll Band"];
-
-	var strade_url = url_prefix + 'strategy/'+$scope.sname; 
+	$scope.names = ["MovingAverage","BollBand"];
 
 	$scope.maclick = function(){
+		var strade_url = url_prefix + 'strategy/'+$scope.sname; 
 		var maorder = {
 			"code":$scope.macode,
 			"longperiod":$scope.malp,
@@ -15,12 +14,12 @@ app.controller('stradeCtrl',function($scope,$http){
 			"exit":$scope.maex
 		};
 
-		sendstr(maorder);
+		sendstr(maorder,strade_url);
 
 	};
 
 	$scope.bbclick = function(){
-
+		var strade_url = url_prefix + 'strategy/'+$scope.sname; 
 		var bborder = {
 			"code":$scope.bbcode,
 			"period":$scope.bbpe,
@@ -28,15 +27,18 @@ app.controller('stradeCtrl',function($scope,$http){
 			"exit":$scope.bbex
 		};
 
-		sendstr(bborder);
+		sendstr(bborder,strade_url);
+
 	};
 
-	var sendstr = function(sdata){
+	var sendstr = function(sdata,surl){
 		$http({
 			method:'POST',
-			url:strade_url,
+			url:surl,
 			data:sdata,
-		}).success(function(){}).error(function(){
+		}).success(function(){
+			alert("send order successfully");
+		}).error(function(){
 			alert("InternetError");
 		 });
 	};

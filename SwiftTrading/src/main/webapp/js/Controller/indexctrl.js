@@ -22,5 +22,7 @@ app.controller('indexCtrl',function($scope,$location){
 	};
 	$scope.oclick = function(){
 		$scope.main = './view/OrderHistory/OrderHistory.html';
-	}
-	});
+	};
+
+
+});

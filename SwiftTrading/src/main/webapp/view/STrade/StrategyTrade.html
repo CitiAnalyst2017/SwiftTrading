@@ -23,7 +23,10 @@
 			<div ng-switch="sname">
 				<div ng-switch-when="MovingAverage">
 					<div class="descri">
-						<h4>this is discribtion of ma</h4>
+						<h4>The trigger for this strategy is when the short average “crosses” the long average: that
+						is, when it was below the long average a moment ago, and now it is above the long
+						average, or vice-versa. When the short average crosses above the long, it’s time to buy; if it crosses below, it’s time to sell. Place your trade and record it.
+						</h4>
 					</div>
 					<hr>
 					<div class="input-group">
@@ -48,9 +51,10 @@
 					<br>
 					<button class="btn btn-primary" ng-click="maclick()">Create Strategy</button>
 				</div>
-				<div ng-switch-when="Boll Band">
+				<div ng-switch-when="BollBand">
 					<div class="descri">
-						<h4>this is discribtion of bb</h4>	
+						<h4>This strategy seeks to take advantage of volatility in a stock, expecting it to return to itsestablished pattern. Take a moving average over some period (for example 20 days),and calculate the standard deviation for that period.
+						</h4>	
 					</div>
 					<hr>
 					<div class="input-group">

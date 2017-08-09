@@ -17,11 +17,15 @@
 	margin-right: 4em;
 }
 
-.finished-order span{
+.finished-order .list-group span{
 	font-size: 1.5em;
 	margin-right: 1em;
 }
 
 .performance{
 	margin-top: 0.5em;
+}
+
+.performance .perf-chart{
+	
 }

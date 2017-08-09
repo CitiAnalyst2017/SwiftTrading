@@ -3,7 +3,7 @@
 app.controller('tradeCtrl',function($scope,$http){
 	$scope.price = 0;
 	$scope.qty = 0;
-	$scope.types = ["MRKT","LIMIT","IOC"];
+	$scope.types = ["MARKT","LIMIT","IOC"];
 	$scope.positions = ["LONG","SHORT"];
 
 	var send_url = url_prefix + 'trade';
@@ -27,7 +27,15 @@ app.controller('tradeCtrl',function($scope,$http){
 			url:send_url,
 			data:order,
 		}).success(function(){
-
+			alert("send order successfully");
+			$scope.type = "";
+			$scope.position = "";
+			$scope,code = "";
+			$scope.price = 0;
+			$scope.qty = 0;
+			$scope.lossp = "";
+			$scope.profp = "";
+			$scope.expir = "";
 		}).error(function(){
 			alert("InternetError");
 		});

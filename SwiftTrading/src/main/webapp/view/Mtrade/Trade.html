@@ -11,10 +11,20 @@
 				<p ng-show="nopt">There Is No Pending Order Now</p>
 				<p ng-show="errormsg" style="color: red;">Internet Error</p>
 				<div class="pendingtrade">
-					<ul class="list-group" ng-repeat="porder in porders">
-						<li class="list-group-item">
-						{{porder}}
-						<button class="btn btn-default" ng-model="oper">{{oper}}</button>
+					<ul class="list-group">
+						<li class="list-group-item" ng-repeat="porder in porders">
+							<span>Code:{{porder.code}}</span>
+							<span>Position:{{porder.position}}</span>
+							<span>Quantity:{{porder.quantity}}</span>
+							<span>BuyPrice:{{porder.bprice}}</span>
+							<span>NowPrice:{{porder.nprice}}</span>
+							<span>Profit:{{porder.profit}}</span>
+							<span>Status:{{porder.status}}</span>
+							<span>OrderTime:{{porder.time}}</span>
+							<span ng-switch="porder.status">
+								<button ng-switch-when="buying" class="btn btn-default pull-right" ng-model="oper" ng-click="opert()" ng-disabled="opdis">Cancel{{oper}}</button>
+								<button ng-switch-when="bought" class="btn btn-default pull-right" ng-model="oper" ng-click="opert()" ng-disabled="opdis" data-target="#selld">Sell{{oper}}</button>
+							</span>
 						</li>
 					</ul>
 				</div>
@@ -133,8 +143,8 @@
 										Submit Order
 										</button>
 									</div>
-								</div><!-- /.modal-content -->
-							</div><!-- /.modal -->
+								</div>
+							</div>
 						</div>
 						<!-- End Dialog -->
 
@@ -156,6 +166,7 @@
         				<button class="btn btn-info" type="button" ng-click="searchrawclick()">Search</button>
       				</span>
 				</div>
+				<p style="color: red;" ng-show="errormsg">Internet Error</p>
 				<div class="raw-data-result">
 					<table class="table table-striped">
 						<thead>

@@ -3,6 +3,8 @@ app.controller('rawCtrl',function($scope,$http,$interval){
 
 	var raw_url = url_prefix + 'security/'+$scope.code;
 
+	$scope.errormsg = false;
+
 	var getrawdata = function(){
 		$http({
 			method:'GET',
@@ -11,16 +13,17 @@ app.controller('rawCtrl',function($scope,$http,$interval){
 		}).success(function(data){
 			$scope.raws = data;
 		}).error(function(){
-			alert("Internet Error");
+			$scope.errormsg = true;
 		});
 	};
 
 	$scope.searchrawclick = function(){
 		getrawdata();	
+
+		$interval(function(){
+			getrawdata();
+		},1000);
 	};
 
-/*
-	$interval(function(){
-		getrawdata();
-	},1000);*/
+
 });

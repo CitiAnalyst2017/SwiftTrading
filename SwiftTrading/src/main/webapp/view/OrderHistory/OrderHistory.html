@@ -5,17 +5,25 @@
 			<div class="panel-body">
 				<p ng-show="nofo">There Is No Finished Order Now</p>
 				<p ng-show="errormsg" style="color: red;">Internet Error</p>
-				<ul class="list-group" ng-repeat="forder in forders">
-					<a class="list-group-item">	  
-						<span>OrderId:{{forder.oid}}</span>
-						<span>OrderTime:{{forder.ot}}</span>
-						<span>Code:{{forder.co}}</span>
-						<span>SellPrice:{{forder.sp}}</span>
-						<span>BuyPrice:{{forder.bp}}</span>
-						<span>Quantity:{{forder.qu}}</span>
-						<span>Profit:{{forder.pr}}</span>
-					</a>
-				</ul>
+				<div class="byselect" ng-show="flistshow">
+					<div class="input-group" style="width: 25%;">
+						<span class="input-group-addon">CreatedBy</span>
+						<select ng-init="by=bys[0]" ng-model="by" ng-options="x for x in bys" class="form-control" ng-change="selectby()">
+						</select>
+					</div>
+					<ul class="list-group" ng-repeat="forder in forders">	
+						<a class="list-group-item">	  
+							<span>OrderId:{{forder.oid}}</span>
+							<span>OrderTime:{{forder.ot}}</span>
+							<span>Code:{{forder.co}}</span>
+							<span>SellPrice:{{forder.sp}}</span>
+							<span>BuyPrice:{{forder.bp}}</span>
+							<span>Quantity:{{forder.qu}}</span>
+							<span>Profit:{{forder.pr}}</span>
+							<span>CreatedBy:{{forder.c}}</span>
+						</a>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -24,7 +32,9 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">Strategy Performance</div>
 			<div class="panel-body">
-				<div ng-include="'./performance.html'"></div>
+				<div class="perf-chart" id="pcontainer">
+				</div>	
+			</div>
 			</div>
 		</div>
 	</div>

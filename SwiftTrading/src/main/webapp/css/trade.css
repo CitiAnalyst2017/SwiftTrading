@@ -19,6 +19,16 @@
 	font-size: 1.5em;
 }
 
+.ptrade-list .pendingtrade span{
+	font-size: 1.3em;
+	margin-right: 1em;
+	color: grey;
+} 
+
+.ptrade-list .pendingtrade .opert{
+	/*float: right;*/
+}
+
 .trade-panel{
 	margin-top: 0.5em;
 }
