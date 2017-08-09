@@ -11,16 +11,16 @@ import lombok.Data;
 @Data
 public class TradeVO {
 	private int id;
-	private TradeStatus tradeStatus;
-	private TradeType tradeType;
+	private TradeStatus tradestatus;
+	private TradeType type;
 	private Position position;
-	private String symbol;
-	private double price;
-	private double currentPrice;
+	private String code;
+	private double buyprice;
+	private double currentprice;
 	private int quantity;
-	private double lossPrice;
-	private double profitPrice;
+	private double lossprice;
+	private double profitprice;
 	private int expiration;
-	private Date startTime;
+	private Date starttime;
 	private double profit;
 }
