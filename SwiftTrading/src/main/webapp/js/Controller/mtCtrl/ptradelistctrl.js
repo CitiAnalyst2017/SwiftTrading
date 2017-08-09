@@ -1,12 +1,24 @@
 
-app.controller('ptradelistCtrl',function($scope){
+/*get pending order every 1 second*/
+app.controller('ptradelistCtrl',function($scope,$http,$interval){
 
-	$scope.nopt = function(){
-			/*if($scope.ptrades.length == 0)
-				return false;
-			else
-				return false;*/
-			return false;
-			
-		};
+	var pending_order_url = url_prefix + 'trade/pending';
+
+	$scope.nopt = false;
+	$scope.errormsg = false;
+
+	$interval(function(){
+		$http({
+			method:'GET',
+			url:pending_order_url,
+		}).success(function(){
+			$scope.porders = data;
+			if(porders.length == 0){
+				$scope.nopt = true;
+			}
+		}).error(function(){
+			$scope.errormsg = true;
+		});
+	},1000);
+
 });

@@ -1,18 +1,30 @@
 <div class="os-page">
-	<div class="finished-order">
+	<div class="finished-order" ng-controller="forderCtrl">
 		<div class="panel panel-default">
 			<div class="panel-heading">Finished Order</div>
 			<div class="panel-body">
-				
+				<p ng-show="nofo">There Is No Finished Order Now</p>
+				<p ng-show="errormsg" style="color: red;">Internet Error</p>
+				<ul class="list-group" ng-repeat="forder in forders">
+					<a class="list-group-item">	  
+						<span>OrderId:{{forder.oid}}</span>
+						<span>OrderTime:{{forder.ot}}</span>
+						<span>Code:{{forder.co}}</span>
+						<span>SellPrice:{{forder.sp}}</span>
+						<span>BuyPrice:{{forder.bp}}</span>
+						<span>Quantity:{{forder.qu}}</span>
+						<span>Profit:{{forder.pr}}</span>
+					</a>
+				</ul>
 			</div>
 		</div>
 	</div>
 
-	<div class="performance">
+	<div class="performance" ng-controller="perfCtrl">
 		<div class="panel panel-default">
 			<div class="panel-heading">Strategy Performance</div>
 			<div class="panel-body">
-				
+				<div ng-include="'./performance.html'"></div>
 			</div>
 		</div>
 	</div>
