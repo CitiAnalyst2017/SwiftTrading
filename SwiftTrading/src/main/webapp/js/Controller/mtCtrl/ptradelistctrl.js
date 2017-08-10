@@ -18,7 +18,7 @@ app.controller('ptradelistCtrl',function($scope,$http,$interval,$rootScope){
 	};
 
 	// mock data
-/*	$scope.porders = [{
+	/*$scope.porders = [{
 		"code":"app",
 		"position":"long",
 		"quantity":214,
@@ -26,7 +26,8 @@ app.controller('ptradelistCtrl',function($scope,$http,$interval,$rootScope){
 		"nowprice":103,
 		"profit":214,
 		"status":"CREATED",
-		"starttime":"2016-3-17"
+		"starttime":"2016-3-17",
+		"type":"sdf"
 	},{
 		"code":"mic",
 		"position":"short",
@@ -35,9 +36,10 @@ app.controller('ptradelistCtrl',function($scope,$http,$interval,$rootScope){
 		"nowprice":103,
 		"profit":-130,
 		"status":"OPEN",
-		"starttime":"2017-6-17"
-	}];*/
-
+		"starttime":"2017-6-17",
+		"type":"MARKET"
+	}];
+*/
 	$http({
 		method:'GET',
 		url:pending_order_url,
@@ -68,18 +70,37 @@ app.controller('ptradelistCtrl',function($scope,$http,$interval,$rootScope){
 	},2000);
 
 	$scope.opert = function(){
-		this.porder.status = 'CLOSING';
+
+		if(this.porder.type != "MARKET"){
+			this.porder.status = 'CLOSING';
+			$http({
+				method:'PUT',
+				url:url_prefix + '/trade/',
+				data:this.porder,
+			}).success(function(){
+				this.oper = "ing";
+				this.opdis = true;
+				alert("operate successfully!");
+			}).error(function(){
+				alert("InternetError");
+			});
+		}else{
+			$('#sello').modal('show');
+		}
+				
+	};
+
+	$scope.sellm = function(){
+		this.porder.sellprice = $scope.sellpr;
 		$http({
-			method:'PUT',
+			method:'POST',
 			url:url_prefix + '/trade/',
 			data:this.porder,
 		}).success(function(){
-			this.oper = "ing";
-			this.opdis = true;
-			alert("operate successfully!");
+
 		}).error(function(){
 			alert("InternetError");
-		});		
+		});
 	};
 
 });
