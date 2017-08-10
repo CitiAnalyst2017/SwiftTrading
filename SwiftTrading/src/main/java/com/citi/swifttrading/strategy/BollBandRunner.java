@@ -26,7 +26,7 @@ public class BollBandRunner extends StrategyRunner {
 	private int getStatus() {
 		if (target.latestPrice() - target.getAverage(period) > std * target.getStd(period))
 			return 1;
-		else if (target.latestPrice() - target.getAverage(period) < std * target.getStd(period))
+		else if (target.getAverage(period) - target.latestPrice() > std * target.getStd(period))
 			return -1;
 		return 0;
 	}
@@ -34,6 +34,15 @@ public class BollBandRunner extends StrategyRunner {
 	@Override
 	public void run() {
 		while (true) {
+			 synchronized (lock) {
+				 while(suspended)
+					try {
+						lock.wait();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			 
 			if (request != null) {
 				if (request.getStatus() ==TradeStatus.CREATED||request.getStatus() == TradeStatus.OPEN && takeProfit()) {
 					closeRequest(request);
@@ -42,17 +51,18 @@ public class BollBandRunner extends StrategyRunner {
 			} else{
 				if (getStatus() == 1) {
 					request = createLongRequest(target, exit);
-				} else if(getStatus()==2){
+				} else if(getStatus()==-1){
 					request = createShortRequest(target, exit);
 				}
 			}
 
 			try {
-				Thread.sleep(50);
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				log.info(e.toString());
 				e.printStackTrace();
 			}
+		}
 		}
 
 	}

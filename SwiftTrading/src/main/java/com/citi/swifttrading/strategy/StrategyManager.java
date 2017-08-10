@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.citi.swifttrading.VO.StrategyVO;
 import com.citi.swifttrading.dao.SecurityDao;
-import com.citi.swifttrading.dao.StrategyDao;
+import com.citi.swifttrading.dao.StrategyRepo;
 import com.citi.swifttrading.domain.BollBand;
 import com.citi.swifttrading.domain.MovingAverage;
 import com.citi.swifttrading.domain.Strategy;
@@ -25,7 +25,7 @@ public class StrategyManager {
 	@Autowired
 	private SecurityDao securityDao;
 	@Autowired
-	private StrategyDao strategyDao;
+	private StrategyRepo strategyRepo;
 	
 	private List<Strategy> strategys= new ArrayList<>();
 	
@@ -46,13 +46,11 @@ public class StrategyManager {
 		movingAverage.setLongPeriod(VO.getLongperiod());
 		movingAverage.setShortPeriod(VO.getShortperiod());
 		movingAverage.setSecurity(securityDao.queryById(VO.getCode()));
-		
+		movingAverage.setStrategyName("MovingAverage");
+		movingAverage.setId(strategyRepo.save(movingAverage));
 		MovingAverageRunner target = new MovingAverageRunner(tradeManager,movingAverage);
-		movingAverage.setStatus("ACTIVE");
 		movingAverage.setRunner(target);
 		target.start();
-		strategyDao.save(movingAverage);
-		
 		log.info("start :"+movingAverage.toString());
 		return VO;
 	}
@@ -85,14 +83,54 @@ public class StrategyManager {
 		bollBand.setPeriod(VO.getPeriod());
 		bollBand.setStd(VO.getStd());
 		bollBand.setSecurity(securityDao.queryById(VO.getCode()));
-		
+		bollBand.setStrategyName("BollBand");
+		bollBand.setId(strategyRepo.save(bollBand));
 		BollBandRunner target = new BollBandRunner(tradeManager,bollBand);
-		bollBand.setStatus("ACTIVE");
 		bollBand.setRunner(target);
 		target.start();
-		strategyDao.save(bollBand);
-		
 		log.info("start :"+bollBand.toString());
 		return VO;
+	}
+
+	public List<StrategyVO> getAll() {
+		List<StrategyVO> VOs=new ArrayList<>();
+		strategys=strategyRepo.queryAll();
+		strategys.forEach(strategy->VOs.add(toVO(strategy)));
+		return VOs;
+	}
+
+	private StrategyVO toVO(Strategy strategy) {
+		StrategyVO VO=new StrategyVO();
+		VO.setCode(strategy.getSecurity().getNameAbbreviation());
+		VO.setExit(strategy.getExit());
+		VO.setId(strategy.getId());
+//		VO.setLongperiod(strategy.get);
+//		VO.setShortperiod(strategy)
+//		VO.setPeriod(strategy);
+//		VO.setStd(strategy);
+		VO.setStatus(strategy.getStatus());
+		VO.setName(strategy.getStrategyName());
+		return VO;
+	}
+
+	@SuppressWarnings("deprecation")
+	public StrategyVO update(StrategyVO VO) throws InterruptedException{
+		Strategy strategy=strategyRepo.queryById(VO.getId());
+		if(!VO.getStatus().equals(strategy.getStatus())) {
+			StrategyRunner runner = strategy.getRunner();
+			if(VO.getStatus().equals("Running")) {
+				if(runner.getState()==Thread.State.WAITING) {
+					runner.Resume();
+					log.info(runner.getState().toString());
+				}else if(runner.getState()==Thread.State.NEW) {
+					runner.start();
+				}
+			}
+			else if(VO.getStatus().equals("Stoped")) {
+							runner.Suspend();					
+					}			
+		}
+		strategyRepo.update(strategy);
+		return null;
 	}
 }
