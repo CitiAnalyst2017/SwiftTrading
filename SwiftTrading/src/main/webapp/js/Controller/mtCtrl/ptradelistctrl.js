@@ -4,6 +4,8 @@ app.controller('ptradelistCtrl',function($scope,$http,$interval,$rootScope){
 
 	var pending_order_url = url_prefix + 'trade/pending';
 
+	var poller;
+
 	$scope.nopt = false;
 	$scope.errormsg = false;
 	$scope.opdis = false;
@@ -85,6 +87,7 @@ app.controller('ptradelistCtrl',function($scope,$http,$interval,$rootScope){
 				alert("InternetError");
 			});
 		}else{
+			$interval.cancel(poller);
 			$('#sello').modal('show');
 		}
 				
@@ -97,10 +100,11 @@ app.controller('ptradelistCtrl',function($scope,$http,$interval,$rootScope){
 			url:url_prefix + '/trade/',
 			data:this.porder,
 		}).success(function(){
-
+			alert("operate successfully!");
 		}).error(function(){
 			alert("InternetError");
 		});
+		
 	};
 
 });

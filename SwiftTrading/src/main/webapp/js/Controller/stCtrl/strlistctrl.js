@@ -4,7 +4,7 @@ app.controller('strlistCtrl',function($scope,$http,$interval,$timeout){
 
 	var str_url = url_prefix + 'strategy';
 
-	
+	var poller;
 
 	$scope.errormsg = false;
 
@@ -69,7 +69,7 @@ app.controller('strlistCtrl',function($scope,$http,$interval,$timeout){
 	$scope.showdetail = function(){
 		$('#strd').modal('show');
 		var det_url = url_prefix + 'strategy/'+this.strate.id+'/orders';
-		$interval(function(){
+		poller = $interval(function(){
 			$http({
 			method:'GET',
 			url:det_url,
@@ -80,6 +80,11 @@ app.controller('strlistCtrl',function($scope,$http,$interval,$timeout){
 		});
 		},2000);	
 		
+	};
+
+	//when closing the dialog clean the $interval
+	$scope.closedialog = function(){
+		$interval.cancel(poller);
 	};
 
 });
