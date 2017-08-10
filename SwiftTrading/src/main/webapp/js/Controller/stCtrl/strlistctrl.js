@@ -23,6 +23,12 @@ app.controller('strlistCtrl',function($scope,$http,$interval,$timeout){
 		"status":"finished"
 	}];
 
+	/*$scope.strate = {
+		"id":"2412",
+		"name":"asfa",
+		"status":"running"
+	};*/
+
 	$scope.cancelstr = function(){
 		this.strate.status = "Stoping";
 		$http({
@@ -48,6 +54,6 @@ app.controller('strlistCtrl',function($scope,$http,$interval,$timeout){
 	};
 
 	$scope.showdetail = function(){
-		alert("asd");
+		/*alert("asd");*/
 	};
 });

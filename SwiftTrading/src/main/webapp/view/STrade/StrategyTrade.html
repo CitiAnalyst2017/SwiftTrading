@@ -11,13 +11,59 @@
 		<p ng-show="errormsg" style="color: red;">Internet Error</p>
 		<div class="panel-body st-list">
 			<table class="table" >
-				<tr ng-repeat="strate in strates">
+				<tr ng-repeat="strate in strates"><!-- ng-repeat="strate in strates" -->
+					<!-- ng-model="strate" -->
 					<td><span>StrategyID:{{strate.id}}</span></td>
 					<td><span>StrategyName:{{strate.name}}</span></td>
 					<td><span>Code:{{strate.code}}</span></td>
 					<td><span>Status:{{strate.status}}</span></td>
 					<td><span><button class="btn btn-link" ng-click="showdetail()" data-target="#strd">Show Details</button></span></td>
-					<td><span ng-switch="strate.status"><button class="btn btn-default" ng-click="cancelstr()" ng-switch-when="running">Stop Strategy</button></span></td>
+					<td><span ng-switch="strate.status"><button class="btn btn-default" ng-click="cancelstr()" ng-switch-when="running">Stop Strategy</button></span></td>	
+					<td>
+					<!-- dialog -->
+					<div class="modal fade" id="strd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title" id="myModalLabel">Strategy Detail</h4>
+								</div><!-- modal-header -->
+								<div class="modal-body">
+									<table class="table">
+										<thead>
+											<tr>
+												<th>Code</th>
+												<th>Position</th>
+												<th>Quantity</th>
+												<th>BuyPrice</th>
+												<th>NowPrice</th>
+												<th>Profit</th>
+												<th>Status</th>
+												<th>StartTime</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="sdt in sdts">
+												<td>{{sdt.code}}</td>
+												<td>{{sdt.position}}</td>
+												<td>{{sdt.quantity}}</td>
+												<td>{{sdt.buyprice}}</td>
+												<td>{{sdt.nowprice}}</td>
+												<td>{{sdt.profit}}</td>
+												<td>{{sdt.status}}</td>
+												<td>{{sdt.starttime}}</td>
+											</tr>
+										</tbody>
+									</table>
+								</div><!-- modal-body -->
+								<div class="modal-footer">
+                					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            					</div><!-- modal-footer -->
+							</div><!-- modal-content -->
+						</div><!-- modal-dialog -->
+					</div>
+					<!-- end dialog -->
+					</td>
 				</tr>
 			</table>
 		</div>

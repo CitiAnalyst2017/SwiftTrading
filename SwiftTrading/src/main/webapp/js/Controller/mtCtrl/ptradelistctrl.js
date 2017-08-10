@@ -79,11 +79,7 @@ app.controller('ptradelistCtrl',function($scope,$http,$interval,$rootScope){
 			alert("operate successfully!");
 		}).error(function(){
 			alert("InternetError");
-		});	
-		
+		});		
 	};
-
-
-
 
 });
