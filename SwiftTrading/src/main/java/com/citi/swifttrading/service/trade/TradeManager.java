@@ -20,6 +20,7 @@ import com.citi.swifttrading.enumration.TradeType;
 import com.citi.swifttrading.util.DateUtil;
 
 import lombok.extern.slf4j.Slf4j;
+
 @Slf4j
 @Service("tradeManager")
 public class TradeManager {
@@ -27,24 +28,25 @@ public class TradeManager {
 	TradeDao tradeDao;
 	@Autowired
 	SecurityDao securityDao;
-	
-	private static final DecimalFormat numf = new DecimalFormat("#0.00"); 
-	private static final SimpleDateFormat datef= new SimpleDateFormat ("HH:mm:ss"); 
 
-	public Trade createMarketTrade(Position position, Security target, double exit,int quantity,int strategyId) {
-		Date now=new Date();
-		Trade trade = new Trade(TradeType.MARKET, target, quantity, now, DateUtil.addDay(now, 1), exit, exit, position, 0);
+	private static final DecimalFormat numf = new DecimalFormat("#0.00");
+	private static final SimpleDateFormat datef = new SimpleDateFormat("HH:mm:ss");
+
+	public Trade createMarketTrade(Position position, Security target, double exit, int quantity, int strategyId)
+			throws InterruptedException {
+		Date now = new Date();
+		Trade trade = new Trade(TradeType.MARKET, target, quantity, now, DateUtil.addDay(now, 1), exit, exit, position,
+				0);
 		trade.setStrategyId(strategyId);
-		trade.setBuyPriceReal(target.latestPrice());
 		trade.setId(tradeDao.save(trade));
+		FulFillment.doFulFillment(trade);
 		return trade;
 	}
 
-	public void closeTrade(Trade trade) {
+	public void closeTrade(Trade trade) throws InterruptedException {
 		tradeDao.update(trade);
-		trade.setStatus(TradeStatus.CLOSED);
+		FulFillment.doFulFillment(trade);
 		trade.setEnd_time(new Date());
-		trade.setSalePriceReal(trade.getSecurity().latestPrice());
 		tradeDao.update(trade);
 		log.info(String.format("Profit________________ %f", trade.calProfit()));
 	}
@@ -59,26 +61,22 @@ public class TradeManager {
 		return trade;
 	}
 
-	
-
-	
-
 	public List<TradeVO> getPendings() {
-		List<TradeVO> VOs=new ArrayList<TradeVO>();
-		List<Trade> trades =tradeDao.queryByStatus(TradeStatus.OPEN);
+		List<TradeVO> VOs = new ArrayList<TradeVO>();
+		List<Trade> trades = tradeDao.queryByStatus(TradeStatus.OPEN);
 		trades.addAll(tradeDao.queryByStatus(TradeStatus.CREATED));
 		trades.addAll(tradeDao.queryByStatus(TradeStatus.CLOSING));
 		trades.sort(null);
-		trades.forEach(trade->{
+		trades.forEach(trade -> {
 			VOs.add(toVO(trade));
 		});
 		return VOs;
 	}
 
 	private TradeVO toVO(Trade trade) {
-		TradeVO VO=new TradeVO();
+		TradeVO VO = new TradeVO();
 		VO.setId(trade.getId());
-		
+
 		VO.setStatus(trade.getStatus());
 		VO.setType(trade.getType());
 		VO.setPosition(trade.getPosition());
@@ -92,16 +90,16 @@ public class TradeManager {
 	}
 
 	public void closeOrCancleTrade(Trade trade) {
-		
-		if(trade.getStatus()==TradeStatus.CREATED)
+
+		if (trade.getStatus() == TradeStatus.CREATED)
 			cancleTrade(trade);
-		else if(trade.getStatus()==TradeStatus.OPEN) {
+		else if (trade.getStatus() == TradeStatus.OPEN) {
 			closeTrade(trade);
 		}
 	}
-	
+
 	public void closeOrCancleTrade(TradeVO VO) {
-		Trade trade=tradeDao.queryById(VO.getId());
+		Trade trade = tradeDao.queryById(VO.getId());
 		closeOrCancleTrade(trade);
 	}
 
@@ -111,21 +109,21 @@ public class TradeManager {
 		trade.setEnd_time(new Date());
 		tradeDao.update(trade);
 	}
-	
-	 private Trade toTrade(TradeVO tradeVO) {
-			Trade trade=new Trade();
-			trade.setSecurity(securityDao.queryById(tradeVO.getCode()));
-			trade.setStart_time(new Date());
-			trade.setExpiration(new Date());
-			trade.setQuantity(tradeVO.getQuantity());
-			trade.setPosition(tradeVO.getPosition());
-			trade.setType(tradeVO.getType());
-			trade.setLoss_price(tradeVO.getLossprice());
-			trade.setProfit_price(tradeVO.getProfitprice());
-			trade.setStatus(TradeStatus.CREATED);
-			if(tradeVO.getType()==TradeType.LIMIT) {
-				trade.setBuyPrice(Double.parseDouble(tradeVO.getBuyprice()));
-			}
-			return trade;
+
+	private Trade toTrade(TradeVO tradeVO) {
+		Trade trade = new Trade();
+		trade.setSecurity(securityDao.queryById(tradeVO.getCode()));
+		trade.setStart_time(new Date());
+		trade.setExpiration(new Date());
+		trade.setQuantity(tradeVO.getQuantity());
+		trade.setPosition(tradeVO.getPosition());
+		trade.setType(tradeVO.getType());
+		trade.setLoss_price(tradeVO.getLossprice());
+		trade.setProfit_price(tradeVO.getProfitprice());
+		trade.setStatus(TradeStatus.CREATED);
+		if (tradeVO.getType() == TradeType.LIMIT) {
+			trade.setBuyPrice(Double.parseDouble(tradeVO.getBuyprice()));
 		}
+		return trade;
+	}
 }

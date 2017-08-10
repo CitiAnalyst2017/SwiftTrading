@@ -1,16 +1,19 @@
 package com.citi.swifttrading.service.trade;
 
 import java.text.DecimalFormat;
+import java.util.Date;
+
 import org.springframework.stereotype.Service;
 
 import com.citi.swifttrading.daoImpl.SecurityDaoImpl;
+import com.citi.swifttrading.domain.Security;
 import com.citi.swifttrading.domain.Trade;
 import com.citi.swifttrading.enumration.Position;
 import com.citi.swifttrading.enumration.TradeStatus;
 import com.citi.swifttrading.enumration.TradeType;
-import com.citi.swifttrading.generator.GetOrderBook;
 import com.citi.swifttrading.generator.OrderBook;
 import com.citi.swifttrading.generator.OrderBookItem;
+import com.citi.swifttrading.util.DateUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,7 +37,10 @@ public class FulFillment {
 		if (!isRightStatus(trade))
 			return;
 		else {
-			generateOrderBook();
+			orderBook = trade.getSecurity().getOrderBook();
+			totalOfferQuantity = getTotalOfferQuantity(orderBook);
+			totalBidQuantity = getTotalBidQuantity(orderBook);
+
 			int requiredQuantity = trade.getQuantity();
 			System.out.println("Quantity: " + requiredQuantity);
 			Position position = trade.getPosition();
@@ -42,11 +48,21 @@ public class FulFillment {
 			switch (tradeType) {
 			case MARKET:
 				System.out.println("This is a MARKET tarde!!");
-				if (Position.LONG == position && requiredQuantity <= totalOfferQuantity) {
+				if (Position.LONG == position && TradeStatus.CREATED == trade.getStatus()
+						&& requiredQuantity <= totalOfferQuantity) {
 					setPriceForBuy(requiredQuantity, trade);
 					trade.setStatus(TradeStatus.OPEN);
-				} else if (Position.SHORT == position && requiredQuantity <= totalBidQuantity) {
+				} else if (Position.SHORT == position && TradeStatus.CREATED == trade.getStatus()
+						&& requiredQuantity <= totalBidQuantity) {
 					setPriceForSell(requiredQuantity, trade);
+					trade.setStatus(TradeStatus.OPEN);
+				} else if (Position.LONG == position && TradeStatus.OPEN == trade.getStatus()
+						&& requiredQuantity <= totalBidQuantity) {
+					setPriceForSell(requiredQuantity, trade);
+					trade.setStatus(TradeStatus.CLOSED);
+				} else if (Position.SHORT == position && TradeStatus.OPEN == trade.getStatus()
+						&& requiredQuantity <= totalOfferQuantity) {
+					setPriceForBuy(requiredQuantity, trade);
 					trade.setStatus(TradeStatus.CLOSED);
 				} else {
 					trade.setStatus(TradeStatus.REJECTED);
@@ -54,28 +70,62 @@ public class FulFillment {
 				break;
 			case IOC:
 				System.out.println("This is a IOC trade!!");
-				if (Position.LONG == position && requiredQuantity <= totalOfferQuantity) {
+				if (Position.LONG == position && TradeStatus.CREATED == trade.getStatus()
+						&& requiredQuantity <= totalOfferQuantity) {
 					setPriceForBuy(requiredQuantity, trade);
 					trade.setStatus(TradeStatus.OPEN);
-				} else if (Position.LONG == position && requiredQuantity > totalOfferQuantity) {
+				} else if (Position.LONG == position && TradeStatus.OPEN == trade.getStatus()
+						&& requiredQuantity <= totalBidQuantity) {
+					setPriceForSell(requiredQuantity, trade);
+					trade.setStatus(TradeStatus.CLOSED);
+				} else if (Position.LONG == position && TradeStatus.CREATED == trade.getStatus()
+						&& requiredQuantity > totalOfferQuantity) {
 					setPriceForBuy(totalOfferQuantity, trade);
 					trade.setQuantity(totalOfferQuantity);
 					trade.setStatus(TradeStatus.OPEN);
-				} else if (Position.SHORT == position && requiredQuantity <= totalBidQuantity) {
-					setPriceForSell(requiredQuantity, trade);
-					trade.setStatus(TradeStatus.CLOSED);
-				} else {
+				} else if (Position.LONG == position && TradeStatus.OPEN == trade.getStatus()
+						&& requiredQuantity > totalBidQuantity) {
 					setPriceForSell(totalBidQuantity, trade);
 					trade.setQuantity(totalBidQuantity);
+					trade.setStatus(TradeStatus.CLOSED);
+				} else if (Position.SHORT == position && TradeStatus.CREATED == trade.getStatus()
+						&& requiredQuantity <= totalBidQuantity) {
+					setPriceForSell(requiredQuantity, trade);
+					trade.setStatus(TradeStatus.OPEN);
+				} else if (Position.SHORT == position && TradeStatus.OPEN == trade.getStatus()
+						&& requiredQuantity <= totalOfferQuantity) {
+					setPriceForBuy(requiredQuantity, trade);
+					trade.setStatus(TradeStatus.CLOSED);
+				} else if (Position.SHORT == position && TradeStatus.CREATED == trade.getStatus()
+						&& requiredQuantity > totalBidQuantity) {
+					setPriceForSell(totalBidQuantity, trade);
+					trade.setQuantity(totalBidQuantity);
+					trade.setStatus(TradeStatus.OPEN);
+				} else {
+					setPriceForBuy(totalOfferQuantity, trade);
+					trade.setQuantity(totalOfferQuantity);
 					trade.setStatus(TradeStatus.CLOSED);
 				}
 				break;
 			case LIMIT:
 				System.out.println("This is a LIMIT trade!!");
-				if (Position.LONG == position) {
+				if (Position.LONG == position && TradeStatus.CREATED == trade.getStatus()) {
 					if (checkIsGoodToBuy(orderBook, trade)) {
 						setPriceForBuy(requiredQuantity, trade);
 						trade.setStatus(TradeStatus.OPEN);
+					} else
+						doFulFillment(trade);
+				} else if (Position.LONG == position && TradeStatus.OPEN == trade.getStatus()) {
+					System.out.println("In Sell!!!");
+					if (checkIsGoodToSell(orderBook, trade)) {
+						setPriceForSell(requiredQuantity, trade);
+						trade.setStatus(TradeStatus.CLOSED);
+					} else
+						doFulFillment(trade);
+				} else if (Position.SHORT == position && TradeStatus.OPEN == trade.getStatus()) {
+					if (checkIsGoodToBuy(orderBook, trade)) {
+						setPriceForBuy(requiredQuantity, trade);
+						trade.setStatus(TradeStatus.CLOSED);
 					} else
 						doFulFillment(trade);
 				} else {
@@ -193,16 +243,6 @@ public class FulFillment {
 			trade.setBuyPriceReal(new Double(df.format(price)));
 		}
 
-	}
-
-	private static void generateOrderBook() {
-		GetOrderBook getOrderBook = new GetOrderBook();
-		orderBook = getOrderBook.getOrderBook();
-		System.out.println(orderBook.toString());
-		totalOfferQuantity = getTotalOfferQuantity(orderBook);
-		totalBidQuantity = getTotalBidQuantity(orderBook);
-		System.out.println(totalOfferQuantity);
-		System.out.println(totalBidQuantity);
 	}
 
 	public static int getTotalOfferQuantity(OrderBook orderBook) {
