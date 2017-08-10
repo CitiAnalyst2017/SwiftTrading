@@ -15,12 +15,12 @@ public class TradeVO {
 	private TradeType type;
 	private Position position;
 	private String code;
-	private double buyprice;
-	private double nowprice;
+	private String buyprice;
+	private String nowprice;
 	private int quantity;
 	private double lossprice;
 	private double profitprice;
 	private int expiration;
-	private Date starttime;
-	private double profit;
+	private String starttime;
+	private String profit;
 }

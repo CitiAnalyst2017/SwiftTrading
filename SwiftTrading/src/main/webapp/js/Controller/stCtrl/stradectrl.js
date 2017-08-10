@@ -23,7 +23,7 @@ app.controller('stradeCtrl',function($scope,$http){
 		var bborder = {
 			"code":$scope.bbcode,
 			"period":$scope.bbpe,
-			"standarddeviation":$scope.bbsd,
+			"std":$scope.bbsd,
 			"exit":$scope.bbex
 		};
 

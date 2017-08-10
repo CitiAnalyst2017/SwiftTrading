@@ -11,18 +11,29 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.citi.swifttrading.VO.OrderBookItemVO;
 import com.citi.swifttrading.dao.PriceRepo;
+import com.citi.swifttrading.generator.OrderBook;
+import com.citi.swifttrading.generator.OrderBookItem;
 
 @RestController
 @RequestMapping("/security")
 public class SecurityController {
 	@Autowired
 	PriceRepo priceRepo;
-	@RequestMapping(value="{abbr}/orderbook",method=RequestMethod.GET)
-    public List<OrderBookItemVO> hello(@PathVariable("abbr") String abbr){
-		
-		List<OrderBookItemVO> VOs=new ArrayList<>();
-		//TODO priceRepo.getOrderBook(abbr).getItems().foreach();
-		VOs.add(new OrderBookItemVO("APPL","Bid",50,15));
-        return VOs;
-    }
+
+	@RequestMapping(value = "{abbr}/orderbook", method = RequestMethod.GET)
+	public List<OrderBookItemVO> hello(@PathVariable("abbr") String abbr) {
+		List<OrderBookItemVO> VOs = new ArrayList<>();
+		OrderBook orderBook = priceRepo.getOrderBook(abbr);
+		if (orderBook != null) {
+			for (OrderBookItem item : priceRepo.getOrderBook(abbr).getOrderItem()) {
+				VOs.add(toVO(abbr, item));
+			}
+		}
+
+		return VOs;
+	}
+
+	private OrderBookItemVO toVO(String abbr, OrderBookItem item) {
+		return new OrderBookItemVO(abbr, item.getBid(), item.getPrice(), item.getQty());
+	}
 }
