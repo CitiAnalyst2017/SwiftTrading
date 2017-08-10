@@ -1,5 +1,7 @@
 package com.citi.swifttrading.service.trade;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,11 +28,13 @@ public class TradeManager {
 	@Autowired
 	SecurityDao securityDao;
 	
+	private static final DecimalFormat numf = new DecimalFormat("#0.00"); 
+	private static final SimpleDateFormat datef= new SimpleDateFormat ("HH:mm:ss"); 
 
-
-	public Trade createMarketTrade(Position position, Security target, double exit,int quantity) {
+	public Trade createMarketTrade(Position position, Security target, double exit,int quantity,int strategyId) {
 		Date now=new Date();
-		Trade trade = new Trade(TradeType.LIMIT, target, quantity, now, DateUtil.addDay(now, 1), exit, exit, position, 0);
+		Trade trade = new Trade(TradeType.MARKET, target, quantity, now, DateUtil.addDay(now, 1), exit, exit, position, 0);
+		trade.setStrategyId(strategyId);
 		trade.setBuyPriceReal(target.latestPrice());
 		trade.setId(tradeDao.save(trade));
 		return trade;
@@ -79,11 +83,11 @@ public class TradeManager {
 		VO.setType(trade.getType());
 		VO.setPosition(trade.getPosition());
 		VO.setCode(trade.getSecurity().getNameAbbreviation());
-		VO.setBuyprice(trade.getBuyPriceReal());
+		VO.setBuyprice(numf.format(trade.getBuyPriceReal()));
 		VO.setQuantity(trade.getQuantity());
-		VO.setStarttime(trade.getStart_time());
-		VO.setProfit(trade.calProfit());
-		VO.setNowprice(trade.getSecurity().latestPrice());
+		VO.setStarttime(datef.format(trade.getStart_time()));
+		VO.setProfit(numf.format(trade.calProfit()));
+		VO.setNowprice(numf.format(trade.getSecurity().latestPrice()));
 		return VO;
 	}
 
@@ -98,7 +102,6 @@ public class TradeManager {
 	
 	public void closeOrCancleTrade(TradeVO VO) {
 		Trade trade=tradeDao.queryById(VO.getId());
-		trade.setStatus(TradeStatus.CLOSING);
 		closeOrCancleTrade(trade);
 	}
 
@@ -121,7 +124,7 @@ public class TradeManager {
 			trade.setProfit_price(tradeVO.getProfitprice());
 			trade.setStatus(TradeStatus.CREATED);
 			if(tradeVO.getType()==TradeType.LIMIT) {
-				trade.setBuyPrice(tradeVO.getBuyprice());
+				trade.setBuyPrice(Double.parseDouble(tradeVO.getBuyprice()));
 			}
 			return trade;
 		}
