@@ -1,0 +1,42 @@
+<div class="modal fade" id=" " tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">Sell Price</h4>
+				<div class="modal-body">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Code</th>
+								<th>Position</th>
+								<th>Quantity</th>
+								<th>BuyPrice</th>
+								<th>NowPrice</th>
+								<th>Profit</th>
+								<th>Status</th>
+								<th>StartTime</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="sdt in sdts">
+								<td>{{porder.code}}</td>
+								<td>{{porder.position}}</td>
+								<td>{{porder.quantity}}</td>
+								<td>{{porder.buyprice}}</td>
+								<td>{{porder.nowprice}}</td>
+								<td>{{porder.profit}}</td>
+								<td>{{porder.status}}</td>
+								<td>{{porder.starttime}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+                	<button type="button" class="btn btn-default" data-dismiss="modal">Sell</button>
+            	</div>
+			</div>
+		</div>
+	</div>
+	
+</div>

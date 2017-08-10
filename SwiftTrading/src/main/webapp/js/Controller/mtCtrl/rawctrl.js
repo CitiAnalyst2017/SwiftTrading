@@ -11,6 +11,7 @@ app.controller('rawCtrl',function($scope,$http,$interval){
 			params:{code:$scope.code},
 			url:raw_url
 		}).success(function(data){
+			$scope.errormsg = false;
 			$scope.raws = data;
 		}).error(function(){
 			$scope.errormsg = true;
@@ -19,7 +20,6 @@ app.controller('rawCtrl',function($scope,$http,$interval){
 
 	$scope.searchrawclick = function(){
 		getrawdata();	
-
 		$interval(function(){
 			getrawdata();
 		},1000);

@@ -6,25 +6,32 @@
 	<div class="td-page-left col-md-8">
 
 		<div class="ptrade-list panel panel-success" ng-controller="ptradelistCtrl">
-			<div class="panel-heading">PendingOrade</div>
+			<div class="panel-heading">PendingOrder</div>
 			<div class="panel-body">
 				<p ng-show="nopt">There Is No Pending Order Now</p>
 				<p ng-show="errormsg" style="color: red;">Internet Error</p>
 				<div class="pendingtrade">
 					<ul class="list-group">
 						<li class="list-group-item" ng-repeat="porder in porders">
-							<span>Code:{{porder.code}}</span>
-							<span>Position:{{porder.position}}</span>
-							<span>Quantity:{{porder.quantity}}</span>
-							<span>BuyPrice:{{porder.buyprice}}</span>
-							<span>NowPrice:{{porder.nowprice}}</span>
-							<span>Profit:{{porder.profit}}</span>
-							<span>Status:{{porder.status}}</span>
-							<span>OrderTime:{{porder.starttime}}</span>
-							<span ng-switch="porder.status">
-								<button ng-switch-when="CREATED" class="btn btn-default pull-right" ng-model="oper" ng-click="opert()" ng-disabled="opdis">Cancel{{oper}}</button>
-								<button ng-switch-when="OPEN" class="btn btn-default pull-right" ng-model="oper" ng-click="opert()" ng-disabled="opdis" data-target="#selld">Sell{{oper}}</button>
-							</span>
+							<table class="table table-striped">
+								<tr>
+									<td><span>Code:{{porder.code}}</span></td>
+									<td><span>Position:{{porder.position}}</span></td>
+									<td><span>NowPrice:<span style="color: lightblue;">{{porder.nowprice}}</span></span></td>
+									<td><span>BuyPrice:{{porder.buyprice}}</span></td>
+									<td rowspan="2"><span ng-switch="porder.status">
+										<button ng-switch-when="CREATED" class="btn btn-default" ng-click="opert()" ng-disabled="opdis">Cancel</button>
+										<button ng-switch-when="OPEN" class="btn btn-default" ng-click="opert()" ng-disabled="opdis">Sell</button>
+									</span></td>
+								</tr>
+								<tr>
+									<td><span>Quantity:{{porder.quantity}}</span></td>
+									<td><span>Profit:<span ng-class="pr(porder)"
+									>{{porder.profit}}</span></span></td>
+									<td><span>Status:{{porder.status}}</span></td>
+									<td><span>StartTime:{{porder.starttime}}</span></td>
+								</tr>
+							</table>	
 						</li>
 					</ul>
 				</div>
