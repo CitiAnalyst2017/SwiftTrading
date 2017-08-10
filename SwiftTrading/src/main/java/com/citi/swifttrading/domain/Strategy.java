@@ -34,7 +34,11 @@ public class Strategy implements Serializable {
 	}
 
 	public String getStatus() {
-		return runner.getState().toString();
+		if(runner!=null) {
+			if(runner.getState()==Thread.State.NEW||runner.isSuspended())
+				return "Stoped";
+		}
+		return "Running";
 	}
 
 	@Override

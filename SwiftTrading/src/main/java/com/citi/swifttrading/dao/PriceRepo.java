@@ -20,30 +20,24 @@ public class PriceRepo {
 		SecurityUpdater updater;
 		List<Double> prices = new ArrayList<>();
 		OrderBook orderBook = new OrderBook();
-		updater = new SecurityUpdater(prices, orderBook);
+		updater = new SecurityUpdater(abbr,prices,orderBooks);
 		updater.start();
 		orderBooks.put(abbr, orderBook);
 		this.prices.put(abbr, prices);
 	}
 
 	public List<Double> getPrices(String abbr) {
-		if (!prices.containsKey(abbr)) {
-			add(abbr);
-		}
 		return prices.get(abbr);
 	}
 
 	public OrderBook getOrderBook(String abbr) {
-		if (!orderBooks.containsKey(abbr)) {
-
-			add(abbr);
-		}
 		return orderBooks.get(abbr);
 	}
 
 	PriceRepo() {
 		add("APPL");
 		add("GOOG");
+		add("CITI");
 	}
 
 	public void stop() {

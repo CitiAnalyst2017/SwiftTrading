@@ -24,7 +24,7 @@ public class TradeController {
 	TradeManager tradeManager;
 	
 	 	@RequestMapping(value="{id}",method=RequestMethod.GET)
-	    public Trade hello(@PathVariable("id") int id){
+	    public Trade hello(@PathVariable("d") int id){
 	        log.debug("hello world");
 	        return tradeManager.getTradeById(id);
 	    }

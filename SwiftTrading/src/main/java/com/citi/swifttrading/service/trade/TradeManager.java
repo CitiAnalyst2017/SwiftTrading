@@ -32,20 +32,29 @@ public class TradeManager {
 	private static final DecimalFormat numf = new DecimalFormat("#0.00");
 	private static final SimpleDateFormat datef = new SimpleDateFormat("HH:mm:ss");
 
-	public Trade createMarketTrade(Position position, Security target, double exit, int quantity, int strategyId)
-			throws InterruptedException {
+	public Trade createMarketTrade(Position position, Security target, double exit, int quantity, int strategyId) {
 		Date now = new Date();
 		Trade trade = new Trade(TradeType.MARKET, target, quantity, now, DateUtil.addDay(now, 1), exit, exit, position,
 				0);
 		trade.setStrategyId(strategyId);
 		trade.setId(tradeDao.save(trade));
-		FulFillment.doFulFillment(trade);
+		try {
+			FulFillment.doFulFillment(trade);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return trade;
 	}
 
-	public void closeTrade(Trade trade) throws InterruptedException {
+	public void closeTrade(Trade trade){
 		tradeDao.update(trade);
-		FulFillment.doFulFillment(trade);
+		try {
+			FulFillment.doFulFillment(trade);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		trade.setEnd_time(new Date());
 		tradeDao.update(trade);
 		log.info(String.format("Profit________________ %f", trade.calProfit()));

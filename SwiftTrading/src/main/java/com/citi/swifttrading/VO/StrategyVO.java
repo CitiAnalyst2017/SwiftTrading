@@ -12,4 +12,5 @@ public class StrategyVO {
 	private int shortperiod;
 	private int period;
 	private double std;
+	private String name;
 }
