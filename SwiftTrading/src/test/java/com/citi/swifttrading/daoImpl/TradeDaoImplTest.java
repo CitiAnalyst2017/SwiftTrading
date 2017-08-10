@@ -15,7 +15,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.citi.swifttrading.domain.Security;
-import com.citi.swifttrading.domain.Strategy;
 import com.citi.swifttrading.domain.Trade;
 import com.citi.swifttrading.enumration.Position;
 import com.citi.swifttrading.enumration.TradeStatus;
@@ -64,13 +63,13 @@ public class TradeDaoImplTest {
 
 	@Test
 	public void testQueryByStatus() {
-		trades = tradeDaoImpl.queryByStarus(TradeStatus.CANCLED);
+		trades = tradeDaoImpl.queryByStatus(TradeStatus.CANCLED);
 		assertEquals(2, trades.size());
-		trades = tradeDaoImpl.queryByStarus(TradeStatus.CREATED);
+		trades = tradeDaoImpl.queryByStatus(TradeStatus.CREATED);
 		assertEquals(2, trades.size());
-		trades = tradeDaoImpl.queryByStarus(TradeStatus.OPEN);
+		trades = tradeDaoImpl.queryByStatus(TradeStatus.OPEN);
 		assertEquals(2, trades.size());
-		trades = tradeDaoImpl.queryByStarus(TradeStatus.CLOSED);
+		trades = tradeDaoImpl.queryByStatus(TradeStatus.CLOSED);
 		assertEquals(2, trades.size());
 	}
 

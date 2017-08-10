@@ -19,4 +19,8 @@ public interface TradeDao {
 	
 	public List<Trade> queryByStatus(TradeStatus status);
 
+	List<Trade> queryByStrategyId(int id);
+
+	public List<Integer> queryStrategyIds();
+
 }

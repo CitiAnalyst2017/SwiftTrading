@@ -1,5 +1,6 @@
 package com.citi.swifttrading.daoImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -57,4 +58,24 @@ public class TradeDaoImpl implements TradeDao {
 		return trades;
 	}
 
+	@Override
+	public List<Trade> queryByStrategyId(int id) {
+		List<Trade> trades = queryAll();
+		List<Trade> result = new ArrayList<>();
+		trades.forEach(trade->{
+			if(trade.getStrategyId()==id) {
+				priceRepo.bind(trade.getSecurity());
+				result.add(trade);
+			}
+		});
+		return result;
+	}
+
+	@Override
+	public List<Integer> queryStrategyIds() {
+		List<Integer> ids=sqlSessionTemplate.selectList("select-strategyIds");
+		return ids;
+	}
+	
+	
 }

@@ -18,7 +18,10 @@
 					<td><span>Code:{{strate.code}}</span></td>
 					<td><span>Status:{{strate.status}}</span></td>
 					<td><span><button class="btn btn-link" ng-click="showdetail()" data-target="#strd">Show Details</button></span></td>
-					<td><span ng-switch="strate.status"><button class="btn btn-default" ng-click="cancelstr()" ng-switch-when="running">Stop Strategy</button></span></td>	
+					<td><span ng-switch="strate.status"><button class="btn btn-default" ng-click="stopstr()" ng-switch-when="Running">Stop Strategy
+						</button>
+						<button class="btn btn-default" ng-click="startstr()" ng-switch-when="Stoped">Start Strategy
+						</button></span></td>	
 					<td>
 					<!-- dialog -->
 					<div class="modal fade" id="strd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

@@ -29,7 +29,6 @@ public class TradeManager {
 	@Autowired
 	SecurityDao securityDao;
 
-	FulFillment fulFillment;
 
 	private static final DecimalFormat numf = new DecimalFormat("#0.00");
 	private static final SimpleDateFormat datef = new SimpleDateFormat("HH:mm:ss");
@@ -40,14 +39,14 @@ public class TradeManager {
 				0);
 		trade.setStrategyId(strategyId);
 		trade.setId(tradeDao.save(trade));
-		fulFillment = new FulFillment(trade);
+		FulFillment fulFillment = new FulFillment(trade,tradeDao);
 		fulFillment.start();
 		return trade;
 	}
 
 	public void closeTrade(Trade trade) {
 		tradeDao.update(trade);
-		fulFillment = new FulFillment(trade);
+		FulFillment fulFillment = new FulFillment(trade,tradeDao);
 		fulFillment.start();
 		trade.setEnd_time(new Date());
 		tradeDao.update(trade);
@@ -59,8 +58,11 @@ public class TradeManager {
 	}
 
 	public Trade createTrade(TradeVO tradeVO) {
+		
 		Trade trade = toTrade(tradeVO);
 		tradeDao.save(trade);
+		FulFillment fulFillment = new FulFillment(trade,tradeDao);
+		fulFillment.start();
 		return trade;
 	}
 
@@ -128,5 +130,43 @@ public class TradeManager {
 			trade.setBuyPrice(Double.parseDouble(tradeVO.getBuyprice()));
 		}
 		return trade;
+	}
+	
+	public List<TradeVO> getByStrategyId(int id) {
+		List<TradeVO> VOs = new ArrayList<TradeVO>();
+		List<Trade> trades=tradeDao.queryByStrategyId(id);
+		trades.forEach(trade -> {
+			VOs.add(toVO(trade));
+		});
+		return VOs;
+	}
+
+	public List<TradeVO> getUserHistory() {
+		List<TradeVO> VOs = new ArrayList<TradeVO>();
+		List<Trade> trades=tradeDao.queryByStrategyId(0);
+		trades.forEach(trade -> {
+			if(isHistory(trade))
+				VOs.add(toVO(trade));
+		});
+		return VOs;
+	}
+
+	public List<Integer> getCreater() {
+		List<Integer> ids=tradeDao.queryStrategyIds();
+		return ids;
+	}
+
+	public List<TradeVO> getTradeHistory(int id) {
+		List<TradeVO> VOs = new ArrayList<TradeVO>();
+		List<Trade> trades=tradeDao.queryByStrategyId(id);
+		trades.forEach(trade -> {
+			if(isHistory(trade))
+				VOs.add(toVO(trade));
+		});
+		return VOs;
+	}
+	
+	private boolean isHistory(Trade trade) {
+		return trade.getStatus()!=TradeStatus.OPEN&&trade.getStatus()!=TradeStatus.CLOSING&&trade.getStatus()!=TradeStatus.CREATED;
 	}
 }

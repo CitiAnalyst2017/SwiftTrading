@@ -64,16 +64,16 @@ public class TradeServiceImplTest {
 
 	@Test
 	public void testQueryByStatus() {
-		trades = tradeServiceImpl.queryByStarus(TradeStatus.CANCLED);
+		trades = tradeServiceImpl.queryByStatus(TradeStatus.CANCLED);
 		System.out.println(trades.get(0).getStatus());
 		assertEquals(4, trades.size());
-		trades = tradeServiceImpl.queryByStarus(TradeStatus.CREATED);
+		trades = tradeServiceImpl.queryByStatus(TradeStatus.CREATED);
 		System.out.println(trades.get(0).getStatus());
 		assertEquals(5, trades.size());
-		trades = tradeServiceImpl.queryByStarus(TradeStatus.OPEN);
+		trades = tradeServiceImpl.queryByStatus(TradeStatus.OPEN);
 		System.out.println(trades.get(0).getStatus());
 		assertEquals(5, trades.size());
-		trades = tradeServiceImpl.queryByStarus(TradeStatus.CLOSED);
+		trades = tradeServiceImpl.queryByStatus(TradeStatus.CLOSED);
 		System.out.println(trades.get(0).getStatus());
 		assertEquals(4, trades.size());
 	}

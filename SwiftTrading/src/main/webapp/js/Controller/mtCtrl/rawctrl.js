@@ -1,11 +1,10 @@
 /*get raw data from server*/
 app.controller('rawCtrl',function($scope,$http,$interval){
 
-	var raw_url = url_prefix + 'security/'+$scope.code;
-
 	$scope.errormsg = false;
 
 	var getrawdata = function(){
+		var raw_url = url_prefix + 'security/'+$scope.code+'/orderbook';
 		$http({
 			method:'GET',
 			params:{code:$scope.code},

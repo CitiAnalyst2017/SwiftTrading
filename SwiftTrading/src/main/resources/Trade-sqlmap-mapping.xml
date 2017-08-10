@@ -45,6 +45,9 @@
 		select * from trade
 	</select>
 
+	<select id="select-strategyIds" resultType="int">
+		select DISTINCT  StrategyID from trade WHERE StrategyID not in (0)
+	</select>
 	<select id="queryByTradeID" resultMap="resultListTrade"
 		parameterType="int">
 		select * from trade t, security s where ID = #{id} and

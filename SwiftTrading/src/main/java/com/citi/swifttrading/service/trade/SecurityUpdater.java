@@ -7,8 +7,7 @@ import com.citi.swifttrading.generator.GetOrderBook;
 import com.citi.swifttrading.generator.OrderBook;
 
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
-@Slf4j
+
 @Setter
 public class SecurityUpdater extends Thread {
 

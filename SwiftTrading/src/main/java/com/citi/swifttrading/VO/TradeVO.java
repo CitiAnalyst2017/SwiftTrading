@@ -1,7 +1,5 @@
 package com.citi.swifttrading.VO;
 
-import java.util.Date;
-
 import com.citi.swifttrading.enumration.Position;
 import com.citi.swifttrading.enumration.TradeStatus;
 import com.citi.swifttrading.enumration.TradeType;
@@ -23,4 +21,5 @@ public class TradeVO {
 	private int expiration;
 	private String starttime;
 	private String profit;
+	private String saleprice;
 }

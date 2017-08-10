@@ -1,5 +1,6 @@
 package com.citi.swifttrading.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class TradeController {
 	TradeManager tradeManager;
 	
 	 	@RequestMapping(value="{id}",method=RequestMethod.GET)
-	    public Trade hello(@PathVariable("d") int id){
+	    public Trade hello(@PathVariable("id") int id){
 	        log.debug("hello world");
 	        return tradeManager.getTradeById(id);
 	    }
@@ -47,5 +48,22 @@ public class TradeController {
 	    		tradeManager.closeOrCancleTrade(trade);
 	    }
 	    
-	   
+	    @RequestMapping(value="/created/user" ,method=RequestMethod.GET)
+	    public List<TradeVO> getUserHistory(){
+	        log.debug("save");
+	        return tradeManager.getUserHistory();
+	    }
+	    
+	    @RequestMapping(value="/created" ,method=RequestMethod.GET)
+	    public List<String> getCreater(){
+	    	List<Integer> ids=tradeManager.getCreater();
+	    	List<String> str=new ArrayList<>();
+	    	ids.forEach(id->str.add(String.valueOf(id)));
+			return str;
+	    }
+	  
+	    @RequestMapping(value="/created/{id}" ,method=RequestMethod.GET)
+	    public List<TradeVO> getCreater(@PathVariable("id") int id){
+	    	return tradeManager.getTradeHistory(id);
+	    }
 }

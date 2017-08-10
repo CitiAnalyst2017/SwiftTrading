@@ -60,12 +60,18 @@ public class Trade implements Serializable,Comparable<Trade> {
 		if(status==TradeStatus.CLOSED) {
 			profit=(salePriceReal-buyPriceReal)*quantity;
 		}
-		else {
+		else if(status==TradeStatus.OPEN){
 			profit=(security.latestPrice()-buyPriceReal)*quantity;
+		}else {
+			profit=0;
 		}
 		if(position==Position.SHORT)
 			profit*=-1;
 		return profit;
+	}
+	
+	public double calRatio() {
+		return calProfit()/buyPriceReal;
 	}
 
 	@Override

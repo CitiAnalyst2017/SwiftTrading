@@ -26,5 +26,4 @@ public class User implements Serializable {
 		this.phoneNumber = phoneNumber;
 		this.address = address;
 	}
-
 }

@@ -1,17 +1,27 @@
 
 
 app.controller('forderCtrl',function($scope,$http,$interval){
-	var fo_url = url_prefix + 'order/finish';
+	var fo_url = url_prefix + 'trade/';
 	$scope.errormsg = false;
 	$scope.nofo = false;
 	$scope.flistshow = true;
-	$scope.bys = ["User"];
+	$scope.bys = ["user"];
 
 	$http({
 		method:'GET',
-		url:fo_url + '/user',
+		url:fo_url + "created/user",
 	}).success(function(data){
-		$scope.bys.concat(data);
+		$scope.forders=data;
+	}).error(function(){
+		$scope.errormsg = true;
+		$scope.flistshow = false;
+	});
+	
+	$http({
+		method:'GET',
+		url:fo_url + 'created',
+	}).success(function(data){
+		$scope.bys=$scope.bys.concat(data);
 	}).error(function(){
 		$scope.errormsg = true;
 		$scope.flistshow = false;
@@ -20,9 +30,9 @@ app.controller('forderCtrl',function($scope,$http,$interval){
 	$scope.selectby = function(){
 		$http({
 			method:'GET',
-			url:fo_url + '/' + this.by,
+			url:fo_url + "created/"+this.by,
 		}).success(function(data){
-			$scope.bys.concat(data);
+			$scope.forders=data;
 		}).error(function(){
 			$scope.errormsg = true;
 			$scope.flistshow = false;

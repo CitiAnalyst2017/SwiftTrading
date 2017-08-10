@@ -5,12 +5,15 @@ package com.citi.swifttrading.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.citi.swifttrading.VO.StrategyVO;
+import com.citi.swifttrading.VO.TradeVO;
+import com.citi.swifttrading.service.trade.TradeManager;
 import com.citi.swifttrading.strategy.StrategyManager;
 
 @RestController
@@ -19,6 +22,9 @@ public class StrategyController {
 	
 	@Autowired
 	 private StrategyManager strategyManager;
+	
+	@Autowired
+	 private TradeManager TradeManager;
 	
     @RequestMapping(value="/MovingAverage",method=RequestMethod.POST)
     public StrategyVO createMovingAveragr(@RequestBody StrategyVO strategyVO){
@@ -50,4 +56,9 @@ public class StrategyController {
 			}
 			return null;
     }
+    
+    @RequestMapping(value = "{id}/orders", method = RequestMethod.GET)
+	public List<TradeVO> hello(@PathVariable("id") int id) {
+		return TradeManager.getByStrategyId(id);
+	}
 }

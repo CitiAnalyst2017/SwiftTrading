@@ -2,8 +2,10 @@ package com.citi.swifttrading.service.trade;
 
 import java.text.DecimalFormat;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.citi.swifttrading.dao.TradeDao;
 import com.citi.swifttrading.daoImpl.SecurityDaoImpl;
 import com.citi.swifttrading.domain.Trade;
 import com.citi.swifttrading.enumration.Position;
@@ -15,39 +17,38 @@ import com.citi.swifttrading.generator.OrderBookItem;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Service
 public class FulFillment extends Thread {
 
-	static SecurityDaoImpl securityDaoImpl;
+	private TradeDao tradeDao;
 
-	static TradeType tradeType;
-	static OrderBook orderBook;
-	static int totalOfferQuantity = 0;
-	static int totalBidQuantity = 0;
+	private TradeType tradeType;
+	private OrderBook orderBook;
+	private int totalOfferQuantity = 0;
+	private int totalBidQuantity = 0;
 
-	static DecimalFormat df = new DecimalFormat("#.00");
+	private DecimalFormat df = new DecimalFormat("#.00");
 
 	private Trade trade;
 
-	public FulFillment(Trade trade) {
+	public FulFillment(Trade trade, TradeDao tradeDao) {
 		this.trade = trade;
+		this.tradeDao = tradeDao;
 	}
 
 	@Override
 	public void run() {
-		while (true) {
-			try {
-				doFulFillment(trade);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+		try {
+			doFulFillment(trade);
+			tradeDao.update(trade);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 
-	public static void doFulFillment(Trade trade) throws InterruptedException {
-		System.out.println("Thread will stop for 5s!!!");
+	public void doFulFillment(Trade trade) throws InterruptedException {
+		log.info("Thread will stop for 5s!!!");
 		Thread.sleep(5000);
-		System.out.println("5s later!!!");
+		log.info("5s later!!!");
 		if (!isRightStatus(trade))
 			return;
 		else {
@@ -56,12 +57,12 @@ public class FulFillment extends Thread {
 			totalBidQuantity = getTotalBidQuantity(orderBook);
 
 			int requiredQuantity = trade.getQuantity();
-			System.out.println("Quantity: " + requiredQuantity);
+			log.info("Quantity: " + requiredQuantity);
 			Position position = trade.getPosition();
 			tradeType = trade.getType();
 			switch (tradeType) {
 			case MARKET:
-				System.out.println("This is a MARKET tarde!!");
+				log.info("This is a MARKET tarde!!");
 				if (Position.LONG == position && TradeStatus.CREATED == trade.getStatus()
 						&& requiredQuantity <= totalOfferQuantity) {
 					setPriceForBuy(requiredQuantity, trade);
@@ -74,16 +75,23 @@ public class FulFillment extends Thread {
 						&& requiredQuantity <= totalBidQuantity) {
 					setPriceForSell(requiredQuantity, trade);
 					trade.setStatus(TradeStatus.CLOSED);
+
+				} else if (Position.LONG == position && TradeStatus.OPEN == trade.getStatus()
+						&& requiredQuantity > totalBidQuantity) {
+					break;
 				} else if (Position.SHORT == position && TradeStatus.OPEN == trade.getStatus()
 						&& requiredQuantity <= totalOfferQuantity) {
 					setPriceForBuy(requiredQuantity, trade);
 					trade.setStatus(TradeStatus.CLOSED);
-				} else {
+				}else if (Position.SHORT == position && TradeStatus.OPEN == trade.getStatus()
+						&& requiredQuantity <= totalOfferQuantity) {
+					break;
+				}else {
 					trade.setStatus(TradeStatus.REJECTED);
 				}
 				break;
 			case IOC:
-				System.out.println("This is a IOC trade!!");
+				log.info("This is a IOC trade!!");
 				if (Position.LONG == position && TradeStatus.CREATED == trade.getStatus()
 						&& requiredQuantity <= totalOfferQuantity) {
 					setPriceForBuy(requiredQuantity, trade);
@@ -122,7 +130,7 @@ public class FulFillment extends Thread {
 				}
 				break;
 			case LIMIT:
-				System.out.println("This is a LIMIT trade!!");
+				log.info("This is a LIMIT trade!!");
 				if (Position.LONG == position && TradeStatus.CREATED == trade.getStatus()) {
 					if (checkIsGoodToBuy(orderBook, trade)) {
 						setPriceForBuy(requiredQuantity, trade);
@@ -130,7 +138,7 @@ public class FulFillment extends Thread {
 					} else
 						doFulFillment(trade);
 				} else if (Position.LONG == position && TradeStatus.OPEN == trade.getStatus()) {
-					System.out.println("In Sell!!!");
+					log.info("In Sell!!!");
 					if (checkIsGoodToSell(orderBook, trade)) {
 						setPriceForSell(requiredQuantity, trade);
 						trade.setStatus(TradeStatus.CLOSED);
@@ -143,7 +151,7 @@ public class FulFillment extends Thread {
 					} else
 						doFulFillment(trade);
 				} else {
-					System.out.println("In Sell!!!");
+					log.info("In Sell!!!");
 					if (checkIsGoodToSell(orderBook, trade)) {
 						setPriceForSell(requiredQuantity, trade);
 						trade.setStatus(TradeStatus.CLOSED);
@@ -153,14 +161,14 @@ public class FulFillment extends Thread {
 
 				break;
 			default:
-				System.out.println("This is default case!!");
+				log.info("This is default case!!");
 				break;
 			}
 		}
 	}
 
-	public static boolean checkIsGoodToSell(OrderBook orderBook, Trade trade) {
-		double price = trade.getBuyPrice();
+	public boolean checkIsGoodToSell(OrderBook orderBook, Trade trade) {
+		double price = trade.getSalePrice();
 		int quantity = trade.getQuantity();
 		int temp = 0;
 
@@ -174,7 +182,7 @@ public class FulFillment extends Thread {
 		return false;
 	}
 
-	public static boolean checkIsGoodToBuy(OrderBook orderBook, Trade trade) {
+	public boolean checkIsGoodToBuy(OrderBook orderBook, Trade trade) {
 		double price = trade.getBuyPrice();
 		int quantity = trade.getQuantity();
 		int temp = 0;
@@ -189,7 +197,7 @@ public class FulFillment extends Thread {
 		return false;
 	}
 
-	public static void setPriceForSell(int requiredQuantity, Trade trade) {
+	public void setPriceForSell(int requiredQuantity, Trade trade) {
 		OrderBookItem Item1 = orderBook.getOrderItem().get(5);
 		OrderBookItem Item2 = orderBook.getOrderItem().get(6);
 		OrderBookItem Item3 = orderBook.getOrderItem().get(7);
@@ -224,7 +232,7 @@ public class FulFillment extends Thread {
 		}
 	}
 
-	public static void setPriceForBuy(int requiredQuantity, Trade trade) {
+	public void setPriceForBuy(int requiredQuantity, Trade trade) {
 		OrderBookItem Item1 = orderBook.getOrderItem().get(0);
 		OrderBookItem Item2 = orderBook.getOrderItem().get(1);
 		OrderBookItem Item3 = orderBook.getOrderItem().get(2);
@@ -259,7 +267,7 @@ public class FulFillment extends Thread {
 
 	}
 
-	public static int getTotalOfferQuantity(OrderBook orderBook) {
+	public int getTotalOfferQuantity(OrderBook orderBook) {
 		int totalQuantity = 0;
 		for (int i = 0; i < 5; i++) {
 			totalQuantity += orderBook.getOrderItem().get(i).getQty();
@@ -268,7 +276,7 @@ public class FulFillment extends Thread {
 
 	}
 
-	public static int getTotalBidQuantity(OrderBook orderBook) {
+	public int getTotalBidQuantity(OrderBook orderBook) {
 		int totalQuantity = 0;
 		for (int i = 5; i < orderBook.getOrderItem().size(); i++) {
 			totalQuantity += orderBook.getOrderItem().get(i).getQty();
@@ -277,7 +285,7 @@ public class FulFillment extends Thread {
 
 	}
 
-	public static boolean isRightStatus(Trade trade) {
+	public boolean isRightStatus(Trade trade) {
 		if (TradeStatus.CANCLED == trade.getStatus()) {
 			log.info("This trade was CANCLED before it compelete!!!");
 			return false;
