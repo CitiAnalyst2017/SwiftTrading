@@ -29,6 +29,8 @@ public class TradeManager {
 	@Autowired
 	SecurityDao securityDao;
 
+	FulFillment fulFillment;
+
 	private static final DecimalFormat numf = new DecimalFormat("#0.00");
 	private static final SimpleDateFormat datef = new SimpleDateFormat("HH:mm:ss");
 
@@ -38,23 +40,33 @@ public class TradeManager {
 				0);
 		trade.setStrategyId(strategyId);
 		trade.setId(tradeDao.save(trade));
+<<<<<<< Updated upstream
 		try {
 			FulFillment.doFulFillment(trade);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+=======
+		fulFillment = new FulFillment(trade);
+		fulFillment.start();
+>>>>>>> Stashed changes
 		return trade;
 	}
 
 	public void closeTrade(Trade trade){
 		tradeDao.update(trade);
+<<<<<<< Updated upstream
 		try {
 			FulFillment.doFulFillment(trade);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+=======
+		fulFillment = new FulFillment(trade);
+		fulFillment.start();
+>>>>>>> Stashed changes
 		trade.setEnd_time(new Date());
 		tradeDao.update(trade);
 		log.info(String.format("Profit________________ %f", trade.calProfit()));

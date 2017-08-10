@@ -1,25 +1,22 @@
 package com.citi.swifttrading.service.trade;
 
 import java.text.DecimalFormat;
-import java.util.Date;
 
 import org.springframework.stereotype.Service;
 
 import com.citi.swifttrading.daoImpl.SecurityDaoImpl;
-import com.citi.swifttrading.domain.Security;
 import com.citi.swifttrading.domain.Trade;
 import com.citi.swifttrading.enumration.Position;
 import com.citi.swifttrading.enumration.TradeStatus;
 import com.citi.swifttrading.enumration.TradeType;
 import com.citi.swifttrading.generator.OrderBook;
 import com.citi.swifttrading.generator.OrderBookItem;
-import com.citi.swifttrading.util.DateUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class FulFillment {
+public class FulFillment extends Thread {
 
 	static SecurityDaoImpl securityDaoImpl;
 
@@ -29,6 +26,23 @@ public class FulFillment {
 	static int totalBidQuantity = 0;
 
 	static DecimalFormat df = new DecimalFormat("#.00");
+
+	private Trade trade;
+
+	public FulFillment(Trade trade) {
+		this.trade = trade;
+	}
+
+	@Override
+	public void run() {
+		while (true) {
+			try {
+				doFulFillment(trade);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	public static void doFulFillment(Trade trade) throws InterruptedException {
 		System.out.println("Thread will stop for 5s!!!");
