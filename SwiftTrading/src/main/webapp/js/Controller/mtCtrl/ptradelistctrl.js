@@ -6,6 +6,7 @@ app.controller('ptradelistCtrl',function($scope,$http,$interval,$rootScope){
 	
 	var poller;
 
+
 	$scope.nopt = false;
 	$scope.errormsg = false;
 	$scope.opdis = false;
@@ -105,7 +106,6 @@ app.controller('ptradelistCtrl',function($scope,$http,$interval,$rootScope){
 		}).success(function(){
 			this.oper = "ing";
 			this.opdis = true;
-			alert("operate successfully!");
 		}).error(function(){
 			alert("InternetError");
 		});
