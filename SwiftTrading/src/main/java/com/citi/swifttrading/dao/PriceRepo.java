@@ -40,11 +40,6 @@ public class PriceRepo {
 		add("CITI");
 	}
 
-	public void stop() {
-		// TODO Auto-generated method stub
-
-	}
-
 	public void bind(Security security) {
 		security.setPrices(getPrices(security.getNameAbbreviation()));
 		security.setOrderBook(getOrderBook(security.getNameAbbreviation()));

@@ -42,21 +42,24 @@ public class BollBandRunner extends StrategyRunner {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-			 
+			 try {
 			if (request != null) {
 				if (request.getStatus() ==TradeStatus.CREATED||request.getStatus() == TradeStatus.OPEN && takeProfit()) {
 					closeRequest(request);
+					request = null;
 				}
-				request = null;
+				
 			} else{
 				if (getStatus() == 1) {
 					request = createLongRequest(target, exit);
+					Thread.sleep(8000);
 				} else if(getStatus()==-1){
 					request = createShortRequest(target, exit);
+					Thread.sleep(8000);
 				}
 			}
 
-			try {
+			
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				log.info(e.toString());

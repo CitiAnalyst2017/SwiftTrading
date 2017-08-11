@@ -23,7 +23,7 @@ public class GetOrderBookItem {
 			obItem.setPrice(Double.parseDouble(df.format(price)));
 			obItem.setQty(bqty);
 			orderDatas.add(obItem);
-			price = price+(0.712 + Math.floor(Math.random())) * 0.99;
+			price = price+(0.712 + Math.floor(rand.nextDouble())) * 0.99;
 		}
 
 		Collections.sort(orderDatas, new Comparator<OrderBookItem>() {

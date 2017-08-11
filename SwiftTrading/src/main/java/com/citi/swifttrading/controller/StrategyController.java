@@ -58,7 +58,12 @@ public class StrategyController {
     }
     
     @RequestMapping(value = "{id}/orders", method = RequestMethod.GET)
-	public List<TradeVO> hello(@PathVariable("id") int id) {
+	public List<TradeVO> getStrategyOrders(@PathVariable("id") int id) {
 		return TradeManager.getByStrategyId(id);
+	}
+    
+    @RequestMapping(value = "performance", method = RequestMethod.GET)
+	public String getStrategyPerformance() {
+		return "{\"MA\":{\"total\":20,\"detail\":[{\"code\":\"APPL\",\"ratio\":20},{\"code\":\"APPL\",\"ratio\":20},{\"code\":\"APPL\",\"ratio\":20},{\"code\":\"APPL\",\"ratio\":20},{\"code\":\"APPL\",\"ratio\":20},{\"code\":\"APPL\",\"ratio\":20},{\"code\":\"APPL\",\"ratio\":20}]},\"BB\":{\"total\":20,\"detail\":[{\"code\":\"APPL\",\"ratio\":17},{\"code\":\"APPL\",\"ratio\":20},{\"code\":\"APPL\",\"ratio\":15},{\"code\":\"APPL\",\"ratio\":20}]}}";
 	}
 }

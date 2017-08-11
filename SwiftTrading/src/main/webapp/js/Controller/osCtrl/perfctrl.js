@@ -2,7 +2,7 @@
 
 app.controller('perfCtrl',function($http,$scope){
 
-	var perf_url = '';
+	var perf_url = url_prefix + 'strategy/performance';
 
 	var ma_total_pr = 56.33;
 

@@ -3,6 +3,8 @@
 app.controller('ptradelistCtrl',function($scope,$http,$interval,$rootScope){
 
 	var pending_order_url = url_prefix + 'trade/pending';
+	
+	var poller;
 
 	$scope.nopt = false;
 	$scope.errormsg = false;
@@ -54,7 +56,7 @@ app.controller('ptradelistCtrl',function($scope,$http,$interval,$rootScope){
 	});
 
 
-	$interval(function(){
+	poller=$interval(function(){
 		$http({
 			method:'GET',
 			url:pending_order_url,
@@ -70,37 +72,58 @@ app.controller('ptradelistCtrl',function($scope,$http,$interval,$rootScope){
 	},2000);
 
 	$scope.opert = function(){
-
-		if(this.porder.type != "MARKET"){
-			this.porder.status = 'CLOSING';
-			$http({
-				method:'PUT',
-				url:url_prefix + '/trade/',
-				data:this.porder,
-			}).success(function(){
-				this.oper = "ing";
-				this.opdis = true;
-				alert("operate successfully!");
-			}).error(function(){
-				alert("InternetError");
-			});
-		}else{
+		
+		if(this.porder.type == "LIMIT"&&this.porder.status=='OPEN'){
+			$interval.cancel(poller);
 			$('#sello').modal('show');
+			
+		}else{
+			this.porder.status = 'CLOSING';
+		$http({
+			method:'PUT',
+			url:url_prefix + '/trade/',
+			data:this.porder,
+		}).success(function(){
+			this.oper = "ing";
+			this.opdis = true;
+			alert("operate successfully!");
+		}).error(function(){
+			alert("InternetError");
+		});
 		}
+		
 				
 	};
 
 	$scope.sellm = function(){
-		this.porder.sellprice = $scope.sellpr;
+		this.porder.saleprice = ""+this.sellpr;
+		this.porder.status = 'CLOSING';
 		$http({
-			method:'POST',
+			method:'PUT',
 			url:url_prefix + '/trade/',
 			data:this.porder,
 		}).success(function(){
-
+			this.oper = "ing";
+			this.opdis = true;
+			alert("operate successfully!");
 		}).error(function(){
 			alert("InternetError");
 		});
+		
+		poller=$interval(function(){
+			$http({
+				method:'GET',
+				url:pending_order_url,
+			}).success(function(data){
+				$scope.errormsg = false;
+				$scope.porders = data;
+				if(porders.length == 0){
+					$scope.nopt = true;
+				}
+			}).error(function(){
+				$scope.errormsg = true;
+			});
+		},2000);
 	};
 
 });

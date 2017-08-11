@@ -126,7 +126,7 @@ public class StrategyManager {
 					runner.start();
 				}
 			}
-			else if(VO.getStatus().equals("Stoped")) {
+			else if(VO.getStatus().equals("Stoping")) {
 							runner.Suspend();					
 					}			
 		}

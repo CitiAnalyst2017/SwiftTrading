@@ -13,33 +13,34 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 public abstract class StrategyRunner extends Thread {
 
-	protected boolean suspended=false;
-	protected Object lock=new Object();
+	protected boolean suspended = false;
+	protected Object lock = new Object();
 	protected TradeManager tradeManager;
 	protected Security target;
 	protected double exit;
 	protected Trade request;
 	protected int strategyID;
+
 	StrategyRunner(TradeManager tradeManager, Strategy strategy) {
 		this.tradeManager = tradeManager;
 		this.target = strategy.getSecurity();
 		this.exit = strategy.getExit();
-		this.strategyID =strategy.getId();
+		this.strategyID = strategy.getId();
 		log.info(tradeManager.toString());
 	}
 
 	protected Trade createLongRequest(Security target, double exit) {
 
-		log.info(String.format("Long Secrity %s ,at price %f ,with exit %f", target.getNameAbbreviation(), target.latestPrice(),
-				exit));
-		return tradeManager.createMarketTrade(Position.LONG, target, exit, 20,strategyID);
+		log.info(String.format("Long Secrity %s ,at price %f ,with exit %f", target.getNameAbbreviation(),
+				target.latestPrice(), exit));
+		return tradeManager.createMarketTrade(Position.LONG, target, exit, 20, strategyID);
 	}
 
 	protected Trade createShortRequest(Security target, double exit) {
 
-		log.info(String.format("short Secrity %s ,at price %f ,with exit %f", target.getNameAbbreviation(), target.latestPrice(),
-				exit));
-		return tradeManager.createMarketTrade(Position.SHORT, target, exit,20,strategyID);
+		log.info(String.format("short Secrity %s ,at price %f ,with exit %f", target.getNameAbbreviation(),
+				target.latestPrice(), exit));
+		return tradeManager.createMarketTrade(Position.SHORT, target, exit, 20, strategyID);
 
 	}
 
@@ -47,19 +48,23 @@ public abstract class StrategyRunner extends Thread {
 		log.info(String.format("close request %s", trade.toString()));
 		tradeManager.closeOrCancleTrade(trade);
 	};
-	
-	protected boolean takeProfit() { 
-		return target.latestPrice()>(1+exit)*request.getBuyPrice()||target.latestPrice()<(1-exit)*request.getBuyPrice();
+
+	protected boolean takeProfit() {
+		if (request.getBuyPriceReal() != 0) {
+			return target.latestPrice() > (1 + exit) * request.getBuyPriceReal()
+					|| target.latestPrice() < (1 - exit) * request.getBuyPriceReal();
+		}
+		return false;
 	}
 
 	public void Resume() {
-		suspended=false;
-		 synchronized (lock) {
-		lock.notify();
-		 }
+		suspended = false;
+		synchronized (lock) {
+			lock.notify();
+		}
 	}
-	
+
 	public void Suspend() {
-		suspended=true;
+		suspended = true;
 	}
 }

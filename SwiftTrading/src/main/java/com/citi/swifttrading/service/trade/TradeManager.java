@@ -87,6 +87,7 @@ public class TradeManager {
 		VO.setPosition(trade.getPosition());
 		VO.setCode(trade.getSecurity().getNameAbbreviation());
 		VO.setBuyprice(numf.format(trade.getBuyPriceReal()));
+		VO.setSaleprice(numf.format(trade.getSalePriceReal()));
 		VO.setQuantity(trade.getQuantity());
 		VO.setStarttime(datef.format(trade.getStart_time()));
 		VO.setProfit(numf.format(trade.calProfit()));

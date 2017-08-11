@@ -39,24 +39,27 @@ public class MovingAverageRunner extends StrategyRunner {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}}
-			
+			try {
 				boolean newStatus = getStatus();
 				if (request != null) {
 					if (request.getStatus() ==TradeStatus.CREATED||request.getStatus() == TradeStatus.OPEN && status != newStatus || takeProfit()) {
 						closeRequest(request);
+						request = null;
 					}
-					request = null;
+					
 				} else if (status != newStatus) {
 					if (status) {
 						request = createLongRequest(target, exit);
+						Thread.sleep(8000);
 					} else {
 						request = createShortRequest(target, exit);
+						Thread.sleep(8000);
 					}
 				}
 	
 				status = newStatus;
 	
-				try {
+				
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
 					log.info(e.toString());

@@ -83,10 +83,10 @@ public class FulFillment extends Thread {
 						&& requiredQuantity <= totalOfferQuantity) {
 					setPriceForBuy(requiredQuantity, trade);
 					trade.setStatus(TradeStatus.CLOSED);
-				}else if (Position.SHORT == position && TradeStatus.OPEN == trade.getStatus()
+				} else if (Position.SHORT == position && TradeStatus.OPEN == trade.getStatus()
 						&& requiredQuantity <= totalOfferQuantity) {
 					break;
-				}else {
+				} else {
 					trade.setStatus(TradeStatus.REJECTED);
 				}
 				break;
@@ -130,35 +130,44 @@ public class FulFillment extends Thread {
 				}
 				break;
 			case LIMIT:
-				log.info("This is a LIMIT trade!!");
-				if (Position.LONG == position && TradeStatus.CREATED == trade.getStatus()) {
-					if (checkIsGoodToBuy(orderBook, trade)) {
-						setPriceForBuy(requiredQuantity, trade);
-						trade.setStatus(TradeStatus.OPEN);
-					} else
-						doFulFillment(trade);
-				} else if (Position.LONG == position && TradeStatus.OPEN == trade.getStatus()) {
-					log.info("In Sell!!!");
-					if (checkIsGoodToSell(orderBook, trade)) {
-						setPriceForSell(requiredQuantity, trade);
-						trade.setStatus(TradeStatus.CLOSED);
-					} else
-						doFulFillment(trade);
-				} else if (Position.SHORT == position && TradeStatus.OPEN == trade.getStatus()) {
-					if (checkIsGoodToBuy(orderBook, trade)) {
-						setPriceForBuy(requiredQuantity, trade);
-						trade.setStatus(TradeStatus.CLOSED);
-					} else
-						doFulFillment(trade);
-				} else {
-					log.info("In Sell!!!");
-					if (checkIsGoodToSell(orderBook, trade)) {
-						setPriceForSell(requiredQuantity, trade);
-						trade.setStatus(TradeStatus.CLOSED);
-					} else
-						doFulFillment(trade);
+				while (true) {
+					log.info("This is a LIMIT trade!!");
+					if (Position.LONG == position && TradeStatus.CREATED == trade.getStatus()) {
+						if (checkIsGoodToBuy(orderBook, trade)) {
+							setPriceForBuy(requiredQuantity, trade);
+							trade.setStatus(TradeStatus.OPEN);
+							break;
+						}
+						// else
+						// doFulFillment(trade);
+					} else if (Position.LONG == position && TradeStatus.OPEN == trade.getStatus()) {
+						log.info("In Sell!!!");
+						if (checkIsGoodToSell(orderBook, trade)) {
+							setPriceForSell(requiredQuantity, trade);
+							trade.setStatus(TradeStatus.CLOSED);
+							break;
+						}
+						// else
+						// doFulFillment(trade);
+					} else if (Position.SHORT == position && TradeStatus.OPEN == trade.getStatus()) {
+						if (checkIsGoodToBuy(orderBook, trade)) {
+							setPriceForBuy(requiredQuantity, trade);
+							trade.setStatus(TradeStatus.CLOSED);
+							break;
+						}
+						// else
+						// doFulFillment(trade);
+					} else {
+						log.info("In Sell!!!");
+						if (checkIsGoodToSell(orderBook, trade)) {
+							setPriceForSell(requiredQuantity, trade);
+							trade.setStatus(TradeStatus.OPEN);
+							break;
+						}
+						// else
+						// doFulFillment(trade);
+					}
 				}
-
 				break;
 			default:
 				log.info("This is default case!!");
@@ -205,30 +214,52 @@ public class FulFillment extends Thread {
 		OrderBookItem Item5 = orderBook.getOrderItem().get(9);
 
 		if (requiredQuantity <= Item1.getQty()) {
-			trade.setSalePriceReal(new Double(df.format(Item1.getPrice())));
+			if(trade.getStatus()==TradeStatus.CREATED) {
+				trade.setBuyPriceReal(new Double(df.format(Item1.getPrice())));
+			}else {
+				trade.setSalePriceReal(new Double(df.format(Item1.getPrice())));
+			}
+			
 		} else if ((requiredQuantity > Item1.getQty()) && (requiredQuantity <= (Item1.getQty() + Item2.getQty()))) {
 			double price = (Item1.getQty() * Item1.getPrice() + Item2.getPrice() * (requiredQuantity - Item1.getQty()))
 					/ requiredQuantity;
-			trade.setSalePriceReal(new Double(df.format(price)));
+			if(trade.getStatus()==TradeStatus.CREATED) {
+				trade.setBuyPriceReal(new Double(df.format(price)));
+			}else {
+				trade.setSalePriceReal(new Double(df.format(price)));
+			}
+			
 		} else if ((requiredQuantity > (Item1.getQty() + Item2.getQty()))
 				&& (requiredQuantity <= (Item1.getQty() + Item2.getQty() + Item3.getQty()))) {
 			double price = (Item1.getQty() * Item1.getPrice() + Item2.getPrice() * Item2.getQty()
 					+ Item3.getPrice() * (requiredQuantity - Item1.getQty() - Item2.getQty())) / requiredQuantity;
-			trade.setSalePriceReal(new Double(df.format(price)));
+			if(trade.getStatus()==TradeStatus.CREATED) {
+				trade.setBuyPriceReal(new Double(df.format(price)));
+			}else {
+				trade.setSalePriceReal(new Double(df.format(price)));
+			}
 		} else if ((requiredQuantity > (Item1.getQty() + Item2.getQty() + Item3.getQty()))
 				&& (requiredQuantity <= (Item1.getQty() + Item2.getQty() + Item3.getQty() + Item4.getQty()))) {
 			double price = (Item1.getQty() * Item1.getPrice() + Item2.getPrice() * Item2.getQty()
 					+ Item3.getPrice() * Item3.getQty()
 					+ Item4.getPrice() * (requiredQuantity - Item1.getQty() - Item2.getQty() - Item3.getQty()))
 					/ requiredQuantity;
-			trade.setSalePriceReal(new Double(df.format(price)));
+			if(trade.getStatus()==TradeStatus.CREATED) {
+				trade.setBuyPriceReal(new Double(df.format(price)));
+			}else {
+				trade.setSalePriceReal(new Double(df.format(price)));
+			}
 		} else {
 			double price = (Item1.getQty() * Item1.getPrice() + Item2.getPrice() * Item2.getQty()
 					+ Item3.getPrice() * Item3.getQty() + Item4.getPrice() * Item4.getQty()
 					+ Item5.getPrice()
 							* (requiredQuantity - Item1.getQty() - Item2.getQty() - Item3.getQty() - Item4.getQty()))
 					/ requiredQuantity;
-			trade.setSalePriceReal(new Double(df.format(price)));
+			if(trade.getStatus()==TradeStatus.CREATED) {
+				trade.setBuyPriceReal(new Double(df.format(price)));
+			}else {
+				trade.setSalePriceReal(new Double(df.format(price)));
+			}
 		}
 	}
 
@@ -239,30 +270,52 @@ public class FulFillment extends Thread {
 		OrderBookItem Item4 = orderBook.getOrderItem().get(3);
 		OrderBookItem Item5 = orderBook.getOrderItem().get(4);
 		if (requiredQuantity <= Item5.getQty()) {
-			trade.setBuyPriceReal(new Double(Item5.getPrice()));
+			if(trade.getStatus()==TradeStatus.CREATED) {
+				trade.setBuyPriceReal(new Double(Item5.getPrice()));
+			}else {
+				trade.setSalePriceReal(new Double(Item5.getPrice()));
+			}
+			
 		} else if ((requiredQuantity > Item5.getQty()) && (requiredQuantity <= (Item5.getQty() + Item4.getQty()))) {
 			double price = (Item5.getQty() * Item5.getPrice() + Item4.getPrice() * (requiredQuantity - Item5.getQty()))
 					/ requiredQuantity;
-			trade.setBuyPriceReal(new Double(df.format(price)));
+			if(trade.getStatus()==TradeStatus.CREATED) {
+				trade.setBuyPriceReal(new Double(df.format(price)));
+			}else {
+				trade.setSalePriceReal(new Double(df.format(price)));
+			}
+			
 		} else if ((requiredQuantity > (Item5.getQty() + Item4.getQty()))
 				&& (requiredQuantity <= (Item5.getQty() + Item4.getQty() + Item3.getQty()))) {
 			double price = (Item5.getQty() * Item5.getPrice() + Item4.getPrice() * Item4.getQty()
 					+ Item3.getPrice() * (requiredQuantity - Item5.getQty() - Item4.getQty())) / requiredQuantity;
-			trade.setBuyPriceReal(new Double(df.format(price)));
+			if(trade.getStatus()==TradeStatus.CREATED) {
+				trade.setBuyPriceReal(new Double(df.format(price)));
+			}else {
+				trade.setSalePriceReal(new Double(df.format(price)));
+			}
 		} else if ((requiredQuantity > (Item5.getQty() + Item4.getQty() + Item3.getQty()))
 				&& (requiredQuantity <= (Item5.getQty() + Item4.getQty() + Item3.getQty() + Item2.getQty()))) {
 			double price = (Item5.getQty() * Item5.getPrice() + Item4.getPrice() * Item4.getQty()
 					+ Item3.getPrice() * Item3.getQty()
 					+ Item2.getPrice() * (requiredQuantity - Item5.getQty() - Item4.getQty() - Item3.getQty()))
 					/ requiredQuantity;
-			trade.setBuyPriceReal(new Double(df.format(price)));
+			if(trade.getStatus()==TradeStatus.CREATED) {
+				trade.setBuyPriceReal(new Double(df.format(price)));
+			}else {
+				trade.setSalePriceReal(new Double(df.format(price)));
+			}
 		} else {
 			double price = (Item5.getQty() * Item5.getPrice() + Item4.getPrice() * Item4.getQty()
 					+ Item3.getPrice() * Item3.getQty() + Item2.getPrice() * Item2.getQty()
 					+ Item1.getPrice()
 							* (requiredQuantity - Item5.getQty() - Item4.getQty() - Item3.getQty() - Item2.getQty()))
 					/ requiredQuantity;
-			trade.setBuyPriceReal(new Double(df.format(price)));
+			if(trade.getStatus()==TradeStatus.CREATED) {
+				trade.setBuyPriceReal(new Double(df.format(price)));
+			}else {
+				trade.setSalePriceReal(new Double(df.format(price)));
+			}
 		}
 
 	}
