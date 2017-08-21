@@ -1,7 +1,7 @@
 
 /*ng-switch will create his own scope 
 in ther words its scope is child scope*/
-app.controller('stradeCtrl',function($scope,$http){
+app.controller('stradeCtrl',function($scope,$http,$rootScope){
 
 	$scope.names = ["MovingAverage","BollBand"];
 
@@ -28,6 +28,7 @@ app.controller('stradeCtrl',function($scope,$http){
 		};
 
 		sendstr(bborder,strade_url);
+		
 
 	};
 

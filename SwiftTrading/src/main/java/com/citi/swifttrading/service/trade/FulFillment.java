@@ -131,6 +131,8 @@ public class FulFillment extends Thread {
 				break;
 			case LIMIT:
 				while (true) {
+					if (!isRightStatus(trade))
+						return;
 					log.info("This is a LIMIT trade!!");
 					if (Position.LONG == position && TradeStatus.CREATED == trade.getStatus()) {
 						if (checkIsGoodToBuy(orderBook, trade)) {

@@ -38,6 +38,15 @@ public class PriceRepo {
 		add("APPL");
 		add("GOOG");
 		add("CITI");
+		add("ABAB");
+		add("APPL");
+		add("C");
+		add("CARR.PA");
+		add("F");
+		add("GOOG");
+		add("NSRGY");
+		add("SNE");
+		add("WMT");
 	}
 
 	public void bind(Security security) {

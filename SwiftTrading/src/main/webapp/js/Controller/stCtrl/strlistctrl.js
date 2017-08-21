@@ -90,5 +90,6 @@ app.controller('strlistCtrl',function($scope,$http,$interval,$timeout){
 	$scope.closedialog = function(){
 		$interval.cancel(poller);
 	};
+	
 
 });
