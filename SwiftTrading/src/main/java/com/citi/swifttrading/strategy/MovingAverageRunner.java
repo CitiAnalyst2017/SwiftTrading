@@ -31,28 +31,41 @@ public class MovingAverageRunner extends StrategyRunner {
 	public void run() {
 		boolean status = getStatus();
 		while (true) {
-			boolean newStatus = getStatus();
-			if (request != null) {
-				if (request.getStatus() ==TradeStatus.CREATED||request.getStatus() == TradeStatus.OPEN && status != newStatus || takeProfit()) {
-					closeRequest(request);
-				}
-				request = null;
-			} else if (status != newStatus) {
-				if (status) {
-					request = createLongRequest(target, exit);
-				} else {
-					request = createShortRequest(target, exit);
-				}
-			}
-
-			status = newStatus;
-
+			 synchronized (lock) {
+				 while(suspended) {
+				 try {
+						lock.wait();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}}
 			try {
-				Thread.sleep(50);
-			} catch (InterruptedException e) {
-				log.info(e.toString());
-				e.printStackTrace();
-			}
+				boolean newStatus = getStatus();
+				if (request != null) {
+					if (request.getStatus() ==TradeStatus.CREATED||request.getStatus() == TradeStatus.OPEN && status != newStatus || takeProfit()) {
+						closeRequest(request);
+						request = null;
+					}
+					
+				} else if (status != newStatus) {
+					if (status) {
+						request = createLongRequest(target, exit);
+						Thread.sleep(8000);
+					} else {
+						request = createShortRequest(target, exit);
+						Thread.sleep(8000);
+					}
+				}
+	
+				status = newStatus;
+	
+				
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					log.info(e.toString());
+					e.printStackTrace();
+				}
+			 }
 		}
 
 	}

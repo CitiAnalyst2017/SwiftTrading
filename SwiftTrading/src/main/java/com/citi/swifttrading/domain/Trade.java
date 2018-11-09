@@ -1,4 +1,4 @@
-package com.citi.swifttrading.domain;
+Wpackage com.citi.swifttrading.domain;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -10,7 +10,7 @@ import com.citi.swifttrading.enumration.TradeType;
 import lombok.Data;
 
 @Data
-public class Trade implements Serializable {
+public class Trade implements Serializable,Comparable<Trade> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -20,7 +20,6 @@ public class Trade implements Serializable {
 	private Date start_time;
 	private Date end_time;
 	private TradeStatus status;
-	private double price;
 	private double loss_price;
 	private double profit_price;
 	private TradeType type;
@@ -28,6 +27,10 @@ public class Trade implements Serializable {
 	private Position position;
 	private String ccy;
 	private double salePrice;
+	private double salePriceReal;
+	private double buyPrice;
+	private double buyPriceReal;
+	private int strategyId;
 
 	public Trade() {
 		super();
@@ -46,9 +49,33 @@ public class Trade implements Serializable {
 		this.status = TradeStatus.CREATED;
 		this.position = position;
 		if (type == TradeType.LIMIT) {
-			this.price = price;
-		} 
-		
+			this.buyPrice = price;
+		} else {
+			this.buyPrice = security.latestPrice();
+		}
+	}
+	
+	public double calProfit() {
+		double profit;
+		if(status==TradeStatus.CLOSED) {
+			profit=(salePriceReal-buyPriceReal)*quantity;
+		}
+		else if(status==TradeStatus.OPEN){
+			profit=(security.latestPrice()-buyPriceReal)*quantity;
+		}else {
+			profit=0;
+		}
+		if(position==Position.SHORT)
+			profit*=-1;
+		return profit;
+	}
+	
+	public double calRatio() {
+		return calProfit()/buyPriceReal;
 	}
 
+	@Override
+	public int compareTo(Trade other) {
+		return this.id-other.id;
+	}
 }

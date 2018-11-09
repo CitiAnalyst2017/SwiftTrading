@@ -2,8 +2,7 @@ package com.citi.swifttrading.domamin;
 
 import static org.junit.Assert.assertEquals;
 
-
-import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.junit.Before;
@@ -16,44 +15,49 @@ import com.citi.swifttrading.enumration.TradeStatus;
 import com.citi.swifttrading.enumration.TradeType;
 
 public class TradeTest {
-	
+
 	Trade trade;
-	
-	LocalDateTime time = LocalDateTime.now();
-	
+
+	Date start_time = new Date();
+	Date expiration;
+	Calendar c = Calendar.getInstance();
+
 	@Before
 	public void setUp() {
-		trade = new Trade(TradeType.MARKET,new Security("This is Security Name", "Short Name"), 100, new Date(),15, 0.05, 0.05, Position.LONG, 10);
+		this.setTime();
+		trade = new Trade(TradeType.LIMIT, new Security("This is Security Name", "Short Name"), 1200, start_time,
+				expiration, 9.5, 11.5, Position.LONG, 10.5);
 	}
 
-//	TODO
-	
-//	@Test
-//	public void testUserGet() {
-//		assertEquals("Short Name", trade.getCode());
-//		assertEquals(100, trade.getQuantity());
-//	}
-//	
-//	@Test
-//	public void testUserSet() {
-//		trade.setCode("ISIN654321");
-//		trade.setQuantity(2000);
-//		trade.setStatus(TradeStatus.OPEN);
-//		trade.setPrice(15.7);
-//		trade.setLoss_price(10.7);
-//		trade.setProfit_price(15.7);
-//		trade.setType(TradeType.MARKET);
-//		
-//		assertEquals("ISIN654321", trade.getCode());
-//		assertEquals(2000, trade.getQuantity());
-//		assertEquals(time.plusDays(5), trade.getExpiration());
-//		assertEquals(time.plusDays(1), trade.getStart_time());
-//		assertEquals(time.plusDays(2), trade.getEnd_time());
-//		assertEquals(1, trade.getStatus());
-//		assertEquals(0, 15.7, trade.getPrice());
-//		assertEquals(0, 10.7, trade.getLoss_price());
-//		assertEquals(0, 15.7, trade.getProfit_price());
-//		assertEquals("A", trade.getType());
-//	}
+	private void setTime() {
+		c.setTime(start_time);
+		c.add(Calendar.MINUTE, 15);
+		expiration = c.getTime();
+	}
+
+	@Test
+	public void testTradeGet() {
+		assertEquals("Short Name", trade.getSecurity().getNameAbbreviation());
+		assertEquals(1200, trade.getQuantity());
+	}
+
+	@Test
+	public void testTradeSet() {
+		trade.getSecurity().setNameAbbreviation("ISIN654321");
+		trade.setQuantity(2000);
+		trade.setStatus(TradeStatus.OPEN);
+		trade.setBuyPrice(15.7);
+		trade.setLoss_price(10.7);
+		trade.setProfit_price(15.7);
+		trade.setType(TradeType.MARKET);
+
+		assertEquals("ISIN654321", trade.getSecurity().getNameAbbreviation());
+		assertEquals(2000, trade.getQuantity());
+		assertEquals(TradeStatus.OPEN, trade.getStatus());
+		assertEquals(0, 15.7, trade.getBuyPrice());
+		assertEquals(0, 10.7, trade.getLoss_price());
+		assertEquals(0, 15.7, trade.getProfit_price());
+		assertEquals(TradeType.MARKET, trade.getType());
+	}
 
 }

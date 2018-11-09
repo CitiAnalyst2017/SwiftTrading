@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.citi.swifttrading.generator.OrderBook;
+import com.citi.swifttrading.util.MathUtil;
+
 import lombok.Data;
 
 @Data
@@ -13,6 +16,7 @@ public class Security implements Serializable{
 	protected List<Double> prices=new ArrayList<>();
 	private String securityName;
 	private String nameAbbreviation;
+	private OrderBook orderBook;
 
 	public Security() {
 		super();
@@ -25,13 +29,8 @@ public class Security implements Serializable{
 	}
 	
 	public double getAverage(int period) {
-		if(period>prices.size())
-			return -1;
-		double sum=0;
-		for(int i=prices.size()-period;i<prices.size();i++) {
-			sum+=prices.get(i);
-		}
-		return sum/period;
+		List<Double> recentPrices = getRecentPrices(period);
+		return MathUtil.average(recentPrices);
 	}
 
 	public void addPrice(double price) {
@@ -45,5 +44,19 @@ public class Security implements Serializable{
 	@Override
 	public String toString() {
 		return "Security [securityName=" + securityName + ", nameAbbreviation=" + nameAbbreviation + "]";
+	}
+
+	
+	public double getStd(int period) {
+		List<Double> recentPrices = getRecentPrices(period);
+		return MathUtil.std(recentPrices);
+	}
+	
+	private List<Double> getRecentPrices(int period){
+		List<Double> recentPrices=new ArrayList<>();
+		for(int i=prices.size()-period;i<prices.size();i++) {
+			recentPrices.add(prices.get(i));
+		}
+		return recentPrices;
 	}
 }

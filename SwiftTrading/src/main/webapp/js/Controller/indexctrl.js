@@ -5,6 +5,8 @@ var finshed_orders = [];
 var can_be_operated_orders = [];
 var finished_orders = [];
 
+var url_prefix = '/swifttrading/rest/';
+
 var app = angular.module('st',[]);
 
 app.controller('indexCtrl',function($scope,$location){
@@ -20,5 +22,7 @@ app.controller('indexCtrl',function($scope,$location){
 	};
 	$scope.oclick = function(){
 		$scope.main = './view/OrderHistory/OrderHistory.html';
-	}
-	});
+	};
+
+
+});

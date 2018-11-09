@@ -19,6 +19,23 @@
 	font-size: 1.5em;
 }
 
+.ptrade-list .pendingtrade .r{
+	color: red;
+}
+
+.ptrade-list .pendingtrade  .g{
+	color: green;
+}
+.ptrade-list .pendingtrade span{
+	font-size: 1.3em;
+	margin-right: 1em;
+	color: grey;
+} 
+
+.ptrade-list button{
+	margin-top: 2em;
+}
+
 .trade-panel{
 	margin-top: 0.5em;
 }
@@ -30,3 +47,4 @@
 .trade-form-right{
 	margin-left: 8em;
 }
+

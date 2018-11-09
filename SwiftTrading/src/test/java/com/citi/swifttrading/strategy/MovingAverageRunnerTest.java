@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import com.citi.swifttrading.domain.MovingAverage;
 import com.citi.swifttrading.domain.Security;
-import com.citi.swifttrading.service.trade.SecrityUpdater;
+import com.citi.swifttrading.service.trade.SecurityUpdater;
 
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
@@ -14,12 +14,12 @@ public class MovingAverageRunnerTest {
 	private MovingAverageRunner target;
 	private MovingAverage movingAverage;
 	private Security security;
-	private SecrityUpdater updater;
+	private SecurityUpdater updater;
 	@Before
 	public void setUp() throws Exception {
 		security=new Security();
 		security.setNameAbbreviation("APPL");
-		updater= new SecrityUpdater(security);
+		//updater= new SecurityUpdater("APPL");
 		target=new  MovingAverageRunner(null, movingAverage);
 	}
 

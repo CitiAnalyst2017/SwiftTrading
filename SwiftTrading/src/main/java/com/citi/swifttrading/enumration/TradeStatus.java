@@ -1,5 +1,5 @@
 package com.citi.swifttrading.enumration;
 
 public enum TradeStatus {
-	CREATED,OPEN,CLOSED,CANCLED
+	CREATED, OPEN, CLOSING, CLOSED, CANCLED, REJECTED
 }

@@ -1,6 +1,5 @@
 package com.citi.swifttrading.daoImpl;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -11,42 +10,34 @@ import com.citi.swifttrading.dao.StrategyDao;
 import com.citi.swifttrading.domain.Strategy;
 
 @Repository
-public class StrategyDaoImpl implements StrategyDao{
+public class StrategyDaoImpl implements StrategyDao {
 
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
+
+	@Autowired
+	SecurityDaoImpl securityDaoImpl;
 	
 	@Override
-	public void save(Strategy s) {
+	public int save(Strategy s) {
 		sqlSessionTemplate.insert("insert-strategy", s);	
+		return s.getId();
 	}
 
 	@Override
 	public Strategy queryById(int id) {
-//		return (Strategy) sqlSessionTemplate.selectOne("queryByStrategyID", id);
-		
-//		TODO
-		
-		List<Strategy> strategy = sqlSessionTemplate.selectList("query_All_Strategy");
-		Iterator<Strategy> iter = strategy.iterator();
-		Strategy ste = null;
-		while(iter.hasNext()) {
-			Strategy s= iter.next();
-			if(s.getId() == id)
-				ste = s;
-		}
-		return ste;
+		return (Strategy) sqlSessionTemplate.selectOne("queryByStrategyID", id);
 	}
 
 	@Override
 	public void update(Strategy s) {
-		sqlSessionTemplate.insert("update-strategy", s);	
-		
+		sqlSessionTemplate.insert("update-strategy", s);
+
 	}
 
 	@Override
 	public void delete(int id) {
-		sqlSessionTemplate.delete("delete-strategy", id);	
+		sqlSessionTemplate.delete("delete-strategy", id);
 	}
 
 	@Override

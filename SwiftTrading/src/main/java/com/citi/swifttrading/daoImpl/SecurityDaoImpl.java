@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.citi.swifttrading.dao.PriceRepo;
 import com.citi.swifttrading.dao.SecurityDao;
 import com.citi.swifttrading.domain.Security;
 
@@ -15,6 +16,9 @@ public class SecurityDaoImpl implements SecurityDao{
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
 	
+	@Autowired
+	private PriceRepo priceRepo;
+	
 	@Override
 	public void save(Security s) {
 		sqlSessionTemplate.insert("insert-security", s);	
@@ -22,7 +26,9 @@ public class SecurityDaoImpl implements SecurityDao{
 
 	@Override
 	public Security queryById(String nameAbbreviation) {
-		return (Security) sqlSessionTemplate.selectOne("queryByID", nameAbbreviation);
+		Security security = (Security) sqlSessionTemplate.selectOne("queryByID", nameAbbreviation);
+		priceRepo.bind(security);
+		return security;
 	}
 
 	@Override
@@ -38,8 +44,9 @@ public class SecurityDaoImpl implements SecurityDao{
 
 	@Override
 	public List<Security> queryAll() {
-		List<Security> security = sqlSessionTemplate.selectList("query_All");
-		return security;
+		List<Security> securitys = sqlSessionTemplate.selectList("query_All");
+		securitys.forEach(security->priceRepo.bind(security));
+		return securitys;
 	}
 
 }

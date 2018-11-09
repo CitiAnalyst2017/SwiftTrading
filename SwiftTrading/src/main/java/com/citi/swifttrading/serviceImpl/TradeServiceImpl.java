@@ -7,22 +7,23 @@ import org.springframework.stereotype.Repository;
 
 import com.citi.swifttrading.daoImpl.TradeDaoImpl;
 import com.citi.swifttrading.domain.Trade;
+import com.citi.swifttrading.enumration.TradeStatus;
 import com.citi.swifttrading.service.TradeService;
 
 @Repository
-public class TradeServiceImpl implements TradeService{
+public class TradeServiceImpl implements TradeService {
 
 	@Autowired
 	private TradeDaoImpl tradeDaoImpl;
-	
+
 	@Override
 	public Trade queryById(int id) {
 		return tradeDaoImpl.queryById(id);
 	}
 
 	@Override
-	public void save(Trade t) {
-		tradeDaoImpl.save(t);
+	public int save(Trade t) {
+		return tradeDaoImpl.save(t);
 	}
 
 	@Override
@@ -38,6 +39,12 @@ public class TradeServiceImpl implements TradeService{
 	@Override
 	public List<Trade> queryAll() {
 		List<Trade> trade = tradeDaoImpl.queryAll();
+		return trade;
+	}
+
+	@Override
+	public List<Trade> queryByStatus(TradeStatus status) {
+		List<Trade> trade = tradeDaoImpl.queryByStatus(status);
 		return trade;
 	}
 

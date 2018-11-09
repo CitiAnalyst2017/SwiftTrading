@@ -1,18 +1,44 @@
 <div class="os-page">
-	<div class="finished-order">
+	<div class="finished-order" ng-controller="forderCtrl">
 		<div class="panel panel-default">
 			<div class="panel-heading">Finished Order</div>
 			<div class="panel-body">
-				
+				<p ng-show="nofo">There Is No Finished Order Now</p>
+				<p ng-show="errormsg" style="color: red;">Internet Error</p>
+				<div class="byselect" ng-show="flistshow">
+					<div class="input-group" style="width: 25%;">
+						<span class="input-group-addon">CreatedBy</span>
+						<select ng-init="by=bys[0]" ng-model="by" ng-options="x for x in bys" class="form-control" ng-change="selectby()">
+						</select>
+					</div>
+					<ul class="list-group" ng-repeat="forder in forders">	
+						<li class="list-group-item">	
+							<table class="table">  
+								<tr>
+									<td><span>Position:{{forder.position}}</span></td>
+									<td><span>OrderTime:{{forder.starttime}}</span></td>
+									<td><span>Code:{{forder.code}}</span></td>
+									<td><span>SellPrice:{{forder.saleprice}}</span></td>
+									<td><span>BuyPrice:{{forder.buyprice}}</span></td>
+									<td><span>Quantity:{{forder.quantity}}</span></td>
+									<td><span>Profit:{{forder.profit}}</span></td>
+									<td><span>Status:{{forder.status}}</span></td>
+								</tr>
+							</table>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="performance">
+	<div class="performance" ng-controller="perfCtrl">
 		<div class="panel panel-default">
 			<div class="panel-heading">Strategy Performance</div>
 			<div class="panel-body">
-				
+				<div class="perf-chart" id="pcontainer">
+				</div>	
+			</div>
 			</div>
 		</div>
 	</div>
